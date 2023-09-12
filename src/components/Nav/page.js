@@ -27,7 +27,15 @@ function NavBar(props) {
 	const [dropdown, setDropdown] = useState(false)
 	const [notifFlag, setNotifFlag] = useState(false)
 
-	useEffect(() => {}, [])
+	const isInLogin = router.pathname === '/login'
+
+	useEffect(() => {
+		console.log('name: ', router.pathname)
+	})
+
+	if (isInLogin) {
+		return null
+	}
 
 	return (
 		<div className="z-40 float-left w-full h-[80px] shadow-sm fixed bg-white border-b-[1px] text-neutral-900 px-[200px] ">
@@ -65,7 +73,7 @@ function NavBar(props) {
 							title="LOG IN"
 							style=" hover:underline text-[14px] font-bold"
 							onClick={() => {
-								console.log('hello')
+								router.push('/login')
 							}}
 						/>
 						<Button
