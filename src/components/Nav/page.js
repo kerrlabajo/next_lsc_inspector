@@ -45,21 +45,24 @@ function NavBar(props) {
 						src={Logo}
 						alt="LSC logo"
 						width={200}
+						onClick={() => {
+							router.push('/')
+						}}
 					/>
 					<Link
-						href="/"
+						href="/features"
 						className="ml-[40px] mr-[20px] hover:underline"
 					>
 						Features
 					</Link>
 					<Link
-						href="/"
+						href="/how-to-use"
 						className="mx-[20px] hover:underline"
 					>
 						How to Use
 					</Link>
 					<Link
-						href="/"
+						href="/about-us"
 						className="mx-[20px] hover:underline"
 					>
 						About Us
@@ -79,7 +82,9 @@ function NavBar(props) {
 						<Button
 							title="Try it now!"
 							style=" bg-green-400 text-white hover:bg-green-500 text-[14px] font-bold"
-							onClick={() => {}}
+							onClick={() => {
+								router.push('/demo')
+							}}
 						/>
 						{/* {renderProfile()} */}
 					</div>
