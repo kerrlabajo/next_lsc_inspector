@@ -10,7 +10,7 @@ const Demo = () => {
 					<h1 className="text-5xl font-bold">Upload your image</h1>
 					<form
 						method="POST"
-						enctype="multipart/form-data"
+						encType="multipart/form-data"
 						action="{{ url_for('input_file.insert_inputFile') }}"
 						className="flex justify-between"
 					>
