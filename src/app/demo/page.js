@@ -4,7 +4,7 @@ import React from 'react'
 
 const Demo = () => {
 	return (
-		<div className="bg-white w-full h-[300vh] float-left px-[200px]">
+		<div className="bg-white w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex justify-center mt-[200px]">
 				<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6">
 					<h1 className="text-5xl font-bold">Upload your image</h1>

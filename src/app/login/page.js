@@ -5,7 +5,7 @@ import Google from '../../../public/assets/images/google.png'
 
 const Login = () => {
 	return (
-		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[300vh] float-left px-[200px]">
+		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 				<div className="w-full bg-white rounded-xl shadow md:mt-0 sm:max-w-md xl:p-0 ">
 					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">

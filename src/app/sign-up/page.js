@@ -3,7 +3,7 @@ import Google from '../../../public/assets/images/google.png'
 
 const Signup = () => {
 	return (
-		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[300vh] float-left px-[200px]">
+		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 				<div class="w-full bg-white rounded-xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 ">
 					<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
