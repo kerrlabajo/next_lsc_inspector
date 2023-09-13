@@ -1,8 +1,13 @@
+'use client'
+
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import BannerImage from '../../../public/assets/images/banner.svg'
 import Button from '@components/Button/page'
 
 const Banner = () => {
+	const router = useRouter()
+
 	return (
 		<div className="bg-white h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 			<div className="w-1/2 pr-[20px] flex items-center justify-center flex-col gap-y-[20px]">
@@ -26,11 +31,11 @@ const Banner = () => {
 				</span>
 				<div className="w-full mt-[50px]">
 					<Button
-						title="Try it now for FREE!"
+						title="Try it now"
 						style=" justify-center text-white w-full bg-gradient-to-r from-green-500 to-blue-300 font-bold"
 						onHover="bg-gradient-to-r from-blue-300 to-green-500"
 						onClick={() => {
-							console.log('hello')
+							router.push('/demo')
 						}}
 					/>
 					<span className="text-xs text-neutral-400">Get started today and try it now with our pre-trained model.</span>
