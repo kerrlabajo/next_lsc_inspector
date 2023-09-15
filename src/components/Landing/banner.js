@@ -32,7 +32,7 @@ const Banner = () => {
 				<div className="w-full mt-[50px]">
 					<Button
 						title="Try it now"
-						style=" justify-center text-white w-full bg-gradient-to-r from-green-500 to-blue-300 font-bold"
+						style=" text-white w-full bg-gradient-to-r from-green-500 to-blue-300 font-bold"
 						onHover="bg-gradient-to-r from-blue-300 to-green-500"
 						onClick={() => {
 							router.push('/demo')

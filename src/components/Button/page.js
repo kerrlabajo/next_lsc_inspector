@@ -7,7 +7,7 @@ const Button = (props) => {
 				props.onClick()
 			}}
 			className={
-				'px-[40px] pr-[40px] h-[50px] lg:pr-[20px] lg:px-[20px] cursor-pointer content-center items-center float-left flex rounded-[10px]' +
+				'px-[40px] pr-[40px] h-[45px] lg:pr-[20px] lg:px-[20px] cursor-pointer content-center items-center justify-center float-left flex rounded-[10px]' +
 				props.style
 			}
 		>
