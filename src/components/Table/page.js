@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import Skeleton from '@/components/loading/Table'
+import Skeleton from '@components/Loading/skeleton'
 import { SvgIcon } from '@mui/material'
 import { ChevronLeft, ChevronRight, ToggleOffOutlined, ToggleOnOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
@@ -179,14 +179,14 @@ const Table = (props) => {
 	const dataArray = Array.isArray(data) ? data : [data]
 	return (
 		<div className="w-full float-left">
-			<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-lg">
-				<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+			<table className="w-full text-sm text-left text-gray-500  rounded-lg">
+				<thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
 					<tr style={{}}>
 						{header &&
 							header.map((item, index) => (
 								<th
 									scope="col"
-									className="px-6 py-5 text-green-500 dark:text-green-400"
+									className="px-6 py-5 text-green-500 "
 									key={index}
 								>
 									{item.title}
@@ -200,7 +200,7 @@ const Table = (props) => {
 						dataArray.map((item, index) => (
 							<tr
 								key={index}
-								className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 text-gray-700 dark:text-white hover:bg-gray-100 hover:dark:bg-gray-700 cursor-pointer"
+								className="bg-white border-b   text-gray-700  hover:bg-gray-100 hover:cursor-pointer"
 							>
 								{header && header.map((hItem, hIndex) => renderIndex(item, index, hItem, hIndex))}
 							</tr>
@@ -209,7 +209,7 @@ const Table = (props) => {
 						[1, 2, 3, 4, 5].map((item, index) => (
 							<tr
 								key={index}
-								className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+								className="bg-white border-b  "
 							>
 								<td
 									colSpan={header.length}
@@ -223,7 +223,7 @@ const Table = (props) => {
 							</tr>
 						))}
 					{!isLoading && (data === null || (data && data.length === 0)) && (
-						<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+						<tr className="bg-white border-b  ">
 							<td
 								colSpan={header.length}
 								style={{
