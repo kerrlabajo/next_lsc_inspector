@@ -1,9 +1,11 @@
 import { useState } from 'react'
 
 import UsersService from '@services/UsersService'
+import useUserStore from './../useStore'
 
 const useSignup = () => {
 	const [isSigningUp, setIsSigningUp] = useState(false)
+	const setUser = useUserStore((state) => state.setUser)
 
 	const signupUser = async ({ username, email, password }) => {
 		setIsSigningUp(true)
@@ -24,21 +26,22 @@ const useSignup = () => {
 			responseCode = error.response.error
 		}
 
-		// switch (responseCode) {
-		// 	case 201:
-		// 		await callbacks.signedUp({ retrievedUser })
-		// 		break
-		// 	case 400:
-		// 		await callbacks.invalidFields()
-		// 		break
-		// 	case 409:
-		// 		await callbacks.usernameExists()
-		// 		break
-		// 	case 500:
-		// 		await callbacks.internalError()
-		// 		break
-		// 	default:
-		// }
+		switch (responseCode) {
+			case 201:
+				// await callbacks.signedUp({ retrievedUser })
+				setUser(retrievedUser)
+				break
+			case 400:
+				await callbacks.invalidFields()
+				break
+			case 409:
+				await callbacks.usernameExists()
+				break
+			case 500:
+				await callbacks.internalError()
+				break
+			default:
+		}
 
 		setIsSigningUp(false)
 	}

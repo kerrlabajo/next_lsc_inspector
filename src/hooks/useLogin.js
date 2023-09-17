@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import UsersService from '@services/UsersService'
+import useUserStore from './../useStore'
 
 const useLogin = () => {
-	const [isLogginIn, setIsLoggingIn] = useState(false)
+	const [isLoggingIn, setIsLoggingIn] = useState(false)
+	const setUser = useUserStore((state) => state.setUser)
 
 	const loginUser = async ({ email, password, callback }) => {
 		setIsLoggingIn(true)
@@ -26,7 +28,8 @@ const useLogin = () => {
 
 		switch (responseCode) {
 			case 200:
-				await callback.loggedIn({ retrievedUser })
+				// await callback.loggedIn({ retrievedUser })
+				setUser(retrievedUser)
 				break
 			case 401:
 				await callback.invalidFields()
@@ -39,7 +42,7 @@ const useLogin = () => {
 		setIsLoggingIn(false)
 	}
 
-	return { isLogginIn, loginUser }
+	return { isLoggingIn, loginUser }
 }
 
 export default useLogin
