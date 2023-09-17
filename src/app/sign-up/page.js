@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
 import useSignup from '@hooks/useRegister'
@@ -9,9 +10,9 @@ import Button from '@components/Button/page'
 import TextInput from '@components/textInput'
 
 import Google from '../../../public/assets/images/google.png'
-import { useRouter } from 'next/router'
 
 const Signup = () => {
+	const router = useRouter()
 	const [username, setUsername] = useState(null)
 	const [errorUsername, setErrorUsername] = useState(null)
 	const [email, setEmail] = useState(null)
@@ -28,6 +29,7 @@ const Signup = () => {
 			email: email,
 			password: password,
 		})
+		router.push('/login')
 	}
 
 	return (

@@ -5,14 +5,20 @@ import Container from '@components/container'
 import Button from '@components/Button/page'
 import FileUpload from '@components/Button/fileUpload'
 import Modal from '@components/Modal/page'
+import Toggle from '@components/Button/toggle'
+import useUserStore from '../../useStore'
 
 const Main = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true)
+	const { user, isAuthenticated } = useUserStore()
 
 	const renderContent = () => {
 		return (
 			<div>
 				<div className="flex flex-col mb-[20px]">
+					<div className="w-full flex justify-end mb-[20px]">
+						<Toggle title="Use custom weights" />
+					</div>
 					<h1 className="font-bold text-[20px]">Model</h1>
 					<span className="text-gray-400">Select from any from our pre-defined model you want to use.</span>
 					<ul className="flex py-[20px] gap-3">
@@ -56,7 +62,7 @@ const Main = () => {
 					</form>
 				</div>
 			</div>
-			{isModalOpen && (
+			{user && isAuthenticated && isModalOpen && (
 				<Modal
 					title="Setup your AI model"
 					onClose={() => {

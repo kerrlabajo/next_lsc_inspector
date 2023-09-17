@@ -28,8 +28,7 @@ const useSignup = () => {
 
 		switch (responseCode) {
 			case 201:
-				// await callbacks.signedUp({ retrievedUser })
-				setUser(retrievedUser)
+				await callbacks.signedUp({ retrievedUser })
 				break
 			case 400:
 				await callbacks.invalidFields()

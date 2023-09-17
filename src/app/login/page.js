@@ -8,11 +8,12 @@ import Image from 'next/image'
 import useLogin from '@hooks/useLogin'
 import Button from '@components/Button/page'
 import TextInput from '@components/textInput'
+import Toggle from '@components/Button/toggle'
+
 import Google from '../../../public/assets/images/google.png'
 
 const Login = () => {
 	const router = useRouter()
-	const { data: session } = useSession()
 	const [email, setEmail] = useState(null)
 	const [errorEmail, setErrorEmail] = useState(null)
 	const [password, setPassword] = useState(null)
@@ -33,7 +34,7 @@ const Login = () => {
 		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 				<div className="w-full bg-white rounded-xl shadow md:mt-0 sm:max-w-md xl:p-0 ">
-					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+					<div className="p-6 space-y-4 ">
 						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">Login</h1>
 						<form
 							className="space-y-4 md:space-y-6"
@@ -100,19 +101,12 @@ const Login = () => {
 									onSubmit()
 								}}
 							/>
-							<button
-								type="submit"
-								className="w-full flex justify-center gap-2  text-neutral-700 border-[1px] border-gray-300 bg-white hover:bg-neutral-100 focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-centerd"
-							>
-								<Image
-									src={Google}
-									alt="Google Logo"
-									width={20}
-									className=""
-								/>
-								Login with Google
-							</button>
-							<p className="text-sm font-light text-gray-500">
+							<Button
+								title="Login with Google"
+								style=" w-full bg-green-400 border border-gray-300 hover:bg-gray-50 h-[39px] bg-white text-gray-500"
+								onClick={() => {}}
+							/>
+							<p className="text-sm font-light text-gray-500 pt-[20px]">
 								Dont have an account?{' '}
 								<a
 									href="sign-up"
