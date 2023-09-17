@@ -1,9 +1,5 @@
 'use client'
 
-if (typeof window === 'object') {
-	//This code is executed in the browser
-	console.log(window.innerWidth)
-}
 export const isLocal = Boolean(
 	window.location.hostname === 'localhost' ||
 		// [::1] is the IPv6 localhost address.
