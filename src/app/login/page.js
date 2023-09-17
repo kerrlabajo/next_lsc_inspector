@@ -1,9 +1,34 @@
+'use client'
+
+import React, { useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import Button from '@components/Button/page'
 import Image from 'next/image'
+import useLogin from '@hooks/useLogin'
+import Button from '@components/Button/page'
+import TextInput from '@components/textInput'
 import Google from '../../../public/assets/images/google.png'
 
 const Login = () => {
+	const router = useRouter()
+	const { data: session } = useSession()
+	const [email, setEmail] = useState(null)
+	const [errorEmail, setErrorEmail] = useState(null)
+	const [password, setPassword] = useState(null)
+	const [errorPassword, setErrorPassword] = useState(null)
+	const { isLoggingIn, loginUser } = useLogin()
+
+	const searchParams = useSearchParams()
+	const callbackUrl = searchParams.get('callbackUrl') || '/main'
+
+	const onSubmit = async () => {
+		await loginUser({
+			email: email,
+			password: password,
+		})
+	}
+
 	return (
 		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
@@ -21,13 +46,20 @@ const Login = () => {
 								>
 									Your email
 								</label>
-								<input
+								<TextInput
 									type="email"
-									name="email"
-									id="email"
-									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-									placeholder="name@company.com"
-									required=""
+									placeholder="Email Address"
+									value={email}
+									onChange={(email, errorEmail) => {
+										setEmail(email)
+										setErrorEmail(errorEmail)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 2,
+										column: 'Email',
+										error: errorEmail,
+									}}
 								/>
 							</div>
 							<div>
@@ -37,13 +69,20 @@ const Login = () => {
 								>
 									Password
 								</label>
-								<input
+								<TextInput
 									type="password"
-									name="password"
-									id="password"
-									placeholder="••••••••"
-									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5 "
-									required=""
+									placeholder="Password"
+									value={password}
+									onChange={(password, errorPassword) => {
+										setPassword(password)
+										setErrorPassword(errorPassword)
+									}}
+									validation={{
+										type: 'text_without_space',
+										column: 'Password',
+										size: 6,
+										error: errorPassword,
+									}}
 								/>
 								<div className="flex items-center h-5 justify-end mt-[10px]">
 									<Link
@@ -54,12 +93,13 @@ const Login = () => {
 									</Link>
 								</div>
 							</div>
-							<button
-								type="submit"
-								className="w-full text-white bg-green-400 hover:bg-green-500 focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-centerd"
-							>
-								Login
-							</button>
+							<Button
+								title="login"
+								style=" w-full bg-green-400 text-white hover:bg-green-500 h-[40px]"
+								onClick={() => {
+									onSubmit()
+								}}
+							/>
 							<button
 								type="submit"
 								className="w-full flex justify-center gap-2  text-neutral-700 border-[1px] border-gray-300 bg-white hover:bg-neutral-100 focus:ring-1 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-centerd"

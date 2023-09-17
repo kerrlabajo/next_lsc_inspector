@@ -9,6 +9,7 @@ import Button from '@components/Button/page'
 import TextInput from '@components/textInput'
 
 import Google from '../../../public/assets/images/google.png'
+import { useRouter } from 'next/router'
 
 const Signup = () => {
 	const [username, setUsername] = useState(null)
