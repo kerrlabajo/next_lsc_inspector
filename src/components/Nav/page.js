@@ -22,7 +22,7 @@ const dropdownMenu = [
 function NavBar(props) {
 	const router = useRouter()
 	const [dropdown, setDropdown] = useState(false)
-	const user = useUserStore((state) => state.user)
+	const { user, logout } = useUserStore()
 
 	const isInLogin = router.pathname === '/login'
 
@@ -60,9 +60,8 @@ function NavBar(props) {
 				<div className="mb-[20px]">
 					<span
 						onClick={() => {
-							signOut({
-								callbackUrl: `${window.location.origin}`,
-							})
+							logout()
+							router.push('/')
 						}}
 						className="block px-4 cursor-pointer py-4 text-sm text-white hover:bg-blue-500 "
 					>

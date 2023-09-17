@@ -4,7 +4,7 @@ function Modal(props) {
 	return (
 		<div
 			id="large-modal"
-			tabindex="-1"
+			tabIndex="-1"
 			className="fixed top-0 left-0 right-0 z-50 w-full p-[10px] overflow-x-hidden overflow-y-auto md:inset-0 h-[100vh] max-h-full items-center content-center justify-center flex modal bg-black bg-opacity-30"
 		>
 			<div className="relative w-full max-w-3xl max-h-full">

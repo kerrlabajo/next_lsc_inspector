@@ -16,11 +16,11 @@ function Homepage({ children }) {
 	const router = useRouter()
 	const pathname = usePathname()
 	const [loading, setLoading] = useState(true)
-	const user = useUserStore((state) => state.user)
+	const { user, isAuthenticated } = useUserStore()
 
 	useEffect(() => {
 		const securedPage = async () => {
-			if (user && redirectDashboard.includes(pathname)) {
+			if (isAuthenticated && user && redirectDashboard.includes(pathname)) {
 				setLoading(false)
 				router.push('/main')
 			} else if (!user && protectedPages.includes(pathname)) {
@@ -42,11 +42,11 @@ function Homepage({ children }) {
 			setLoading(false)
 		}
 		securedPage()
-	})
+	}, [isAuthenticated, pathname, router, user])
 
 	return (
 		<div className="float-left w-full min-h-full bg-white text-black ">
-			{!loading && user && (
+			{!loading && isAuthenticated && user && (
 				<div className="w-full float-left">
 					<Nav />
 					<div className="w-full min-h-[100vh] bg-gray-100 float-left relative">

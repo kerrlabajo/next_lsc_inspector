@@ -6,7 +6,7 @@ import useUserStore from './../useStore'
 
 const useLogin = () => {
 	const [isLoggingIn, setIsLoggingIn] = useState(false)
-	const setUser = useUserStore((state) => state.setUser)
+	const { login } = useUserStore()
 
 	const loginUser = async ({ email, password, callback }) => {
 		setIsLoggingIn(true)
@@ -29,7 +29,7 @@ const useLogin = () => {
 		switch (responseCode) {
 			case 200:
 				// await callback.loggedIn({ retrievedUser })
-				setUser(retrievedUser)
+				login(retrievedUser.user.access_token, retrievedUser)
 				break
 			case 401:
 				await callback.invalidFields()
