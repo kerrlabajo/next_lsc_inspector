@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import UsersService from '@services/UsersService'
 import useUserStore from './../useStore'
 
 const useSignup = () => {
+	const router = useRouter()
 	const [isSigningUp, setIsSigningUp] = useState(false)
 	const setUser = useUserStore((state) => state.setUser)
 
@@ -28,7 +30,8 @@ const useSignup = () => {
 
 		switch (responseCode) {
 			case 201:
-				await callbacks.signedUp({ retrievedUser })
+				// await callbacks.signedUp({ retrievedUser })
+				router.push('/login')
 				break
 			case 400:
 				await callbacks.invalidFields()
