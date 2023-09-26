@@ -3,7 +3,10 @@ import config from './config'
 
 const BASE_URL = `${config.API_URL}/files`
 const FilesServices = {
-    upload: (file, headers) => axios.post(`${BASE_URL}/upload`, file, { headers }),
+    upload: (file, token) => axios.post(`${BASE_URL}/upload`, file, { headers : {
+         Authorization : token,
+         "Content-Type": "multipart/form-data"
+    } }),
 	analyze: (file) => axios.post(`${BASE_URL}/analyze`, file),
     getAll: () => axios.get(`${BASE_URL}`),
     getById: (id) => axios.get(`${BASE_URL}/${id}`),
