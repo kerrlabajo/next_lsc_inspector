@@ -25,7 +25,8 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			<head>
 				<title>LSC-Inspector</title>
-				<Script id="docsbot">
+				<Script src="https://cdn.roboflow.com/0.2.26/roboflow.js"></Script>
+				{/* <Script id="docsbot">
 					{`
 					window.DocsBotAI=window.DocsBotAI||{},DocsBotAI.init=function(c){return new Promise(function(e,o){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://widget.docsbot.ai/chat.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n),t.addEventListener("load",function(){window.DocsBotAI.mount({id:c.id,supportCallback:c.supportCallback});var t;t=function(n){return new Promise(function(e){if(document.querySelector(n))return e(document.querySelector(n));var o=new MutationObserver(function(t){document.querySelector(n)&&(e(document.querySelector(n)),o.disconnect())});o.observe(document.body,{childList:!0,subtree:!0})})},t&&t("#docsbotai-root").then(e).catch(o)}),t.addEventListener("error",function(t){o(t.message)})})};
 					DocsBotAI.init({id: "ZrbLG98bbxZ9EFqiPvyl/UMADr9eozeBQ8sZKr0GW",supportCallback: function (event, history) {
@@ -35,7 +36,7 @@ export default function RootLayout({ children }) {
 						Beacon('open');
 					},});
 					`}
-				</Script>
+				</Script> */}
 			</head>
 			<Client>{children}</Client>
 		</html>
