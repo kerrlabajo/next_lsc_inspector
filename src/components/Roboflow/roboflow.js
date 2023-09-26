@@ -7,8 +7,8 @@ const Roboflow = (props) => {
 	const [inferRunning, setInferRunning] = useState(true)
 
 	const PUBLISHABLE_ROBOFLOW_API_KEY = 'rf_Dsl5UQjBexM9F4JpLJrczqATmt02'
-	const PROJECT_URL = props.modelName
-	const MODEL_VERSION = props.modelVersion
+	const PROJECT_URL = 'body-parts-rnvjw'
+	const MODEL_VERSION = '1'
 	var model
 
 	const startInfer = () => {

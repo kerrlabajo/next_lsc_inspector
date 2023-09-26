@@ -85,7 +85,7 @@ const Demo = () => {
 						</div>
 						{toggleButton ? (
 							<Roboflow
-								modelName="lsc-inspector"
+								modelName="body parts"
 								modelVersion="1"
 							/>
 						) : (

@@ -6,14 +6,12 @@ import React, { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { KeyboardArrowDown, KeyboardArrowUp, Dashboard } from '@mui/icons-material'
 import { signOut } from 'next-auth/react'
-import { useSession } from 'next-auth/react'
 
 const Sidebar = (props) => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const [subMenuOpen, setSubmenuOpen] = useState(false)
 	const [subIndex, setSubIndex] = useState('')
-	const { data: session } = useSession()
 
 	return (
 		<div className={`w-full float-left min-h-[100vh] mt-[80px] relative bg-[#48BF91] border-r-[1px] border-r-gray-200`}>
