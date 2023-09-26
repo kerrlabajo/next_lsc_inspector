@@ -6,9 +6,9 @@ const Roboflow = (props) => {
 	const canvasRef = useRef(null)
 	const [inferRunning, setInferRunning] = useState(true)
 
-	const PUBLISHABLE_ROBOFLOW_API_KEY = 'rf_Dsl5UQjBexM9F4JpLJrczqATmt02'
-	const PROJECT_URL = 'body-parts-rnvjw'
-	const MODEL_VERSION = '1'
+	const PUBLISHABLE_ROBOFLOW_API_KEY = 'rf_5w20VzQObTXjJhTjq6kad9ubrm33'
+	const PROJECT_URL = 'egohands-public'
+	const MODEL_VERSION = 9
 	var model
 
 	const startInfer = () => {
@@ -54,7 +54,7 @@ const Roboflow = (props) => {
 			const detections = await model.detect(webcamRef.current.video)
 
 			const ctx = canvasRef.current.getContext('2d')
-			drawBoxes(detections, ctx)
+			drawBoxes(detections, ctx, true)
 		}
 	}
 
@@ -68,7 +68,7 @@ const Roboflow = (props) => {
 		canvasRef.current.getContext('2d').scale(window.devicePixelRatio, window.devicePixelRatio)
 	}
 
-	const drawBoxes = (detections, ctx) => {
+	const drawBoxes = (detections, ctx, isMirrored) => {
 		ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 		detections.forEach((row) => {
 			if (true) {
@@ -81,6 +81,9 @@ const Roboflow = (props) => {
 			}
 
 			if (row.confidence < 0) return
+			// if (isMirrored) {
+			// 	row.x = canvasRef.current.width - row.x
+			// }
 
 			//dimensions
 			var x = row.x - row.width / 2
@@ -97,7 +100,7 @@ const Roboflow = (props) => {
 
 			//shade
 			ctx.fillStyle = 'black'
-			ctx.globalAlpha = 0.2
+			ctx.globalAlpha = 0.5
 			ctx.fillRect(x, y, w, h)
 			ctx.globalAlpha = 1.0
 
@@ -136,7 +139,7 @@ const Roboflow = (props) => {
 			<Webcam
 				ref={webcamRef}
 				muted={true}
-				mirrored={true}
+				// mirrored={true}
 				className="absolute mx-auto mt-[50px] left-0 right-0 text-center z-10"
 			/>
 			<canvas
