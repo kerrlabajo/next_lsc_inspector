@@ -1,25 +1,24 @@
 import { useState } from 'react'
 import FilesServices from '@services/FilesServices'
-import useUserStore from './../useStore'
 
 	const useUpload = () => {
 		const [isUploading, setIsUploading] = useState(false)
 
-		const uploadFile = async ({ body, headers }) => {
+		const uploadFile = async ({ body, authorization }) => {
 			setIsUploading(true)
 
 			let responseCode
 			let fileUploaded
-			console.log(body, headers)
+			console.log(body, authorization)
 			try {
-				const { status, data } = await FilesServices.upload(body, headers)
+				const { status, data } = await FilesServices.upload(body, authorization)
 
 				responseCode = status
 				fileUploaded = data
 				return(fileUploaded)
 			} catch (error) {
-				//responseCode = error.response.status
-				console.log('iM HERE: ', body)
+				responseCode = error.message
+				console.log(responseCode)
 			}
 
 			switch (responseCode) {
