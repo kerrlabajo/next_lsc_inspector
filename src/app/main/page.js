@@ -79,63 +79,97 @@ const Main = () => {
 	}
 
 	return (
-		<>
-		<Container>
-			<div className="h-[100vh] float-left text-neutral-900 w-full flex justify-center p-[20px]">
-				<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6">
-					<h1 className="text-5xl font-bold">Upload your image</h1>
-					<form
-						id="fileUploadForm"
-						method="POST"
-						encType="multipart/form-data"
-						className="flex justify-between"
-					>
-						<input
-							type="file"
-							name="file"
-							accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
-							onChange={({target}) =>{
-								setFile(target.files[0])
-							}}
-						/>
-						<Button
-							title="Upload"
-							style=" bg-green-400 text-white hover:bg-green-500"
-							onClick={handleFileUpload}
-						/>
-					</form>
-				</div>
-			</div>
-			{user && isAuthenticated && isModalOpen && (
-				<Modal
-					title="Setup your AI model"
-					onClose={() => {
-						setIsModalOpen(!isModalOpen)
-					}}
-					content={renderContent}
-					footer={() => {
-						return (
-							<div className="w-full flex justify-end">
-								<Button
-									style={' bg-green-400 text-white ml-[20px]'}
-									title="Continue"
-									onClick={() => {
-										setIsModalOpen(!isModalOpen)
-									}}
-								/>
-							</div>
-						)
-					}}
-				/>
-			)}
-		</Container>
-		<Container>
-        {uploadedImageUrl && (
-          <img src={uploadedImageUrl} alt="Uploaded" />
+    <>
+      <Container>
+        <div className="h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]">
+          <div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6">
+            <h1 className="text-5xl font-bold">Upload your image</h1>
+            <form
+              id="fileUploadForm"
+              method="POST"
+              encType="multipart/form-data"
+              className="flex justify-between"
+            >
+              <input
+                type="file"
+                name="file"
+                accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
+                onChange={({ target }) => {
+                  setFile(target.files[0]);
+                }}
+              />
+              <Button
+                title="Upload"
+                style=" bg-green-400 text-white hover:bg-green-500"
+                onClick={handleFileUpload}
+              />
+            </form>
+          </div>
+          {uploadedImageUrl && (
+            <div className="w-full flex flex-row gap-x-36 mb-4 rounded shadow p-6">
+              <img
+                className="flex-shrink-0 w-1/3 h-1/2 object-cover"
+                src={uploadedImageUrl}
+                alt="Uploaded"
+              />
+              <div className="flex flex-col flex-grow items-start">
+                <div className="flex items-center mb-2">
+                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                    Filename:
+                  </p>
+                  <p>test</p>
+                </div>
+                <div className="flex items-center mb-2">
+                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                    Dimensions:
+                  </p>
+                  <p>test</p>
+                </div>
+                <div className="flex items-center mb-2">
+                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                    Size:
+                  </p>
+                  <p>test</p>
+                </div>
+                <div className="flex items-center">
+                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                    Extension:
+                  </p>
+                  <p>test</p>
+                </div>
+              </div>
+              <Button
+                title="Upload"
+                style=" bg-green-400 text-white hover:bg-green-500 ml-auto"
+              />
+            </div>
+          )}
+        </div>
+        {user && isAuthenticated && isModalOpen && (
+          <Modal
+            title="Setup your AI model"
+            onClose={() => {
+              setIsModalOpen(!isModalOpen);
+            }}
+            content={renderContent}
+            footer={() => {
+              return (
+                <div className="w-full flex justify-end">
+                  <Button
+                    style={" bg-green-400 text-white ml-[20px]"}
+                    title="Continue"
+                    onClick={() => {
+                      setIsModalOpen(!isModalOpen);
+                    }}
+                  />
+                </div>
+              );
+            }}
+          />
         )}
-      	</Container>
-		</>
-	)
+      </Container>
+    </>
+  );
 }
 
 export default Main
