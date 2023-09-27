@@ -8,7 +8,10 @@ const FilesServices = {
          Authorization : token,
          "Content-Type": "multipart/form-data"
     } }),
-	analyze: (file) => axios.post(`${BASE_URL}/analyze`, file),
+	analyze: (url, token) => axios.post(`${BASE_URL}/analyze`, { url : url }, { headers :{
+        Authorization: `Bearer ${token}`//,
+        //"Content-Type": "application/json"
+      } }),
 	getAll: () => axios.get(`${BASE_URL}`),
 	getById: (id) => axios.get(`${BASE_URL}/${id}`),
 	demoAnalyze: () => axios.get(`${BASE_URL}/${id}`),
