@@ -22,16 +22,24 @@ const Main = () => {
         // Add other headers if needed
     };
 	const handleFileUpload = async () => {
-		const formData = new FormData()
-		formData.append('file', file) //works
+		if(file){
+			const formData = new FormData()
+			formData.append('file', file) //works
 
-		const response = await uploadFile(formData, headers);
-		console.log(response.data.url)
-		if (response.status === 201) {
-			setUploadedImageUrl(response.data.url)
-			console.log(uploadedImageUrl)
-			console.log("hey")
+			const response = await uploadFile({
+				body: formData,
+				headers: headers
+			});
+			if (response) {
+				console.log('Image uploaded successfully')
+				setUploadedImageUrl(response.url)
+			}else{
+				console.error('Image upload not successful')
+			}
+		}else{
+			console.error('No file selected')
 		}
+
 	};
 
 	useEffect(() => {

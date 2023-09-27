@@ -5,20 +5,20 @@ import useUserStore from './../useStore'
 	const useUpload = () => {
 		const [isUploading, setIsUploading] = useState(false)
 
-		const uploadFile = async ({ body }) => {
+		const uploadFile = async ({ body, headers }) => {
 			setIsUploading(true)
 
 			let responseCode
 			let fileUploaded
-
+			console.log(body, headers)
 			try {
-				const { status, data } = await FilesServices.upload(body)
+				const { status, data } = await FilesServices.upload(body, headers)
 
 				responseCode = status
 				fileUploaded = data
 				return(fileUploaded)
 			} catch (error) {
-				responseCode = error.response.status
+				//responseCode = error.response.status
 				console.log('iM HERE: ', body)
 			}
 
