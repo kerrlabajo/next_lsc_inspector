@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Button from '@components/Button/page'
 import Roboflow from '@components/Roboflow/roboflow'
 import Container from '@components/container'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
+import useUpload from '@hooks/useUpload'
 
 const menuItems = [
 	{
@@ -18,8 +20,46 @@ const menuItems = [
 ]
 
 const Demo = () => {
+	const [loading, setLoading] = useState(false)
 	const [toggleButton, setToggleButton] = useState(false)
 	const [selected, setSelected] = useState(0)
+	const [file, setFile] = useState(null)
+	const [selectedFile, setSelectedFile] = useState(null)
+	const { isUploading, uploadFile } = useUpload()
+
+	useEffect(() => {}, [file])
+
+	const handleFileChange = (event) => {
+		const file = event.target.files[0]
+		setSelectedFile(file)
+	}
+
+	const uploadImage = async () => {
+		if (selectedFile) {
+			const formData = new FormData()
+			formData.append('file', selectedFile)
+
+			const result = await uploadFile({
+				body: formData,
+			})
+				.then((response) => {
+					console.log('here: ', response)
+					if (response) {
+						console.log('Image uploaded successfully')
+						setFile(response)
+						setLoading(false)
+					} else {
+						console.error('Image upload not successful')
+						setLoading(false)
+					}
+				})
+				.catch((error) => {
+					console.error('Error: ' + error)
+				})
+		} else {
+			console.error('No file selected')
+		}
+	}
 
 	return (
 		<div className="bg-white w-full h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px]">
@@ -55,25 +95,36 @@ const Demo = () => {
 				</ul>
 
 				{selected === 0 ? (
-					<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
-						<h1 className="text-5xl font-bold">Upload your image</h1>
-						<form
-							method="POST"
-							encType="multipart/form-data"
-							className="flex justify-between"
-						>
-							<input
-								type="file"
-								name="file"
-								accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
+					<>
+						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
+							<h1 className="text-5xl font-bold">Upload your image</h1>
+							<form
+								method="POST"
+								encType="multipart/form-data"
+								className="flex justify-between"
+							>
+								<input
+									type="file"
+									name="file"
+									accept=".txt, .pdf, .png, .jpg, .jpeg"
+									onChange={handleFileChange}
+								/>
+								<Button
+									title="Upload"
+									style=" bg-green-400 text-white hover:bg-green-500"
+									onClick={uploadImage}
+								/>
+							</form>
+						</div>
+
+						{file && (
+							<Image
+								src={file?.url}
+								alt="image"
+								width={200}
 							/>
-							<Button
-								title="Upload"
-								style=" bg-green-400 text-white hover:bg-green-500"
-								onClick={() => {}}
-							/>
-						</form>
-					</div>
+						)}
+					</>
 				) : (
 					<div className="w-full h-full mt-10 flex flex-col items-center gap-[20px]">
 						<div className="w-full flex justify-end">

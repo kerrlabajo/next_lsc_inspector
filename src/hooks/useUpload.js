@@ -3,30 +3,38 @@ import FilesServices from '@services/FilesServices'
 import useUserStore from './../useStore'
 
 const useUpload = () => {
-    const [uploading, setUploading] = useState(false);
-    /*const headers = {
-        'Authorization': user.access_token,
-        // Add other headers if needed
-    };*/
-    //console.log(user.access_token)
-    const uploadFile = async (file, headers) => {
-        try {
-            console.log(file)
-            console.log(headers.Authorization)
-            setUploading(true);
-            const response = await FilesServices.upload(file, headers.Authorization);
-            if (response.status === 201){
-                return response
-            }
-        } catch (error) {
-           // throw new Error(`Error uploading file: ${error.message}`);
-           console.log(error)
-        } finally {
-            setUploading(false);
-        }
-    };
+	const [isUploading, setIsUploading] = useState(false)
 
-    return { uploadFile, uploading }
+	const uploadFile = async ({ body }) => {
+		setIsUploading(true)
+
+		let responseCode
+		let fileUploaded
+
+		try {
+			const { status, data } = await FilesServices.upload(body)
+
+			responseCode = status
+			fileUploaded = data
+		} catch (error) {
+			responseCode = error.response.status
+			console.log('iM HERE: ', body)
+		}
+
+		switch (responseCode) {
+			case 201:
+				break
+			case 401:
+				await callback.invalidFields()
+				break
+			case 500:
+				await callback.internalError()
+				break
+		}
+
+		setIsUploading(false)
+	}
+	return { isUploading, uploadFile }
 }
 
 export default useUpload
