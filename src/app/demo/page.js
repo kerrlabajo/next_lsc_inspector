@@ -118,11 +118,10 @@ const Demo = () => {
 						</div>
 
 						{file && (
-							<img
+							<Image
 								src={file?.url}
 								alt="image"
 								width={200}
-								height={200}
 							/>
 						)}
 					</>
