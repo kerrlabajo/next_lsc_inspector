@@ -1,17 +1,56 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import Container from '@components/container'
 import Button from '@components/Button/page'
 import FileUpload from '@components/Button/fileUpload'
 import Modal from '@components/Modal/page'
 import Toggle from '@components/Button/toggle'
 import useUserStore from '../../useStore'
+import useUpload from '@hooks/useUpload'
+import axios from 'axios'
 
 const Main = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true)
 	const { user, isAuthenticated } = useUserStore()
+	const { uploadFile } = useUpload()
+	const [file, setFile] = useState(null)
+	const [uploadedImageUrl, setUploadedImageUrl] = useState(null)
+	const headers = {
+        'Authorization' : user.user.access_token,
+		'content-type': 'multipart/form-data'
+        // Add other headers if needed
+    };
+	const handleFileUpload = async () => {
+		if(file){
+			const formData = new FormData()
+			formData.append('file', file) //works
 
+			const response = await uploadFile({
+				body: formData,
+				headers: headers
+			});
+			if (response) {
+				console.log('Image uploaded successfully')
+				setUploadedImageUrl(response.url)
+			}else{
+				console.error('Image upload not successful')
+			}
+		}else{
+			console.error('No file selected')
+		}
+
+	};
+
+	useEffect(() => {
+		// This block of code will run whenever uploadedImageUrl changes.
+		// It will log the updated URL to the console.
+		if (uploadedImageUrl) {
+		  console.log('Uploaded Image URL:', uploadedImageUrl);
+		}
+	  }, [uploadedImageUrl]);
+
+	//console.log(headers.authorization)
 	const renderContent = () => {
 		return (
 			<div>
@@ -40,11 +79,13 @@ const Main = () => {
 	}
 
 	return (
+		<>
 		<Container>
 			<div className="h-[100vh] float-left text-neutral-900 w-full flex justify-center p-[20px]">
 				<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6">
 					<h1 className="text-5xl font-bold">Upload your image</h1>
 					<form
+						id="fileUploadForm"
 						method="POST"
 						encType="multipart/form-data"
 						className="flex justify-between"
@@ -53,11 +94,14 @@ const Main = () => {
 							type="file"
 							name="file"
 							accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
+							onChange={({target}) =>{
+								setFile(target.files[0])
+							}}
 						/>
 						<Button
 							title="Upload"
 							style=" bg-green-400 text-white hover:bg-green-500"
-							onClick={() => {}}
+							onClick={handleFileUpload}
 						/>
 					</form>
 				</div>
@@ -85,6 +129,12 @@ const Main = () => {
 				/>
 			)}
 		</Container>
+		<Container>
+        {uploadedImageUrl && (
+          <img src={uploadedImageUrl} alt="Uploaded" />
+        )}
+      	</Container>
+		</>
 	)
 }
 
