@@ -7,6 +7,8 @@ import Roboflow from '@components/Roboflow/roboflow'
 import Container from '@components/container'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import useUpload from '@hooks/useUpload'
+import useAnalyze from '@hooks/useDemoAnalyze'
+import ImageSkeleton from '@components/Skeleton/imageSkeleton'
 
 const menuItems = [
 	{
@@ -23,46 +25,52 @@ const Demo = () => {
 	const [loading, setLoading] = useState(false)
 	const [toggleButton, setToggleButton] = useState(false)
 	const [selected, setSelected] = useState(0)
-	const [file, setFile] = useState(null)
 	const [selectedFile, setSelectedFile] = useState(null)
+	const [uploadedFile, setUploadedFile] = useState(null)
+	const [file, setFile] = useState(null)
 	const { isUploading, uploadFile } = useUpload()
-
-	useEffect(() => {}, [file])
+	const { isAnalyzing, analyzeFile } = useAnalyze()
+	// useEffect(() => {}, [])
 
 	const handleFileChange = (event) => {
 		const file = event.target.files[0]
 		setSelectedFile(file)
 	}
 
+	const analyzeImage = async () => {
+		setLoading(true)
+		console.log(uploadedFile)
+		const response = await analyzeFile({ url: uploadedFile.url })
+		if (response) {
+			setFile(response.data)
+			setLoading(false)
+		} else {
+			setLoading(false)
+		}
+	}
+
 	const uploadImage = async () => {
+		setLoading(true)
 		if (selectedFile) {
 			const formData = new FormData()
 			formData.append('file', selectedFile)
-
-			const result = await uploadFile({
+			const response = await uploadFile({
 				body: formData,
 			})
-				.then((response) => {
-					console.log('here: ', response)
-					if (response) {
-						console.log('Image uploaded successfully')
-						setFile(response)
-						setLoading(false)
-					} else {
-						console.error('Image upload not successful')
-						setLoading(false)
-					}
-				})
-				.catch((error) => {
-					console.error('Error: ' + error)
-				})
+
+			if (response) {
+				setUploadedFile(response.data)
+				setLoading(false)
+			} else {
+				setLoading(false)
+			}
 		} else {
 			console.error('No file selected')
 		}
 	}
 
 	return (
-		<div className="bg-white w-full h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px]">
+		<div className="bg-white w-full h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
 			<Container
 				withTab={true}
 				style=" text-neutral-900 mt-[100px]"
@@ -93,7 +101,6 @@ const Demo = () => {
 						</div>
 					</li>
 				</ul>
-
 				{selected === 0 ? (
 					<>
 						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
@@ -117,12 +124,47 @@ const Demo = () => {
 							</form>
 						</div>
 
+						{uploadedFile && (
+							<div className="w-full h-fit flex flex-col gap-x-1 items-left justify-between mb-4 min-h-48 rounded shadow p-6 mt-10 gap-[20px]">
+								<h1 className="text-xl font-bold">Analyze Image</h1>
+
+								<div className="flex flex-col relative items-center gap-[20px]">
+									<Image
+										src={uploadedFile?.url}
+										alt="upload image"
+										width={500}
+										height={100}
+										style={{ height: 'auto', maxHeight: '350px', maxWidth: '600px' }}
+									/>
+									<Button
+										title="Analyze"
+										style=" bg-green-400 text-white hover:bg-green-500 w-[500px]"
+										onClick={analyzeImage}
+									/>
+								</div>
+							</div>
+						)}
+
+						{loading && (
+							<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-fit rounded shadow p-6 mt-10">
+								<ImageSkeleton />
+							</div>
+						)}
 						{file && (
-							<Image
-								src={file?.url}
-								alt="image"
-								width={200}
-							/>
+							<div className="w-full h-fit flex flex-col gap-x-1 items-left justify-between mb-4 min-h-48 rounded shadow p-6 mt-10 gap-[20px]">
+								<h1 className="text-xl font-bold">Analyze Image</h1>
+
+								<div className="flex flex-col relative items-center gap-[20px]">
+									<Image
+										src={file?.url}
+										alt="result image"
+										width={500}
+										height={100}
+										style={{ height: 'auto', maxHeight: '350px', maxWidth: '600px' }}
+									/>
+									<div>result here:</div>
+								</div>
+							</div>
 						)}
 					</>
 				) : (
@@ -141,6 +183,7 @@ const Demo = () => {
 							/>
 						) : (
 							<WebcamSkeleton />
+							// <ImageSkeleton />
 						)}
 					</div>
 				)}

@@ -22,6 +22,7 @@ import useUserStore from './../useStore'
 				console.log('iM HERE: ', body)
 			}
 
+<<<<<<< HEAD
 			switch (responseCode) {
 				case 201:
 					break
@@ -34,6 +35,15 @@ import useUserStore from './../useStore'
 			}
 
 			setIsUploading(false)
+=======
+			responseCode = status
+			fileUploaded = data
+
+			return { data, status }
+		} catch (error) {
+			responseCode = error.response.status
+			console.log('iM HERE: ', body)
+>>>>>>> 29f1f22 (Implement analyze in demo page)
 		}
 		return { isUploading, uploadFile }
 	}

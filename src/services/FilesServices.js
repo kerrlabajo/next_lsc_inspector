@@ -9,9 +9,9 @@ const FilesServices = {
          "Content-Type": "multipart/form-data"
     } }),
 	analyze: (file) => axios.post(`${BASE_URL}/analyze`, file),
+	demoAnalyze: (url) => axios.post(`${BASE_URL}/demo`, url),
 	getAll: () => axios.get(`${BASE_URL}`),
 	getById: (id) => axios.get(`${BASE_URL}/${id}`),
-	demoAnalyze: () => axios.get(`${BASE_URL}/${id}`),
 }
 
 export default FilesServices
