@@ -11,9 +11,9 @@ const FilesServices = {
 	analyze: (url, token) => axios.post(`${BASE_URL}/analyze`, { url : url }, { headers :{
         Authorization: `Bearer ${token}`
       } }),
+	demoAnalyze: (url) => axios.post(`${BASE_URL}/demo`, url),
 	getAll: () => axios.get(`${BASE_URL}`),
 	getById: (id) => axios.get(`${BASE_URL}/${id}`),
-	demoAnalyze: () => axios.get(`${BASE_URL}/${id}`),
 }
 
 export default FilesServices

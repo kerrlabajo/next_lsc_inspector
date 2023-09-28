@@ -84,6 +84,7 @@ function NavBar(props) {
 							onClick={() => {
 								router.push('/')
 							}}
+							className="cursor-pointer"
 						/>
 					</div>
 					<div className={'h-[80px] w-1/4 float-left flex flex-row content-center items-center justify-end '}>
@@ -120,6 +121,7 @@ function NavBar(props) {
 							onClick={() => {
 								router.push('/')
 							}}
+							className="cursor-pointer"
 						/>
 						<Link
 							href="/features"
