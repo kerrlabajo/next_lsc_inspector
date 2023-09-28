@@ -17,10 +17,14 @@ const Main = () => {
 	const { uploadFile } = useUpload()
   const { analyzeFile } = useAnalyze()
 	const [file, setFile] = useState(null)
-	const [uploadedImageUrl, setUploadedImageUrl] = useState(null)
+	const [uploadedImage, setUploadedImage] = useState(null)
   const [analyzedImage, setAnalyzedImage] = useState(null)
+  const [extension, setExtension] = useState(null)
   const [selectedModel, setSelectedModel] = useState('General')
-	const authorization =  user.user.access_token
+  let authorization
+  if(user){
+    authorization =  user.user.access_token
+  }
 	const handleFileUpload = async () => {
 		if(file){
 			const formData = new FormData()
@@ -32,7 +36,9 @@ const Main = () => {
 			});
 			if (response) {
 				console.log('Image uploaded successfully')
-				setUploadedImageUrl(response.url)
+				setUploadedImage(response)
+        setExtension(response.filename.split('.').pop());
+        console.log( extension);
 			}else{
 				console.error('Image upload not successful')
 			}
@@ -47,10 +53,10 @@ const Main = () => {
     setIsModalOpen(false)
   }
   const handleAnalyze = async () => {
-    if (uploadedImageUrl) {
+    if (uploadedImage) {
         try {
             const response = await analyzeFile({
-                fileUrl: uploadedImageUrl
+                fileUrl: uploadedImage.url
             }, authorization)
 
             if (response.status === 201) {
@@ -67,17 +73,31 @@ const Main = () => {
     }
   }
 
+  const handleExport = () => {
+    if (analyzedImage) {
+      const link = document.createElement('a')
+      link.href = analyzedImage.url
+      link.setAttribute("download", analyzedImage.name); //or any other extension
+          document.body.appendChild(link);
+          link.click();
+      document.body.removeChild(link)
+    }
+  };
+
 	useEffect(() => {
-    // This block of code will run whenever either uploadedImageUrl or analyzedImage changes.
+    // This block of code will run whenever either uploadedImage or analyzedImage changes.
     // It will log the updated URLs to the console.
-    if (uploadedImageUrl) {
-        console.log('Uploaded Image URL:', uploadedImageUrl);
+    if (uploadedImage) {
+        console.log('Uploaded Image:', uploadedImage);
     }
 
     if (analyzedImage) {
-        console.log('Analyzed Image URL:', analyzedImage);
+        console.log('Analyzed Image:', analyzedImage);
     }
-}, [uploadedImageUrl, analyzedImage]);
+    if(extension){
+      console.log('Extension:', extension);
+    }
+}, [uploadedImage, analyzedImage, extension]);
 
 	//console.log(headers.authorization)
 	const renderContent = () => {
@@ -134,37 +154,37 @@ const Main = () => {
               />
             </form>
           </div>
-          {uploadedImageUrl && (
-            <div className="w-full flex flex-row gap-x-36 mb-4 rounded shadow p-6">
+          {uploadedImage && (
+            <div className="w-full flex flex-row gap-x-20 mb-4 rounded shadow p-6">
               <img
                 className="flex-shrink-0 w-1/3 h-1/2 object-cover"
-                src={uploadedImageUrl}
+                src={uploadedImage.url}
                 alt="Uploaded"
               />
               <div className="flex flex-col flex-grow items-start">
-                <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                <div className="flex items-start mb-2" style={{ wordWrap: 'break-word', maxWidth: '300px' }}>
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
                     Filename:
                   </p>
-                  <p>test</p>
+                  <p style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{uploadedImage.filename}</p>
                 </div>
                 <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
                     Dimensions:
                   </p>
-                  <p>test</p>
+                  <p>{uploadedImage.dimensions}</p>
                 </div>
                 <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
                     Size:
                   </p>
-                  <p>test</p>
+                  <p>{uploadedImage.size}</p>
                 </div>
                 <div className="flex items-center">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
                     Extension:
                   </p>
-                  <p>test</p>
+                  <p>{extension}</p>
                 </div>
               </div>
               <Button
@@ -175,38 +195,43 @@ const Main = () => {
             </div>
           )}
           {analyzedImage && (
-            <div className="w-full flex flex-row gap-x-36 mb-4 rounded shadow p-6">
+            <div className="w-full flex flex-row gap-x-20 mb-4 rounded shadow p-6">
               <img
                 className="flex-shrink-0 w-1/3 h-1/2 object-cover"
                 src={analyzedImage.url}
                 alt="Uploaded"
               />
               <div className="flex flex-col flex-grow items-start">
-                <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
-                    Filename:
+                <div className="flex items-start mb-2" style={{ wordWrap: 'break-word', maxWidth: '300px' }}>
+                  <p className="font-bold" style={{ width: "120px" }}>
+                    Classification:
                   </p>
-                  <p>test</p>
+                  <p>{analyzedImage.classification}</p>
+                </div>
+                <div className="flex items-center mb-2 ">
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
+                    Accuracy:
+                  </p>
+                  <p style={{wordWrap: "break-word"}}>{analyzedImage.accuracy}</p>
                 </div>
                 <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
-                    Dimensions:
+                  <p className="font-bold mr-5" style={{ width: "100px" }}>
+                    Error Rate:
                   </p>
-                  <p>test</p>
+                  <p>{analyzedImage.error_rate}</p>
                 </div>
-                <div className="flex items-center mb-2">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
-                    Size:
+                <div className="flex items-start" style={{ wordWrap: 'break-word', maxWidth: '300px' }}>
+                  <p className="font-bold mr-20" style={{ width: "220px" }}>
+                    Path:
                   </p>
-                  <p>test</p>
-                </div>
-                <div className="flex items-center">
-                  <p className="font-bold mr-4" style={{ width: "100px" }}>
-                    Extension:
-                  </p>
-                  <p>test</p>
+                  <p style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{analyzedImage.url}</p>
                 </div>
               </div>
+              <Button
+                title="Export"
+                style=" bg-green-400 text-white hover:bg-green-500 ml-auto"
+                onClick={handleExport}
+              />
             </div>
           )}
         </div>
