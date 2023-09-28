@@ -1,8 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import Modal from '@components/Modal/page'
 import Button from '@components/Button/page'
 import Roboflow from '@components/Roboflow/roboflow'
 import Container from '@components/container'
@@ -23,12 +25,14 @@ const menuItems = [
 ]
 
 const Demo = () => {
+	const router = useRouter()
 	const [loading, setLoading] = useState(false)
 	const [toggleButton, setToggleButton] = useState(false)
 	const [selected, setSelected] = useState(0)
 	const [selectedFile, setSelectedFile] = useState(null)
 	const [uploadedFile, setUploadedFile] = useState(null)
 	const [file, setFile] = useState(null)
+	const [isModalOpen, setIsModalOpen] = useState(false)
 	const { isUploading, uploadFile } = useUpload()
 	const { isAnalyzing, analyzeFile } = useAnalyze()
 
@@ -68,6 +72,22 @@ const Demo = () => {
 		} else {
 			console.error('No file selected')
 		}
+	}
+
+	const renderContent = () => {
+		return (
+			<div className="flex flex-col gap-[10px]">
+				<span>You need to log in to export this image.</span>
+				<span
+					className=" text-md font-bold text-blue-500 cursor-pointer hover:underline"
+					onClick={() => {
+						router.push('/login')
+					}}
+				>
+					Login in here {`>`}
+				</span>
+			</div>
+		)
 	}
 
 	return (
@@ -152,8 +172,15 @@ const Demo = () => {
 							</div>
 						)}
 						{file && (
-							<div className="w-full h-fit flex flex-col gap-x-1 items-left justify-between mb-4 min-h-48 rounded shadow p-6 mt-10 gap-[20px]">
+							<div className="w-full h-fit flex relative flex-col gap-x-1 items-left justify-between mb-4 min-h-48 rounded shadow p-6 mt-10 gap-[20px]">
 								<h1 className="text-xl font-bold">Results: </h1>
+								<Button
+									title="Export"
+									style=" bg-green-400 text-white hover:bg-green-500 absolute right-6 top-6"
+									onClick={() => {
+										setIsModalOpen(!isModalOpen)
+									}}
+								/>
 
 								<div className="flex relative items-center gap-[20px]">
 									<Image
@@ -173,11 +200,11 @@ const Demo = () => {
 										</div>
 										<div>
 											<b>Accuracy: </b>
-											{file.accuracy}
+											<span>{Math.round(file.accuracy * 100)} %</span>
 										</div>
 										<div>
 											<b>Error Rate: </b>
-											{file.error_rate}
+											<span>{Math.round(file.error_rate * 100)} %</span>
 										</div>
 										<div className="flex gap-2">
 											<b>Url: </b>
@@ -185,7 +212,7 @@ const Demo = () => {
 												href={file.url}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-blue-400"
+												className="text-blue-400 hover:underline"
 											>
 												{file.url}
 											</Link>
@@ -214,6 +241,28 @@ const Demo = () => {
 							// <ImageSkeleton />
 						)}
 					</div>
+				)}
+				{isModalOpen && (
+					<Modal
+						title="Export File"
+						onClose={() => {
+							setIsModalOpen(!isModalOpen)
+						}}
+						content={renderContent}
+						footer={() => {
+							return (
+								<div className="w-full flex justify-end">
+									<Button
+										style={' bg-green-400 text-white ml-[20px]'}
+										title="Close"
+										onClick={() => {
+											setIsModalOpen(!isModalOpen)
+										}}
+									/>
+								</div>
+							)
+						}}
+					/>
 				)}
 			</Container>
 		</div>
