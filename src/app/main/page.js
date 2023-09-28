@@ -37,8 +37,7 @@ const Main = () => {
 			formData.append('file', file) //works
 
 			const response = await uploadFile({
-				body: formData,
-				headers: authorization
+				body: formData
 			});
 			if (response) {
 				console.log('Image uploaded successfully')

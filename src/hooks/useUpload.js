@@ -6,14 +6,14 @@ import FilesServices from '@services/FilesServices'
 const useUpload = () => {
 	const [isUploading, setIsUploading] = useState(false)
 
-		const uploadFile = async ({ body, authorization }) => {
+		const uploadFile = async ({ body }) => {
 			setIsUploading(true)
 
 			let responseCode
 			let fileUploaded
-			console.log(body, authorization)
+			console.log(body)
 			try {
-			const { status, data } = await FilesServices.upload(body, authorization)
+			const { status, data } = await FilesServices.upload(body)
 
 			responseCode = status
 			fileUploaded = data

@@ -4,8 +4,7 @@ import config from './config'
 const BASE_URL = `${config.API_URL}/files`
 
 const FilesServices = {
-    upload: (file, token) => axios.post(`${BASE_URL}/upload`, file, { headers : {
-         Authorization : token,
+    upload: (file) => axios.post(`${BASE_URL}/upload`, file, { headers : {
          "Content-Type": "multipart/form-data"
     } }),
 	analyze: (url, token) => axios.post(`${BASE_URL}/analyze`, { url : url }, { headers :{
