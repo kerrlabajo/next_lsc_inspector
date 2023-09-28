@@ -20,8 +20,7 @@ const useUpload = () => {
 
 			return { data, status }
 		} catch (error) {
-			responseCode = error.response.status
-			console.log('iM HERE: ', body)
+			console.log(error)
 		}
 
 		switch (responseCode) {

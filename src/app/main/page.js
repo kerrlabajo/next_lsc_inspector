@@ -39,8 +39,8 @@ const Main = () => {
 			});
 			if (response) {
 				console.log('Image uploaded successfully')
-				setUploadedImage(response)
-        setExtension(response.filename.split('.').pop());
+				setUploadedImage(response.data)
+        setExtension(response.data.filename.split('.').pop());
         console.log( extension);
 			}else{
 				console.error('Image upload not successful')
