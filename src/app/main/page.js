@@ -282,21 +282,21 @@ const Main = () => {
                       <p className="font-bold" style={{ width: "120px" }}>
                         Classification:
                       </p>
-                      <p>{analyzedImage.classification}</p>
+                      <p className={analyzedImage.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>{analyzedImage.classification}</p>
                     </div>
                     <div className="flex items-center mb-2 ">
                       <p className="font-bold mr-5" style={{ width: "100px" }}>
                         Accuracy:
                       </p>
                       <p style={{ wordWrap: "break-word" }}>
-                        {analyzedImage.accuracy}
+                        {Math.round(analyzedImage.accuracy * 100)} %
                       </p>
                     </div>
                     <div className="flex items-center mb-2">
                       <p className="font-bold mr-5" style={{ width: "100px" }}>
                         Error Rate:
                       </p>
-                      <p>{analyzedImage.error_rate}</p>
+                      <p>{Math.round(analyzedImage.error_rate * 100)} %</p>
                     </div>
                     <div
                       className="flex items-start"
