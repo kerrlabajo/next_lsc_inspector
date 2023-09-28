@@ -30,16 +30,16 @@ const Demo = () => {
 	const [file, setFile] = useState(null)
 	const { isUploading, uploadFile } = useUpload()
 	const { isAnalyzing, analyzeFile } = useAnalyze()
-	// useEffect(() => {}, [])
 
 	const handleFileChange = (event) => {
+		setFile(null)
+		setUploadedFile(null)
 		const file = event.target.files[0]
 		setSelectedFile(file)
 	}
 
 	const analyzeImage = async () => {
 		setLoading(true)
-		console.log(uploadedFile)
 		const response = await analyzeFile({ url: uploadedFile.url })
 		if (response) {
 			setFile(response.data)
@@ -70,7 +70,7 @@ const Demo = () => {
 	}
 
 	return (
-		<div className="bg-white w-full h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
+		<div className="bg-white w-full h-fit min-h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
 			<Container
 				withTab={true}
 				style=" text-neutral-900 mt-[100px]"
@@ -104,7 +104,7 @@ const Demo = () => {
 				{selected === 0 ? (
 					<>
 						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
-							<h1 className="text-5xl font-bold">Upload your image</h1>
+							<h1 className="text-3xl font-bold">Upload your image</h1>
 							<form
 								method="POST"
 								encType="multipart/form-data"
@@ -152,9 +152,9 @@ const Demo = () => {
 						)}
 						{file && (
 							<div className="w-full h-fit flex flex-col gap-x-1 items-left justify-between mb-4 min-h-48 rounded shadow p-6 mt-10 gap-[20px]">
-								<h1 className="text-xl font-bold">Analyze Image</h1>
+								<h1 className="text-xl font-bold">Results: </h1>
 
-								<div className="flex flex-col relative items-center gap-[20px]">
+								<div className="flex relative items-center gap-[20px]">
 									<Image
 										src={file?.url}
 										alt="result image"
@@ -162,7 +162,24 @@ const Demo = () => {
 										height={100}
 										style={{ height: 'auto', maxHeight: '350px', maxWidth: '600px' }}
 									/>
-									<div>result here:</div>
+									<div>
+										<div>
+											<b>Classification: </b>
+											{file.classification}
+										</div>
+										<div>
+											<b>Accuracy: </b>
+											{file.accuracy}
+										</div>
+										<div>
+											<b>Error Rate: </b>
+											{file.error_rate}
+										</div>
+										<div>
+											<b>Url: </b>
+											{file.url}
+										</div>
+									</div>
 								</div>
 							</div>
 						)}
