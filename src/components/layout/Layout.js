@@ -47,7 +47,7 @@ function Homepage({ children }) {
 	return (
 		<div className="float-left w-full min-h-full bg-white text-black ">
 			{!loading && isAuthenticated && user && (
-				<div className="w-full float-left">
+				<div className="w-full min-h-[100vh] float-left">
 					<Nav />
 					<div className="w-full min-h-[100vh] bg-gray-100 float-left relative">
 						<div className="lg:block 2xl:block sm:hidden xs:hidden md:hidden w-[15%] min-h-[100vh] fixed float-left">
