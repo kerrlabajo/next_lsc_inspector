@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Button from '@components/Button/page'
 import Roboflow from '@components/Roboflow/roboflow'
 import Container from '@components/container'
@@ -70,7 +71,7 @@ const Demo = () => {
 	}
 
 	return (
-		<div className="bg-white w-full h-fit min-h-[100vh] float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
+		<div className="bg-white w-full h-fit float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
 			<Container
 				withTab={true}
 				style=" text-neutral-900 mt-[100px]"
@@ -147,7 +148,7 @@ const Demo = () => {
 
 						{loading && (
 							<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-fit rounded shadow p-6 mt-10">
-								<ImageSkeleton />
+								<ImageSkeleton title={'analyzing image...'} />
 							</div>
 						)}
 						{file && (
@@ -162,10 +163,13 @@ const Demo = () => {
 										height={100}
 										style={{ height: 'auto', maxHeight: '350px', maxWidth: '600px' }}
 									/>
-									<div>
+									<div className="w-fit overflow-hidden">
 										<div>
 											<b>Classification: </b>
-											{file.classification}
+
+											<span className={file.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>
+												{file.classification}
+											</span>
 										</div>
 										<div>
 											<b>Accuracy: </b>
@@ -175,9 +179,16 @@ const Demo = () => {
 											<b>Error Rate: </b>
 											{file.error_rate}
 										</div>
-										<div>
+										<div className="flex gap-2">
 											<b>Url: </b>
-											{file.url}
+											<Link
+												href={file.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="text-blue-400"
+											>
+												{file.url}
+											</Link>
 										</div>
 									</div>
 								</div>
