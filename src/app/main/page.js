@@ -11,6 +11,7 @@ import useUpload from '@hooks/useUpload'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import Roboflow from '@components/Roboflow/roboflow'
 import useAnalyze from '@hooks/useAnalyze';
+import ImageSkeleton from '@components/Skeleton/imageSkeleton'
 
 const Main = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true)
@@ -22,14 +23,16 @@ const Main = () => {
   const [analyzedImage, setAnalyzedImage] = useState(null)
   const [extension, setExtension] = useState(null)
   const [selectedModel, setSelectedModel] = useState('General')
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(0)
   const [toggleButton, setToggleButton] = useState(false)
+  const [loading, setLoading] = useState(false)
   let authorization
   if(user){
     authorization =  user.user.access_token
   }
 	const handleFileUpload = async () => {
 		if(file){
+      setLoading(true)
 			const formData = new FormData()
 			formData.append('file', file) //works
 
@@ -42,7 +45,9 @@ const Main = () => {
 				setUploadedImage(response.data)
         setExtension(response.data.filename.split('.').pop());
         console.log( extension);
+        setLoading(false)
 			}else{
+        setLoading(false)
 				console.error('Image upload not successful')
 			}
 		}else{
@@ -58,6 +63,7 @@ const Main = () => {
   const handleAnalyze = async () => {
     if (uploadedImage) {
         try {
+            setLoading(true)
             const response = await analyzeFile({
                 fileUrl: uploadedImage.url
             }, authorization)
@@ -65,10 +71,13 @@ const Main = () => {
             if (response.status === 201) {
                 console.log('Image analyzed successfully');
                 setAnalyzedImage(response.data); // Assuming response.data contains the analyzed data
+                setLoading(false)
             } else {
                 console.error('Image analyze unsuccessful');
+                setLoading(false)
             }
         } catch (error) {
+            setLoading(false)
             console.error('Error analyzing file:', error.message);
         }
     } else {
@@ -293,14 +302,12 @@ const Main = () => {
                       className="flex items-start"
                       style={{ wordWrap: "break-word", maxWidth: "300px" }}
                     >
-                      <p className="font-bold mr-20" style={{ width: "220px" }}>
+                      <p className="font-bold mr-20" style={{ width: "2520px" }}>
                         Path:
                       </p>
                       <p
                         style={{
                           maxWidth: "550px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
                         }}
                       >
                         {analyzedImage.url}
@@ -314,6 +321,11 @@ const Main = () => {
                   />
                 </div>
               )}
+              {loading && (
+							<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-fit rounded shadow p-6 mt-10">
+								<ImageSkeleton title={'Loading...'} />
+							</div>
+						)}
           </>
         ) : (
           <div className="w-full h-full mt-10 flex flex-col items-center gap-[20px]">
