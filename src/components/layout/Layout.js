@@ -70,7 +70,7 @@ function Homepage({ children }) {
 							<Nav />
 							<div className="w-full float-left flex flex-col">
 								{children}
-								{/* <Footer /> */}
+								<Footer />
 							</div>
 						</>
 					)}

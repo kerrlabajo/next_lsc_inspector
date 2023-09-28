@@ -68,7 +68,7 @@ const Roboflow = (props) => {
 		canvasRef.current.getContext('2d').scale(window.devicePixelRatio, window.devicePixelRatio)
 	}
 
-	const drawBoxes = (detections, ctx, isMirrored) => {
+	const drawBoxes = (detections, ctx) => {
 		ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
 		detections.forEach((row) => {
 			if (true) {
