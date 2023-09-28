@@ -226,9 +226,7 @@ const Main = () => {
                       </p>
                       <p
                         style={{
-                          maxWidth: "300px",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
+                          maxWidth: "400px",
                         }}
                       >
                         {uploadedImage.filename}
@@ -300,7 +298,7 @@ const Main = () => {
                       </p>
                       <p
                         style={{
-                          maxWidth: "200px",
+                          maxWidth: "550px",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                         }}
