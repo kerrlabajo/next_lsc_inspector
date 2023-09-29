@@ -34,7 +34,7 @@ const Main = () => {
 		if (file) {
 			setLoading(true)
 			const formData = new FormData()
-			formData.append('file', file) //works
+			formData.append('file', file)
 
 			const response = await uploadFile({
 				body: formData,
@@ -55,7 +55,6 @@ const Main = () => {
 	}
 
 	const handleSelectModel = (modelName) => {
-		// Add your logic here to handle the selected model
 		setSelectedModel(modelName)
 		setIsModalOpen(false)
 	}
@@ -72,7 +71,7 @@ const Main = () => {
 
 				if (response.status === 201) {
 					console.log('Image analyzed successfully')
-					setAnalyzedImage(response.data) // Assuming response.data contains the analyzed data
+					setAnalyzedImage(response.data)
 					setLoading(false)
 				} else {
 					console.error('Image analyze unsuccessful')
@@ -91,7 +90,7 @@ const Main = () => {
 		if (analyzedImage) {
 			const link = document.createElement('a')
 			link.href = analyzedImage.url
-			link.setAttribute('download', 'image.png') //or any other extension
+			link.setAttribute('download', 'image.png')
 			document.body.appendChild(link)
 			link.click()
 			document.body.removeChild(link)
@@ -99,8 +98,6 @@ const Main = () => {
 	}
 
 	useEffect(() => {
-		// This block of code will run whenever either uploadedImage or analyzedImage changes.
-		// It will log the updated URLs to the console.
 		if (uploadedImage) {
 			console.log('Uploaded Image:', uploadedImage)
 		}
@@ -113,7 +110,6 @@ const Main = () => {
 		}
 	}, [uploadedImage, analyzedImage, extension])
 
-	//console.log(headers.authorization)
 	const renderContent = () => {
 		return (
 			<div>
