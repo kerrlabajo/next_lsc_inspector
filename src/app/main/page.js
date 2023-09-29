@@ -22,7 +22,7 @@ const Main = () => {
 	const [uploadedImage, setUploadedImage] = useState(null)
 	const [analyzedImage, setAnalyzedImage] = useState(null)
 	const [extension, setExtension] = useState(null)
-	const [selectedModel, setSelectedModel] = useState('General')
+	const [selectedModel, setSelectedModel] = useState(null)
 	const [selected, setSelected] = useState(0)
 	const [toggleButton, setToggleButton] = useState(false)
 	const [loading, setLoading] = useState(false)
@@ -56,8 +56,10 @@ const Main = () => {
 
 	const handleSelectModel = (modelName) => {
 		setSelectedModel(modelName)
-		setIsModalOpen(false)
+		console.log("?")
+		//setIsModalOpen(false)
 	}
+
 	const handleAnalyze = async () => {
 		if (uploadedImage) {
 			try {
@@ -120,18 +122,18 @@ const Main = () => {
 					<h1 className="font-bold text-[20px]">Model</h1>
 					<span className="text-gray-400">Select from any from our pre-defined model you want to use.</span>
 					<ul className="flex py-[20px] gap-3">
-						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500">
+						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500" onClick={handleSelectModel('General')}>
 							<span
 								className=""
-								onClick={handleSelectModel('General')}
+
 							>
 								General
 							</span>
 						</li>
-						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500">
+						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500" onClick={handleSelectModel('LaserSolder')}>
 							<span
 								className=""
-								onClick={handleSelectModel('LaserSolder')}
+
 							>
 								Laser Solder
 							</span>
@@ -149,6 +151,28 @@ const Main = () => {
 
 	return (
 		<>
+			{user && isAuthenticated && isModalOpen && (
+					<Modal
+						title="Setup your AI model"
+						onClose={() => {
+							setIsModalOpen(!isModalOpen)
+						}}
+						content={renderContent}
+						footer={() => {
+							return (
+								<div className="w-full flex justify-end">
+									<Button
+										style={' bg-green-400 text-white ml-[20px]'}
+										title="Continue"
+										onClick={() => {
+											setIsModalOpen(!isModalOpen)
+										}}
+									/>
+								</div>
+							)
+						}}
+					/>
+			)}
 			<Container>
 				{/* <div className="min-h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]"> */}
 				<ul className="flex flex-wrap -mb-px  border-b border-gray-200">
@@ -177,29 +201,6 @@ const Main = () => {
 						</div>
 					</li>
 				</ul>
-
-				{user && isAuthenticated && isModalOpen && (
-					<Modal
-						title="Setup your AI model"
-						onClose={() => {
-							setIsModalOpen(!isModalOpen)
-						}}
-						content={renderContent}
-						footer={() => {
-							return (
-								<div className="w-full flex justify-end">
-									<Button
-										style={' bg-green-400 text-white ml-[20px]'}
-										title="Continue"
-										onClick={() => {
-											setIsModalOpen(!isModalOpen)
-										}}
-									/>
-								</div>
-							)
-						}}
-					/>
-				)}
 
 				{selected === 0 ? (
 					<>
