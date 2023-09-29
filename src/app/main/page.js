@@ -220,8 +220,8 @@ const Main = () => {
 									name="file"
 									accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
 									onChange={({ target }) => {
-										// setFile(null)
-										// uploadFile(null)
+										setUploadedImage(null)
+										setAnalyzedImage(null)
 										setFile(target.files[0])
 									}}
 								/>
@@ -322,7 +322,7 @@ const Main = () => {
 										>
 											Accuracy:
 										</p>
-										<p style={{ wordWrap: 'break-word' }}>{Math.round(analyzedImage.accuracy * 100)} %</p>
+										<p style={{ wordWrap: 'break-word' }}>{analyzedImage.accuracy }</p>
 									</div>
 									<div className="flex items-center mb-2">
 										<p
@@ -331,7 +331,7 @@ const Main = () => {
 										>
 											Error Rate:
 										</p>
-										<p>{Math.round(analyzedImage.error_rate * 100)} %</p>
+										<p>{analyzedImage.error_rate}	</p>
 									</div>
 									<div
 										className="flex items-start"
