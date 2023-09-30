@@ -56,8 +56,7 @@ const Main = () => {
 
 	const handleSelectModel = (modelName) => {
 		setSelectedModel(modelName)
-		console.log("?")
-		//setIsModalOpen(false)
+		setIsModalOpen(false)
 	}
 
 	const handleAnalyze = async () => {
@@ -110,7 +109,10 @@ const Main = () => {
 		if (extension) {
 			console.log('Extension:', extension)
 		}
-	}, [uploadedImage, analyzedImage, extension])
+		if(selectedModel){
+			console.log("Extension:",selectedModel)
+		}
+	}, [uploadedImage, analyzedImage, extension, selectedModel])
 
 	const renderContent = () => {
 		return (
@@ -122,7 +124,8 @@ const Main = () => {
 					<h1 className="font-bold text-[20px]">Model</h1>
 					<span className="text-gray-400">Select from any from our pre-defined model you want to use.</span>
 					<ul className="flex py-[20px] gap-3">
-						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500" onClick={handleSelectModel('General')}>
+						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500"
+						onClick={() => handleSelectModel('General')}>
 							<span
 								className=""
 
@@ -130,7 +133,8 @@ const Main = () => {
 								General
 							</span>
 						</li>
-						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500" onClick={handleSelectModel('LaserSolder')}>
+						<li className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500"
+						onClick={() => handleSelectModel('LaserSolder')}>
 							<span
 								className=""
 
