@@ -17,7 +17,7 @@ const Banner = () => {
 						<span>YOLO V8</span>
 					</div>
 				</div>
-				<h1 className="text-5xl font-bold">
+				<h1 className="text-2xl lg:text-5xl font-bold">
 					<span className="text-green-500">Laser Soldering Qualitative</span> Inspector
 				</h1>
 
