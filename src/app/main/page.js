@@ -56,7 +56,7 @@ const Main = () => {
 
 	const handleSelectModel = (modelName) => {
 		setSelectedModel(modelName)
-		setIsModalOpen(false)
+		// setIsModalOpen(false)
 	}
 
 	const handleAnalyze = async () => {
@@ -155,28 +155,6 @@ const Main = () => {
 
 	return (
 		<>
-			{user && isAuthenticated && isModalOpen && (
-					<Modal
-						title="Setup your AI model"
-						onClose={() => {
-							setIsModalOpen(!isModalOpen)
-						}}
-						content={renderContent}
-						footer={() => {
-							return (
-								<div className="w-full flex justify-end">
-									<Button
-										style={' bg-green-400 text-white ml-[20px]'}
-										title="Continue"
-										onClick={() => {
-											setIsModalOpen(!isModalOpen)
-										}}
-									/>
-								</div>
-							)
-						}}
-					/>
-			)}
 			<Container>
 				{/* <div className="min-h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]"> */}
 				<ul className="flex flex-wrap -mb-px  border-b border-gray-200">
@@ -205,7 +183,28 @@ const Main = () => {
 						</div>
 					</li>
 				</ul>
-
+				{user && isAuthenticated && isModalOpen && (
+					<Modal
+						title="Setup your AI model"
+						onClose={() => {
+							setIsModalOpen(!isModalOpen)
+						}}
+						content={renderContent}
+						footer={() => {
+							return (
+								<div className="w-full flex justify-end">
+									<Button
+										style={' bg-green-400 text-white ml-[20px]'}
+										title="Continue"
+										onClick={() => {
+											setIsModalOpen(!isModalOpen)
+										}}
+									/>
+								</div>
+							)
+						}}
+					/>
+				)}
 				{selected === 0 ? (
 					<>
 						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
@@ -323,7 +322,7 @@ const Main = () => {
 										>
 											Accuracy:
 										</p>
-										<p style={{ wordWrap: 'break-word' }}>{analyzedImage.accuracy }</p>
+										<p style={{ wordWrap: 'break-word' }}>{analyzedImage.accuracy}</p>
 									</div>
 									<div className="flex items-center mb-2">
 										<p
@@ -332,7 +331,7 @@ const Main = () => {
 										>
 											Error Rate:
 										</p>
-										<p>{analyzedImage.error_rate}	</p>
+										<p>{analyzedImage.error_rate} </p>
 									</div>
 									<div
 										className="flex items-start"

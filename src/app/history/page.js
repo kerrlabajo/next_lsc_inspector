@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
-import Features from '@components/Landing/features'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Table from '@components/Table/page'
 import Container from '@components/container'
 import Button from '@components/Button/page'
+import useUserStore from '@useStore'
+import useFiles from '@hooks/useFiles'
 
 const header = [
 	{
@@ -29,14 +31,14 @@ const header = [
 		title: 'Classification',
 		type: 'text',
 		variable: 'classification',
+		style: {
+			fontWeight: 'bold',
+		},
 	},
 	{
 		title: 'Accuracy',
 		type: 'text',
 		variable: 'accuracy',
-		style: {
-			fontWeight: 'bold',
-		},
 	},
 	{
 		title: 'Actions',
@@ -47,48 +49,29 @@ const header = [
 		options: [
 			{
 				title: 'View',
-				action: 'redirect',
-				route: '/file/view?id=',
-				route_params: 'id',
+				action: null,
+				icon: '',
 			},
 			{
 				action: null,
 				title: 'Delete',
-				route: '/file/remove?id=',
+				icon: '',
 			},
 		],
 	},
 ]
 
-let tableData = [
-	{
-		date: '03-13-2023',
-		name: 'File 1',
-		size: '121 kb',
-		classification: 'good',
-		accuracy: '97%',
-	},
-	{
-		date: '03-13-2023',
-		name: 'File 2',
-		size: '51 kb',
-		classification: 'good',
-		accuracy: '91%',
-	},
-	{
-		date: '03-13-2023',
-		name: 'File 3',
-		size: '211 kb',
-		classification: 'bad',
-		accuracy: '87%',
-	},
-]
-
 const History = () => {
+	const router = useRouter()
 	const [loading, setLoading] = useState(false)
-	const [data, setData] = useState([])
 	const [selected, setSelected] = useState(null)
 	const [deleteFlag, setDeleteFlag] = useState(false)
+	const { user, isAuthenticated } = useUserStore()
+	const { isRetrieving, files } = useFiles(user?.user.access_token)
+
+	useEffect(() => {
+		console.log('files: ', files)
+	}, [])
 
 	return (
 		<Container>
@@ -105,13 +88,15 @@ const History = () => {
 				</div>
 				<Table
 					header={header}
-					data={tableData}
+					data={files?.data}
 					limit={10}
 					isLoading={loading}
 					onClick={(menu, item) => {
 						if (menu && menu.title == 'Delete') {
 							setSelected(item)
 							setDeleteFlag(true)
+						} else if (menu && menu.title == 'View') {
+							router.push(`/history/${item.id}`)
 						}
 					}}
 					pagination={true}
