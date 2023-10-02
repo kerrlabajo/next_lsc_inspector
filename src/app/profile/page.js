@@ -7,13 +7,23 @@ import Link from "next/link";
 import Button from "@components/Button/page";
 import ProfilePictureUpload from "@components/profilepictureUpload";
 import EditIcon from "@mui/icons-material/Edit";
+import useUserStore from '../../useStore'
 
 const Profile = () => {
+  const { user, isAuthenticated } = useUserStore()
+  const [username, setUsername] = useState(null);
+  const [errorUsername, setErrorUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [errorEmail, setErrorEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [errorPassword, setErrorPassword] = useState(null);
 
+  //temporary delete when final
+  let userId
+  if (user) {
+		//userId = user.user.access_token
+    console.log(user);
+	}
   return (
     <>
       <div className="min-h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]">
@@ -40,16 +50,16 @@ const Profile = () => {
                   <TextInput
                     type="username"
                     placeholder="Username"
-                    value={email}
-                    onChange={(email, errorEmail) => {
-                      setEmail(email);
-                      setErrorEmail(errorEmail);
+                    value={username}
+                    onChange={(username, errorUsername) => {
+                      setUsername(username);
+                      setErrorUsername(errorUsername);
                     }}
                     validation={{
                       type: "text_without_space",
                       size: 2,
-                      column: "Email",
-                      error: errorEmail,
+                      column: "Username",
+                      error: errorUsername,
                     }}
                   />
                 </div>
@@ -102,7 +112,7 @@ const Profile = () => {
                   />
                 </div>
               </div>
-              <div className="flex mb-14">
+              <div className="flex mb-24">
                 <div className="w-1/2 mr-4">
                   <div className="flex items-center h-5 justify-end  mt-[-5px]">
                     <Link
@@ -114,10 +124,10 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center">
+              <div className="flex justify-center ">
                   <Button
                     title="Save Changes"
-                    style=" w-1/3 bg-green-400 text-white hover:bg-green-500 h-[40px] justify-center"
+                    style=" w-1/4 bg-green-400 text-white hover:bg-green-500 h-[40px] justify-center"
                     onClick={() => {
                       onSubmit();
                     }}

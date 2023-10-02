@@ -110,7 +110,7 @@ const Main = () => {
 			console.log('Extension:', extension)
 		}
 		if(selectedModel){
-			console.log("Extension:",selectedModel)
+			console.log("Model:",selectedModel)
 		}
 	}, [uploadedImage, analyzedImage, extension, selectedModel])
 
