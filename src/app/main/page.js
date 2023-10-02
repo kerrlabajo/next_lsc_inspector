@@ -56,7 +56,7 @@ const Main = () => {
 
 	const handleSelectModel = (modelName) => {
 		setSelectedModel(modelName)
-		setIsModalOpen(false)
+		// setIsModalOpen(false)
 	}
 	const handleAnalyze = async () => {
 		if (uploadedImage) {
@@ -177,7 +177,6 @@ const Main = () => {
 						</div>
 					</li>
 				</ul>
-
 				{user && isAuthenticated && isModalOpen && (
 					<Modal
 						title="Setup your AI model"
@@ -200,7 +199,6 @@ const Main = () => {
 						}}
 					/>
 				)}
-
 				{selected === 0 ? (
 					<>
 						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
@@ -318,7 +316,7 @@ const Main = () => {
 										>
 											Accuracy:
 										</p>
-										<p style={{ wordWrap: 'break-word' }}>{analyzedImage.accuracy }</p>
+										<p style={{ wordWrap: 'break-word' }}>{analyzedImage.accuracy}</p>
 									</div>
 									<div className="flex items-center mb-2">
 										<p
@@ -327,7 +325,7 @@ const Main = () => {
 										>
 											Error Rate:
 										</p>
-										<p>{analyzedImage.error_rate}	</p>
+										<p>{analyzedImage.error_rate} </p>
 									</div>
 									<div
 										className="flex items-start"

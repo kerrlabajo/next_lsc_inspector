@@ -238,7 +238,6 @@ const Demo = () => {
 							/>
 						) : (
 							<WebcamSkeleton />
-							// <ImageSkeleton />
 						)}
 					</div>
 				)}
