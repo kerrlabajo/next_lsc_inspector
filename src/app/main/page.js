@@ -41,8 +41,9 @@ const Main = () => {
       });
       if (response) {
         console.log("Image uploaded successfully");
+        console.log(response.data.name.split(".").pop());
         setUploadedImage(response.data);
-        setExtension(response.data.filename.split(".").pop());
+        setExtension(response.data.name.split(".").pop());
         console.log(extension);
         setLoading(false);
       } else {
@@ -63,6 +64,7 @@ const Main = () => {
     if (uploadedImage) {
       try {
         setLoading(true);
+        console.log(uploadedImage)
         const response = await analyzeFile(
           {
             fileUrl: uploadedImage.url,
@@ -243,7 +245,7 @@ const Main = () => {
                       Filename:
                     </p>
                     <p className="break-words max-w-[400px] xl:max-w-[23rem] md:max-w-[10rem]">
-                      {uploadedImage.filename}
+                      {uploadedImage.name}
                     </p>
                   </div>
                   <div className="flex items-center mb-2">
