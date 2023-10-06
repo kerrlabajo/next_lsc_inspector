@@ -23,7 +23,7 @@ const FilesServices = {
 	download: (token, id, destination) =>
 		axios.post(
 			`${BASE_URL}/download`,
-			{ id: id, ditination: destination },
+			{ id:id, destination: destination },
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,

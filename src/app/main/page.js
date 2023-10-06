@@ -20,7 +20,7 @@ const Main = () => {
 	const { user, isAuthenticated } = useUserStore()
 	const { uploadFile } = useUpload()
 	const { analyzeFile } = useAnalyze()
-	const { downloadFile } = useAnalyze()
+	const { downloadFile } = useDownload()
 	const [file, setFile] = useState(null)
 	const [uploadedImage, setUploadedImage] = useState(null)
 	const [analyzedImage, setAnalyzedImage] = useState(null)
@@ -90,7 +90,7 @@ const Main = () => {
 	}
 
 	const handleExport = () => {
-		downloadFile(user.access_token, analyzedImage.id, '')
+		downloadFile(authorization, {id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png'})
 		// if (analyzedImage) {
 		// 	const link = document.createElement('a')
 		// 	link.href = analyzedImage.url

@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import FilesServices from '@services/FilesServices'
 
-const useDowloadFile = (token, id, destination) => {
+const useDowloadFile = () => {
 	const [isDownloading, setIsDownloading] = useState(false)
 
-	const downloadFile = async () => {
+	const downloadFile = async (token,{ id, destination}) => {
 		setIsDownloading(true)
 
-		let responseCode
+		let responseCode	
 		let downloadedFile
 		try {
 			const response = await FilesServices.download(token, id, destination)
+			console.log("reponse: ", response)
 			if (response) {
 				return response
 			} else {
