@@ -6,18 +6,21 @@ import Button from '@components/Button/page'
 import FileUpload from '@components/Button/fileUpload'
 import Modal from '@components/Modal/page'
 import Toggle from '@components/Button/toggle'
-import useUserStore from '../../useStore'
-import useUpload from '@hooks/useUpload'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import Roboflow from '@components/Roboflow/roboflow'
 import useAnalyze from '@hooks/useAnalyze'
 import Skeleton from '@components/Skeleton/Skeleton'
+
+import useUserStore from '../../useStore'
+import useUpload from '@hooks/useUpload'
+import useDownload from '@hooks/useDownloadFile'
 
 const Main = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true)
 	const { user, isAuthenticated } = useUserStore()
 	const { uploadFile } = useUpload()
 	const { analyzeFile } = useAnalyze()
+	const { downloadFile } = useAnalyze()
 	const [file, setFile] = useState(null)
 	const [uploadedImage, setUploadedImage] = useState(null)
 	const [analyzedImage, setAnalyzedImage] = useState(null)
@@ -87,14 +90,15 @@ const Main = () => {
 	}
 
 	const handleExport = () => {
-		if (analyzedImage) {
-			const link = document.createElement('a')
-			link.href = analyzedImage.url
-			link.setAttribute('download', 'image.png')
-			document.body.appendChild(link)
-			link.click()
-			document.body.removeChild(link)
-		}
+		downloadFile(user.access_token, analyzedImage.id, '')
+		// if (analyzedImage) {
+		// 	const link = document.createElement('a')
+		// 	link.href = analyzedImage.url
+		// 	link.setAttribute('download', 'image.png')
+		// 	document.body.appendChild(link)
+		// 	link.click()
+		// 	document.body.removeChild(link)
+		// }
 	}
 
 	useEffect(() => {
