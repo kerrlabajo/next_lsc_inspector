@@ -42,7 +42,7 @@ const Main = () => {
 			if (response) {
 				console.log('Image uploaded successfully')
 				setUploadedImage(response.data)
-				setExtension(response.data.filename.split('.').pop())
+				setExtension(response.data.name.split('.').pop())
 				console.log(extension)
 				setLoading(false)
 			} else {
@@ -249,7 +249,7 @@ const Main = () => {
 												maxWidth: '400px',
 											}}
 										>
-											{uploadedImage.filename}
+											{uploadedImage.name}
 										</p>
 									</div>
 									<div className="flex items-center mb-2">
