@@ -41,10 +41,8 @@ const Main = () => {
       });
       if (response) {
         console.log("Image uploaded successfully");
-        console.log(response.data.name.split(".").pop());
         setUploadedImage(response.data);
         setExtension(response.data.name.split(".").pop());
-        console.log(extension);
         setLoading(false);
       } else {
         setLoading(false);
