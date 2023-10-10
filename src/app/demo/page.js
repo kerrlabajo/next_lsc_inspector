@@ -200,11 +200,11 @@ const Demo = () => {
 										</div>
 										<div>
 											<b>Accuracy: </b>
-											<span>{Math.round(file.accuracy * 100)} %</span>
+											<span>{file.accuracy}</span>
 										</div>
 										<div>
 											<b>Error Rate: </b>
-											<span>{Math.round(file.error_rate * 100)} %</span>
+											<span>{file.error_rate}</span>
 										</div>
 										<div className="flex gap-2">
 											<b>Url: </b>

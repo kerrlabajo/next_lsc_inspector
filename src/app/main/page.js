@@ -1,57 +1,60 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import Container from "@components/container";
-import Button from "@components/Button/page";
-import FileUpload from "@components/Button/fileUpload";
-import Modal from "@components/Modal/page";
-import Toggle from "@components/Button/toggle";
-import useUserStore from "../../useStore";
-import useUpload from "@hooks/useUpload";
-import WebcamSkeleton from "@components/Skeleton/webcamSkeleton";
-import Roboflow from "@components/Roboflow/roboflow";
-import useAnalyze from "@hooks/useAnalyze";
-import Skeleton from "@components/Skeleton/Skeleton";
+import React, { useState, useEffect } from 'react'
+import Container from '@components/container'
+import Button from '@components/Button/page'
+import FileUpload from '@components/Button/fileUpload'
+import Modal from '@components/Modal/page'
+import Toggle from '@components/Button/toggle'
+import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
+import Roboflow from '@components/Roboflow/roboflow'
+import useAnalyze from '@hooks/useAnalyze'
+import Skeleton from '@components/Skeleton/Skeleton'
+import useUserStore from '../../useStore'
+import useUpload from '@hooks/useUpload'
+import useDownload from '@hooks/useDownloadFile'
 
 const Main = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-  const { user, isAuthenticated } = useUserStore();
-  const { uploadFile } = useUpload();
-  const { analyzeFile } = useAnalyze();
-  const [file, setFile] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const [analyzedImage, setAnalyzedImage] = useState(null);
-  const [extension, setExtension] = useState(null);
-  const [selectedModel, setSelectedModel] = useState(null);
-  const [selected, setSelected] = useState(0);
-  const [toggleButton, setToggleButton] = useState(false);
-  const [loading, setLoading] = useState(false);
-  let authorization;
-  if (user) {
-    authorization = user.user.access_token;
-  }
-  const handleFileUpload = async () => {
-    if (file) {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("file", file);
+	const [isModalOpen, setIsModalOpen] = useState(true)
+	const { user, isAuthenticated } = useUserStore()
+	const { uploadFile } = useUpload()
+	const { analyzeFile } = useAnalyze()
+	const { downloadFile } = useDownload()
+	const [file, setFile] = useState(null)
+	const [uploadedImage, setUploadedImage] = useState(null)
+	const [analyzedImage, setAnalyzedImage] = useState(null)
+	const [extension, setExtension] = useState(null)
+	const [selectedModel, setSelectedModel] = useState('General')
+	const [selected, setSelected] = useState(0)
+	const [toggleButton, setToggleButton] = useState(false)
+	const [loading, setLoading] = useState(false)
+	let authorization
+	if (user) {
+		authorization = user.user.access_token
+	}
+	const handleFileUpload = async () => {
+		if (file) {
+			setLoading(true)
+			const formData = new FormData()
+			formData.append('file', file)
 
-      const response = await uploadFile({
-        body: formData,
-      });
-      if (response) {
-        console.log("Image uploaded successfully");
-        setUploadedImage(response.data);
-        setExtension(response.data.name.split(".").pop());
-        setLoading(false);
-      } else {
-        setLoading(false);
-        console.error("Image upload not successful");
-      }
-    } else {
-      console.error("No file selected");
-    }
-  };
+			const response = await uploadFile({
+				body: formData,
+			})
+			if (response) {
+				console.log('Image uploaded successfully')
+				setUploadedImage(response.data)
+				setExtension(response.data.name.split('.').pop())
+				console.log(extension)
+				setLoading(false)
+			} else {
+				setLoading(false)
+				console.error('Image upload not successful')
+			}
+		} else {
+			console.error('No file selected')
+		}
+	}
 
   const handleSelectModel = (modelName) => {
     setSelectedModel(modelName);
@@ -87,16 +90,17 @@ const Main = () => {
     }
   };
 
-  const handleExport = () => {
-    if (analyzedImage) {
-      const link = document.createElement("a");
-      link.href = analyzedImage.url;
-      link.setAttribute("download", "image.png");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
+	const handleExport = () => {
+		downloadFile(authorization, {id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png'})
+		// if (analyzedImage) {
+		// 	const link = document.createElement('a')
+		// 	link.href = analyzedImage.url
+		// 	link.setAttribute('download', 'image.png')
+		// 	document.body.appendChild(link)
+		// 	link.click()
+		// 	document.body.removeChild(link)
+		// }
+	}
 
   useEffect(() => {
     if (uploadedImage) {
