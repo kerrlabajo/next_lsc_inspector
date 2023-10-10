@@ -44,7 +44,7 @@ const Main = () => {
 			if (response) {
 				console.log('Image uploaded successfully')
 				setUploadedImage(response.data)
-				setExtension(response.data.name.split('.').pop())
+				setExtension(response.data.filename.split('.').pop())
 				console.log(extension)
 				setLoading(false)
 			} else {
@@ -91,7 +91,7 @@ const Main = () => {
   };
 
 	const handleExport = () => {
-		downloadFile(authorization, {id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png'})
+		// downloadFile(authorization, { id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png' })
 		// if (analyzedImage) {
 		// 	const link = document.createElement('a')
 		// 	link.href = analyzedImage.url

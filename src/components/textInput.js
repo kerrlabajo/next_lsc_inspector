@@ -43,13 +43,7 @@ function Text(props) {
 					(props.style ? props.style : 'bg-gray-50 text-gray-900')
 				}
 			></input>
-			<div className="w-full">
-				{props.validation && props.validation.error && (
-					<label className="text-red-600">
-						<b>Oops!</b> {props.validation.error}
-					</label>
-				)}
-			</div>
+			<div className="w-full">{props.validation && props.validation.error && <label className="text-red-400">{props.validation.error}</label>}</div>
 		</div>
 	)
 }
