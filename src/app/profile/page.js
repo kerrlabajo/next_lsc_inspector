@@ -45,7 +45,7 @@ const Profile = () => {
       formData.append("profile_image", uploadedImage);
       const response1 = await uploadPicture(userId, authorization, formData);
       setLoading(true); //insert loading skeleton
-      if (response1) {
+      if (response1.status === 201) {
         console.log(response1);
         setLoading(false);
       } else {
@@ -63,14 +63,14 @@ const Profile = () => {
       email: updatedEmail,
       password: updatedPassword,
     });
-    if (response) {
+    if (response.status === 201) {
       console.log(response);
       setLoading(false);
     } else {
       setLoading(false);
       console.error("There was an error editing the user");
     }
-    //window.location.reload();
+    window.location.reload();
   };
 
   return (
