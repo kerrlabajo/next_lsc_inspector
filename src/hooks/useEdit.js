@@ -4,13 +4,13 @@ import UsersService from '@services/UsersService';
 const useEdit = () => {
     const [editting, setEditting] = useState(false);
 
-    const editFile = async ({id}, token) => {
+    const editUser = async (id, token, body) => {
         try {
             console.log(id)
             setEditting(true);
-            const response = await UsersService.edit(id, token);
+            const response = await UsersService.edit(id, token, body);
             if (response) {
-                return response
+                return response;
             } else {
                 throw new Error(`Error updating user: ${response.statusText}`);
             }
@@ -22,7 +22,7 @@ const useEdit = () => {
     };
 
 
-    return { editFile, editting };
+    return { editUser, editting };
 }
 
 export default useEdit;
