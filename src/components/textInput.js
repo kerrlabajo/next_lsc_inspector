@@ -39,8 +39,9 @@ function Text(props) {
 					}
 				}}
 				className={
-					'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ' +
-					(props.style ? props.style : 'bg-gray-50 text-gray-900')
+					'bg-gray-50 border border-gray-300 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 ' +
+					(props.style ? props.style : 'bg-gray-50 text-gray-900') +
+					(props.disable ? ' text-gray-500 opacity-40' : '  text-gray-900')
 				}
 			></input>
 			<div className="w-full">{props.validation && props.validation.error && <label className="text-red-400">{props.validation.error}</label>}</div>

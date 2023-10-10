@@ -4,15 +4,16 @@ import FilesServices from '@services/FilesServices'
 const useDeleteFile = () => {
 	const [isDeleting, setIsDeleting] = useState(false)
 
-	const deleteFile = async (token, id, callback) => {
+	const deleteFile = async ({ token, id, callback }) => {
 		setIsDeleting(true)
 
 		let responseCode
 		let deletedFile
 		if (id) {
+			console.log('id: ', id)
+			console.log('token: ', token)
 			try {
 				const { status, data } = await FilesServices.deleteById(token, id)
-				console.log('file: ', data)
 				responseCode = status
 				deletedFile = data
 			} catch (error) {
@@ -20,10 +21,8 @@ const useDeleteFile = () => {
 				responseCode = error.response
 			}
 		} else {
-			console.log('Im here ------------')
 			try {
 				const { status, data } = await FilesServices.deleteAll(token)
-				console.log('file: ', data)
 				responseCode = status
 				deletedFile = data
 			} catch (error) {

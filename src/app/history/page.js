@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import Table from '@components/Table/page'
@@ -16,11 +16,17 @@ import String from '@utils/string'
 const History = () => {
 	const router = useRouter()
 	const { user } = useUserStore()
-	const { isRetrieving, files } = useFiles(user?.user.access_token)
+	const { isRetrieving, files, fetchFiles } = useFiles(user?.user.access_token)
 	const { isDeleting, deleteFile } = useDeleteFile()
 	const [selected, setSelected] = useState(null)
 	const [error, setError] = useState(null)
+	const [reload, setReload] = useState(false)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+	useEffect(() => {
+		fetchFiles()
+		setReload(false)
+	}, [reload])
 
 	const deleteItemCallbacks = {
 		success: () =>
@@ -39,11 +45,11 @@ const History = () => {
 
 	const deleteItem = async () => {
 		if (selected) {
-			await deleteFile(user.user.access_token, selected.id, deleteItemCallbacks)
-			// await files()
+			await deleteFile({ token: user?.user.access_token, id: selected.id, callback: deleteItemCallbacks })
 		} else {
-			await deleteFile(user.user.access_token, deleteItemCallbacks)
+			await deleteFile({ token: user?.user.access_token, callback: deleteItemCallbacks })
 		}
+		setReload(true)
 		setSelected(null)
 	}
 
