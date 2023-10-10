@@ -1,77 +1,55 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+
 import Table from '@components/Table/page'
 import Container from '@components/container'
 import Button from '@components/Button/page'
+import Modal from '@components/Modal/page'
+
 import useUserStore from '@useStore'
 import useFiles from '@hooks/useFiles'
-
-const header = [
-	{
-		title: 'Date',
-		type: 'text',
-		variable: 'date',
-	},
-	{
-		title: 'Name',
-		type: 'text',
-		variable: 'name',
-		style: {
-			fontWeight: 'bold',
-		},
-	},
-	{
-		title: 'Size',
-		type: 'text',
-		variable: 'size',
-	},
-	{
-		title: 'Classification',
-		type: 'text',
-		variable: 'classification',
-		style: {
-			fontWeight: 'bold',
-		},
-	},
-	{
-		title: 'Accuracy',
-		type: 'text',
-		variable: 'accuracy',
-	},
-	{
-		title: 'Actions',
-		type: 'action',
-		style: {
-			width: 300,
-		},
-		options: [
-			{
-				title: 'View',
-				action: null,
-				icon: '',
-			},
-			{
-				action: null,
-				title: 'Delete',
-				icon: '',
-			},
-		],
-	},
-]
+import useDeleteFile from '@hooks/useDeleteFile'
+import String from '@utils/string'
 
 const History = () => {
 	const router = useRouter()
-	const [loading, setLoading] = useState(false)
-	const [selected, setSelected] = useState(null)
-	const [deleteFlag, setDeleteFlag] = useState(false)
-	const { user, isAuthenticated } = useUserStore()
+	const { user } = useUserStore()
 	const { isRetrieving, files } = useFiles(user?.user.access_token)
+	const { isDeleting, deleteFile } = useDeleteFile()
+	const [selected, setSelected] = useState(null)
+	const [error, setError] = useState(null)
+	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
-	useEffect(() => {
-		console.log('files: ', files)
-	}, [])
+	const deleteItemCallbacks = {
+		success: () =>
+			setError({
+				overall: 'Invalid email address and/or password.',
+			}),
+		notFound: () =>
+			setError({
+				overall: `File doesn't exists`,
+			}),
+		internalError: () =>
+			setError({
+				overall: 'Oops, something went wrong.',
+			}),
+	}
+
+	const deleteItem = async () => {
+		if (selected) {
+			await deleteFile(user.user.access_token, selected.id, deleteItemCallbacks)
+			// await files()
+		} else {
+			await deleteFile(user.user.access_token, deleteItemCallbacks)
+		}
+		setSelected(null)
+	}
+
+	const renderDeleteModal = () => {
+		return <div className="flex flex-col items-center gap-[20px]">Are you sure you want to delete this item?</div>
+	}
 
 	return (
 		<Container>
@@ -83,18 +61,21 @@ const History = () => {
 						<Button
 							title="Clear History"
 							style=" bg-blue-400 text-white w-[20%] h-[35px]"
+							onClick={() => {
+								setIsDeleteModalOpen(true)
+							}}
 						/>
 					</div>
 				</div>
 				<Table
-					header={header}
+					header={String.tableHeader}
 					data={files?.data}
 					limit={10}
-					isLoading={loading}
+					isLoading={isRetrieving}
 					onClick={(menu, item) => {
 						if (menu && menu.title == 'Delete') {
 							setSelected(item)
-							setDeleteFlag(true)
+							setIsDeleteModalOpen(true)
 						} else if (menu && menu.title == 'View') {
 							router.push(`/history/${item.id}`)
 						}
@@ -108,6 +89,36 @@ const History = () => {
 					}}
 				/>
 			</div>
+			{isDeleteModalOpen && (
+				<Modal
+					title={'Confirm delete'}
+					content={renderDeleteModal}
+					onClose={() => {
+						setIsDeleteModalOpen(!isDeleteModalOpen)
+					}}
+					footer={() => {
+						return (
+							<div className="w-full flex justify-end">
+								<Button
+									style={' bg-red-400 text-white'}
+									title="Cancel"
+									onClick={() => {
+										setIsDeleteModalOpen(!isDeleteModalOpen)
+									}}
+								/>
+								<Button
+									style={' bg-green-400 text-white ml-[10px]'}
+									title="Confirm"
+									onClick={() => {
+										deleteItem()
+										setIsDeleteModalOpen(!isDeleteModalOpen)
+									}}
+								/>
+							</div>
+						)
+					}}
+				/>
+			)}
 		</Container>
 	)
 }

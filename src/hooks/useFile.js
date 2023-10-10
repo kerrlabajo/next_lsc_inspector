@@ -13,7 +13,6 @@ const useFile = (token, id) => {
 			let retrievedFile
 			try {
 				const { status, data } = await FilesServices.getById(token, id)
-				console.log('file: ', data)
 				responseCode = status
 				retrievedFile = data
 			} catch (error) {

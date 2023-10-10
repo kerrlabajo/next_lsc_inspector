@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import FilesServices from '@services/FilesServices'
 
-const useFiles = (token, id) => {
+const useFiles = (token) => {
 	const [isRetrieving, setIsRetrieving] = useState(false)
 	const [files, setFiles] = useState(null)
 
@@ -33,6 +33,8 @@ const useFiles = (token, id) => {
 			}
 		}
 		retrieveFiles()
+
+		setIsRetrieving(false)
 	}, [])
 
 	return { isRetrieving, files }

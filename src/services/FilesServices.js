@@ -23,7 +23,7 @@ const FilesServices = {
 	download: (token, id, destination) =>
 		axios.post(
 			`${BASE_URL}/download`,
-			{ id:id, destination: destination },
+			{ id: id, destination: destination },
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -39,6 +39,18 @@ const FilesServices = {
 		}),
 	getById: (token, id) =>
 		axios.get(`${BASE_URL}/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}),
+	deleteAll: (token) =>
+		axios.delete(`${BASE_URL}/`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}),
+	deleteById: (token, id) =>
+		axios.delete(`${BASE_URL}/${id}`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

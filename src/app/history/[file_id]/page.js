@@ -15,10 +15,6 @@ const Page = ({ params }) => {
 	const { user, isAuthenticated } = useUserStore()
 	const { isRetrieving, file } = useFile(user?.user.access_token, params.file_id)
 
-	useEffect(() => {
-		console.log('file: ', file)
-	})
-
 	const renderContent = () => {
 		return (
 			<>
