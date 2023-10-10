@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useUserStore from "../useStore";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 function ProfilePictureUpload({ setUploadedImage }) {
   const [profileImage, setProfileImage] = useState(null);
@@ -7,10 +8,11 @@ function ProfilePictureUpload({ setUploadedImage }) {
   const { user, isAuthenticated } = useUserStore();
 
   useEffect(() => {
-    if (user && user.user.profile_image) {
+    if (temporaryProfPIc === null && user && user.user.profile_image) {
       setTemporaryProfPIc(user.user.profile_image);
+      console.log(user)
     }
-  }, [user]);
+  }, [user, temporaryProfPIc]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -46,11 +48,30 @@ function ProfilePictureUpload({ setUploadedImage }) {
           alt="Profile Image"
         />
 
+        <label htmlFor="file" className="custom-file-upload mt-36 ml-36" style={
+          {
+            background: "#48BF91",
+            border: "6px solid #FFFFFF",
+            borderRadius: "50%",
+            cursor: "pointer",
+            fontWeight: "bold",
+            fontSize: "24px",
+            height: "50px",
+            width: "50px",
+            position: "absolute",
+          }
+        }>
+          <CameraAltIcon fontSize="large" style={{
+            color: "#FFFFFF",
+          }} />
+        </label>
         <input
           type="file"
+          id="file"
           name="file"
           accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
           onChange={handleImageChange}
+          style={{ display: "none" }}
         />
       </div>
     </div>
