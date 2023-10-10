@@ -1,40 +1,68 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+
 import useLogin from '@hooks/useLogin'
+
 import Button from '@components/Button/page'
 import TextInput from '@components/textInput'
-import Toggle from '@components/Button/toggle'
+import { SvgIcon } from '@mui/material'
+import { ArrowBack } from '@mui/icons-material'
 
 import Google from '../../../public/assets/images/google.png'
+import Logo from '../../../public/assets/images/white-logo.svg'
 
 const Login = () => {
 	const router = useRouter()
-	const [email, setEmail] = useState(null)
-	const [errorEmail, setErrorEmail] = useState(null)
-	const [password, setPassword] = useState(null)
-	const [errorPassword, setErrorPassword] = useState(null)
 	const { isLoggingIn, loginUser } = useLogin()
+	const [email, setEmail] = useState('')
+	const [errorEmail, setErrorEmail] = useState(null)
+	const [password, setPassword] = useState('')
+	const [errorPassword, setErrorPassword] = useState(null)
+	const [error, setError] = useState(null)
 
-	const searchParams = useSearchParams()
-	const callbackUrl = searchParams.get('callbackUrl') || '/main'
+	const loginUserCallbacks = {
+		invalidFields: () =>
+			setError({
+				overall: 'Invalid email address and/or password.',
+			}),
+		internalError: () =>
+			setError({
+				overall: 'Oops, something went wrong.',
+			}),
+	}
 
 	const onSubmit = async () => {
 		await loginUser({
 			email: email,
 			password: password,
+			callback: loginUserCallbacks,
 		})
 	}
 
 	return (
 		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
-			<div className=" h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
+			<div className=" h-[100vh] float-left text-neutral-900 w-full flex flex-col gap-10 items-center justify-center">
+				<SvgIcon
+					component={ArrowBack}
+					className="absolute left-6 top-6 w-20 h-auto text-white cursor-pointer"
+					fontSize="large"
+					onClick={() => router.back()}
+				/>
+				<Image
+					src={Logo}
+					alt="logo"
+					className="w-[200px] md:w-[300px] lg:w-[400px] h-auto"
+				/>
 				<div className="w-full bg-white rounded-xl shadow md:mt-0 sm:max-w-md xl:p-0 ">
-					<div className="p-6 space-y-4 ">
+					<div className="p-6 space-y-4">
 						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">Login</h1>
+
+						{error && <span className="text-red-400 py-8">{error.overall}</span>}
+
 						<form
 							className="space-y-4 md:space-y-6"
 							action="#"
@@ -51,6 +79,7 @@ const Login = () => {
 									placeholder="Email Address"
 									value={email}
 									onChange={(email, errorEmail) => {
+										setError(null)
 										setEmail(email)
 										setErrorEmail(errorEmail)
 									}}
@@ -74,6 +103,7 @@ const Login = () => {
 									placeholder="Password"
 									value={password}
 									onChange={(password, errorPassword) => {
+										setError(null)
 										setPassword(password)
 										setErrorPassword(errorPassword)
 									}}
@@ -96,8 +126,17 @@ const Login = () => {
 							<Button
 								title="login"
 								style=" w-full bg-green-400 text-white hover:bg-green-500 h-[40px]"
+								loading={isLoggingIn}
 								onClick={() => {
-									onSubmit()
+									if (!error) {
+										if (email !== '' && password !== '') {
+											onSubmit()
+										} else {
+											setError({
+												overall: `Don't leave any field empty!`,
+											})
+										}
+									}
 								}}
 							/>
 							<Button
@@ -107,12 +146,12 @@ const Login = () => {
 							/>
 							<p className="text-sm font-light text-gray-500 pt-[20px]">
 								Dont have an account?{' '}
-								<a
+								<Link
 									href="sign-up"
 									className="font-medium hover:underline"
 								>
 									Sign up here
-								</a>
+								</Link>
 							</p>
 						</form>
 					</div>

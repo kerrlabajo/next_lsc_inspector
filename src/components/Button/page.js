@@ -1,4 +1,4 @@
-import Spinner from '@components/Spinner/page'
+import Spinner from '@components/Loading/spinner'
 
 const Button = (props) => {
 	return (

@@ -23,13 +23,14 @@ const useLogin = () => {
 			responseCode = status
 			retrievedUser = data
 		} catch (error) {
+			console.log(error)
 			responseCode = error.response.status
 		}
 
 		switch (responseCode) {
 			case 200:
-				// await callback.loggedIn({ retrievedUser })
 				login(retrievedUser.user.access_token, retrievedUser)
+				return retrievedUser
 				break
 			case 401:
 				await callback.invalidFields()

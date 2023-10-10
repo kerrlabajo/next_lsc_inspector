@@ -1,19 +1,19 @@
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import UsersService from '@services/UsersService'
 import useUserStore from './../useStore'
+import useLogin from '@hooks/useLogin'
 
 const useSignup = () => {
-	const router = useRouter()
+	const { login } = useUserStore()
+	const { loginUser } = useLogin()
 	const [isSigningUp, setIsSigningUp] = useState(false)
-	const setUser = useUserStore((state) => state.setUser)
 
-	const signupUser = async ({ username, email, password }) => {
+	const signupUser = async ({ username, email, password, callbacks }) => {
 		setIsSigningUp(true)
 
 		let responseCode
-		let retrievedUser
+		let registeredUser
 
 		try {
 			const { status, data } = await UsersService.signup({
@@ -23,21 +23,27 @@ const useSignup = () => {
 			})
 
 			responseCode = status
-			retrievedUser = data
+			registeredUser = data
 		} catch (error) {
-			responseCode = error.response.error
+			console.log('error: ', error)
+			responseCode = error.response.status
 		}
 
 		switch (responseCode) {
 			case 201:
-				// await callbacks.signedUp({ retrievedUser })
-				router.push('/login')
+				// setTimeout(async () => {
+				const user = await loginUser({
+					email: email,
+					password: password,
+				})
+				login(user.user.access_token, user)
+				// }, 1000)
 				break
 			case 400:
 				await callbacks.invalidFields()
 				break
 			case 409:
-				await callbacks.usernameExists()
+				await callbacks.emailExists()
 				break
 			case 500:
 				await callbacks.internalError()

@@ -1,12 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Nav from '@components/Nav/page'
-import Sidebar from '@components/sidebar'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import String from '@utils/string'
-import Footer from '@components/Footer/page'
+import { useRouter, usePathname } from 'next/navigation'
 import useUserStore from '../../useStore'
-// import Spinner from '@/components/loading/Spinner'
+
+import Nav from '@components/Nav/page'
+import Footer from '@components/Footer/page'
+import Sidebar from '@components/sidebar'
+import Spinner from '@components/Loading/spinner'
+import String from '@utils/string'
 
 const protectedPages = ['/dashboard', '/main', '/history', '/profile']
 
@@ -27,18 +28,6 @@ function Homepage({ children }) {
 				window.location.href = window.location.origin + '/login'
 				setLoading(false)
 			}
-			//  else {
-			// 	if (localSession) {
-			// 		let actType = parseInt(localSession?.user)
-
-			// 		if (actType == config.admin && protectedPages.includes(pathname)) {
-			// 			signOut({
-			// 				callbackUrl: `${window.location.origin}`,
-			// 			})
-			// 		}
-			// 	}
-			// 	setLoading(false)
-			// }
 			setLoading(false)
 		}
 		securedPage()
@@ -76,7 +65,7 @@ function Homepage({ children }) {
 					)}
 				</div>
 			)}
-			{/* {loading && <Spinner />} */}
+			{loading && <Spinner />}
 		</div>
 	)
 }
