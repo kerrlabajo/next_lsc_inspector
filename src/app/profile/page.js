@@ -19,6 +19,7 @@ const Profile = () => {
 	const { user } = useUserStore()
 	const { uploadPicture } = useEditProfilePicture()
 	const { editUser } = useEdit()
+	const [profileImage, setProfileImage] = useState(null)
 	const [username, setUsername] = useState(user?.user.username)
 	const [errorUsername, setErrorUsername] = useState(null)
 	const [email, setEmail] = useState(user?.user.email)
@@ -50,6 +51,7 @@ const Profile = () => {
 			formData.append('profile_image', uploadedImage)
 			const response1 = await uploadPicture(userId, authorization, formData)
 			userData.state.user.user.user_profile = response1
+			userData.state.user.user.profile_image = response1.data.profile_image
 			setLoading(true)
 			if (response1.status === 201) {
 				setLoading(false)
