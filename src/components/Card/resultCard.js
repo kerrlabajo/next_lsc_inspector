@@ -1,21 +1,32 @@
+import Image from 'next/image'
+
 const ResultCard = (props) => {
 	return (
 		<div
-			className="bg-blue-50 w-full h-full min-h-[200px] p-[20px] flex flex-col justify-between shadow rounded-md"
-			key={props.key}
+			className="bg-blue-50 w-full h-fit min-h-[200px] p-[20px] flex flex-col gap-4 justify-between shadow rounded-md"
+			// key={props.key}
+			onClick={props.onClick()}
 		>
-			<div className="h-1/3 flex justify-between">
+			<div className="flex justify-between">
 				<span className="text-xl font-bold">{props.data.name}</span>
 				<span className="text-green-400">Successful</span>
 			</div>
-			<div className="h-2/3 flex flex-col">
-				<span>
-					Classification:{' '}
-					<span className={` ${props.data.classification === 'Good' ? `text-green-400` : `text-red-400`} font-bold`}>
-						{props.data.classification}
+			<div className="w-full flex flex-col gap-2">
+				<div className="flex justify-between">
+					<span>
+						<span className={` ${props.data.classification === 'Good' ? `text-green-400` : `text-red-400`} font-bold`}>
+							{props.data.classification}
+						</span>
 					</span>
-				</span>
-				<span>Accuracy: {props.data.accuracy}</span>
+					<span>Accuracy: {props.data.accuracy}</span>
+				</div>
+				<Image
+					src={props.data.url}
+					alt="image"
+					width={200}
+					height={100}
+					className="max-w-full mx-auto"
+				/>
 			</div>
 		</div>
 	)

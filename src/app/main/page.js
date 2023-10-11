@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+
 import Container from '@components/container'
 import Button from '@components/Button/page'
 import FileUpload from '@components/Button/fileUpload'
@@ -8,10 +9,11 @@ import Modal from '@components/Modal/page'
 import Toggle from '@components/Button/toggle'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import Roboflow from '@components/Roboflow/roboflow'
-import useAnalyze from '@hooks/useAnalyze'
 import Skeleton from '@components/Skeleton/Skeleton'
+
 import useUserStore from '../../useStore'
 import useUpload from '@hooks/useUpload'
+import useAnalyze from '@hooks/useAnalyze'
 import useDownload from '@hooks/useDownloadFile'
 
 const Main = () => {
@@ -151,209 +153,211 @@ const Main = () => {
 	return (
 		<>
 			<Container>
-				{/* <div className="min-h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]"> */}
-				<ul className="flex flex-wrap -mb-px  border-b border-gray-200">
-					<li className="mr-2">
-						<div>
-							<a
-								className={`inline-block p-4 cursor-pointer ${
-									selected === 0
-										? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
-										: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
-								}`}
-								onClick={() => setSelected(0)}
-							>
-								Upload Image
-							</a>
-							<a
-								className={`inline-block p-4 cursor-pointer ${
-									selected === 1
-										? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
-										: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
-								}`}
-								onClick={() => setSelected(1)}
-							>
-								External Webcam
-							</a>
-						</div>
-					</li>
-				</ul>
-				{user && isAuthenticated && isModalOpen && (
-					<Modal
-						title="Setup your AI model"
-						onClose={() => {
-							setIsModalOpen(!isModalOpen)
-						}}
-						content={renderContent}
-						footer={() => {
-							return (
-								<div className="w-full flex justify-end">
-									<Button
-										style={' bg-green-400 text-white ml-[20px]'}
-										title="Continue"
-										onClick={() => {
-											setIsModalOpen(!isModalOpen)
+				<div className="min-h-[100vh] float-left text-neutral-900 w-full justify-center p-[20px]">
+					<h1 className="font-bold text-[25px]">Prediction</h1>
+					<ul className="flex flex-wrap -mb-px  border-b border-gray-200">
+						<li className="mr-2">
+							<div>
+								<a
+									className={`inline-block p-4 cursor-pointer ${
+										selected === 0
+											? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+											: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
+									}`}
+									onClick={() => setSelected(0)}
+								>
+									Upload Image
+								</a>
+								<a
+									className={`inline-block p-4 cursor-pointer ${
+										selected === 1
+											? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+											: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
+									}`}
+									onClick={() => setSelected(1)}
+								>
+									External Webcam
+								</a>
+							</div>
+						</li>
+					</ul>
+					{user && isAuthenticated && isModalOpen && (
+						<Modal
+							title="Setup your AI model"
+							onClose={() => {
+								setIsModalOpen(!isModalOpen)
+							}}
+							content={renderContent}
+							style="w-[50%]"
+							footer={() => {
+								return (
+									<div className="w-full flex justify-end">
+										<Button
+											style={' bg-green-400 text-white ml-[20px]'}
+											title="Continue"
+											onClick={() => {
+												setIsModalOpen(!isModalOpen)
+											}}
+										/>
+									</div>
+								)
+							}}
+						/>
+					)}
+					{selected === 0 ? (
+						<>
+							<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
+								<h1 className="text-3xl font-bold">Upload your image</h1>
+								<form
+									id="fileUploadForm"
+									method="POST"
+									encType="multipart/form-data"
+									className="flex justify-between"
+								>
+									<input
+										type="file"
+										name="file"
+										accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
+										onChange={({ target }) => {
+											setUploadedImage(null)
+											setAnalyzedImage(null)
+											setFile(target.files[0])
 										}}
 									/>
+									<Button
+										title="Upload"
+										style=" bg-green-400 text-white hover:bg-green-500"
+										onClick={handleFileUpload}
+									/>
+								</form>
+							</div>
+							{uploadedImage && (
+								<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
+									<img
+										className="flex-shrink w-1/3 h-1/2 object-cover"
+										src={uploadedImage.url}
+										alt="Uploaded"
+									/>
+									<div className="flex flex-col flex-shrink items-start font text-base">
+										<div className="flex items-start mb-2">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Filename:
+											</p>
+											<p className="break-words max-w-[400px] xl:max-w-[23rem] md:max-w-[10rem]">{uploadedImage.name}</p>
+										</div>
+										<div className="flex items-center mb-2">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Dimensions:
+											</p>
+											<p>{uploadedImage.dimensions}</p>
+										</div>
+										<div className="flex items-center mb-2">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Size:
+											</p>
+											<p>{uploadedImage.size}</p>
+										</div>
+										<div className="flex items-center">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Extension:
+											</p>
+											<p>{extension}</p>
+										</div>
+									</div>
+									<Button
+										title="Analyze"
+										style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
+										onClick={handleAnalyze}
+									/>
 								</div>
-							)
-						}}
-					/>
-				)}
-				{selected === 0 ? (
-					<>
-						<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-48 rounded shadow p-6 mt-10">
-							<h1 className="text-3xl font-bold">Upload your image</h1>
-							<form
-								id="fileUploadForm"
-								method="POST"
-								encType="multipart/form-data"
-								className="flex justify-between"
-							>
-								<input
-									type="file"
-									name="file"
-									accept=".txt, .pdf, .png, .jpg, .jpeg, .gif"
-									onChange={({ target }) => {
-										setUploadedImage(null)
-										setAnalyzedImage(null)
-										setFile(target.files[0])
-									}}
-								/>
+							)}
+							{analyzedImage && (
+								<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
+									<img
+										className="flex-shrink-0 w-1/3 h-1/2 object-cover"
+										src={analyzedImage.url}
+										alt="Uploaded"
+									/>
+									<div className="flex flex-col flex-shrink items-start font text-base">
+										<div className="flex items-start mb-2">
+											<p
+												className="font-bold"
+												style={{ width: '120px' }}
+											>
+												Classification:
+											</p>
+											<p className={analyzedImage.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>
+												{analyzedImage.classification}
+											</p>
+										</div>
+										<div className="flex items-center mb-2 ">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Accuracy:
+											</p>
+											<p>{analyzedImage.accuracy}</p>
+										</div>
+										<div className="flex items-center mb-2">
+											<p
+												className="font-bold mr-5"
+												style={{ width: '100px' }}
+											>
+												Error Rate:
+											</p>
+											<p>{analyzedImage.error_rate} </p>
+										</div>
+										<div className="flex items-start">
+											<p className="font-bold mr-20">Path:</p>
+											<p className="break-words max-w-[400px] xl:max-w-[23rem] md:max-w-[10rem]">{analyzedImage.url}</p>
+										</div>
+									</div>
+									<Button
+										title="Export"
+										style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
+										onClick={handleExport}
+									/>
+								</div>
+							)}
+							{loading && (
+								<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-fit rounded shadow p-6 mt-10">
+									<Skeleton title={'Loading...'} />
+								</div>
+							)}
+						</>
+					) : (
+						<div className="w-full h-full mt-10 flex flex-col items-center gap-[20px]">
+							<div className="w-full flex justify-end">
 								<Button
-									title="Upload"
+									title={!toggleButton ? 'Open Webcam' : 'Close Webcam'}
+									onClick={() => setToggleButton(!toggleButton)}
 									style=" bg-green-400 text-white hover:bg-green-500"
-									onClick={handleFileUpload}
 								/>
-							</form>
+							</div>
+							{toggleButton ? (
+								<Roboflow
+									modelName="body parts"
+									modelVersion="1"
+								/>
+							) : (
+								<WebcamSkeleton />
+							)}
 						</div>
-						{uploadedImage && (
-							<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
-								<img
-									className="flex-shrink w-1/3 h-1/2 object-cover"
-									src={uploadedImage.url}
-									alt="Uploaded"
-								/>
-								<div className="flex flex-col flex-shrink items-start font text-base">
-									<div className="flex items-start mb-2">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Filename:
-										</p>
-										<p className="break-words max-w-[400px] xl:max-w-[23rem] md:max-w-[10rem]">{uploadedImage.name}</p>
-									</div>
-									<div className="flex items-center mb-2">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Dimensions:
-										</p>
-										<p>{uploadedImage.dimensions}</p>
-									</div>
-									<div className="flex items-center mb-2">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Size:
-										</p>
-										<p>{uploadedImage.size}</p>
-									</div>
-									<div className="flex items-center">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Extension:
-										</p>
-										<p>{extension}</p>
-									</div>
-								</div>
-								<Button
-									title="Analyze"
-									style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
-									onClick={handleAnalyze}
-								/>
-							</div>
-						)}
-						{analyzedImage && (
-							<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
-								<img
-									className="flex-shrink-0 w-1/3 h-1/2 object-cover"
-									src={analyzedImage.url}
-									alt="Uploaded"
-								/>
-								<div className="flex flex-col flex-shrink items-start font text-base">
-									<div className="flex items-start mb-2">
-										<p
-											className="font-bold"
-											style={{ width: '120px' }}
-										>
-											Classification:
-										</p>
-										<p className={analyzedImage.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>
-											{analyzedImage.classification}
-										</p>
-									</div>
-									<div className="flex items-center mb-2 ">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Accuracy:
-										</p>
-										<p>{analyzedImage.accuracy}</p>
-									</div>
-									<div className="flex items-center mb-2">
-										<p
-											className="font-bold mr-5"
-											style={{ width: '100px' }}
-										>
-											Error Rate:
-										</p>
-										<p>{analyzedImage.error_rate} </p>
-									</div>
-									<div className="flex items-start">
-										<p className="font-bold mr-20">Path:</p>
-										<p className="break-words max-w-[400px] xl:max-w-[23rem] md:max-w-[10rem]">{analyzedImage.url}</p>
-									</div>
-								</div>
-								<Button
-									title="Export"
-									style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
-									onClick={handleExport}
-								/>
-							</div>
-						)}
-						{loading && (
-							<div className="w-full flex flex-col gap-x-1 items-left justify-between mb-4 h-fit rounded shadow p-6 mt-10">
-								<Skeleton title={'Loading...'} />
-							</div>
-						)}
-					</>
-				) : (
-					<div className="w-full h-full mt-10 flex flex-col items-center gap-[20px]">
-						<div className="w-full flex justify-end">
-							<Button
-								title={!toggleButton ? 'Open Webcam' : 'Close Webcam'}
-								onClick={() => setToggleButton(!toggleButton)}
-								style=" bg-green-400 text-white hover:bg-green-500"
-							/>
-						</div>
-						{toggleButton ? (
-							<Roboflow
-								modelName="body parts"
-								modelVersion="1"
-							/>
-						) : (
-							<WebcamSkeleton />
-						)}
-					</div>
-				)}
-				{/* </div> */}
+					)}
+				</div>
 			</Container>
 		</>
 	)

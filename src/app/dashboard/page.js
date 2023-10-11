@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Container from '@components/container'
 import ResultCard from '@components/Card/resultCard'
@@ -12,6 +12,8 @@ const Dashboard = () => {
 	const router = useRouter()
 	const { user } = useUserStore()
 	const { isRetrieving, files } = useFiles(user?.user.access_token)
+
+	// const [selected, setSelected] = useState(null)
 	const goodFiles = files?.data?.filter((file) => file.classification === 'Good')
 	const noGoodFiles = files?.data?.filter((file) => file.classification === 'No Good')
 	const sortedFiles = files?.data?.slice().sort((a, b) => b.timestamp - a.timestamp)
@@ -51,10 +53,11 @@ const Dashboard = () => {
 					>
 						See all
 					</span>
-					<div className="grid grid-cols-3 gap-4">
+					<div className="w-full h-fit grid grid-cols-3 gap-4">
 						{recentFiles &&
 							recentFiles.map((item, index) => (
 								<ResultCard
+									onClick={() => {}}
 									key={index}
 									data={item}
 								/>
