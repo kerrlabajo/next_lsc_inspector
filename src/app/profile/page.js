@@ -132,7 +132,7 @@ const Profile = () => {
 	return (
 		<Container>
 			<div className="min-h-[100vh] relative float-left text-neutral-900 w-full justify-center p-[20px]">
-				<h1 className="font-bold text-3xl mb-4">Profile</h1>
+				<h1 className="font-bold text-[25px]">Profile</h1>
 				<div
 					className="absolute flex items-center right-0 top-0 float-right text-gray-500 cursor-pointer hover:text-green-400"
 					onClick={() => setIsEditing(!isEditing)}

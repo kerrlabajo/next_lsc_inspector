@@ -67,6 +67,7 @@ const History = () => {
 						<Button
 							title="Clear History"
 							style=" bg-blue-400 text-white w-[20%] h-[35px]"
+							isLoading={isDeleting}
 							onClick={() => {
 								setIsDeleteModalOpen(true)
 							}}
