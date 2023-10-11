@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google'
 import React, { Suspense } from 'react'
 import { SessionProvider } from 'next-auth/react'
 import Layout from '@components/layout/Layout'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,6 +15,7 @@ export default function Client({ children }) {
 				<Suspense>
 					<Layout>{children}</Layout>
 				</Suspense>
+				<ToastContainer />
 			</SessionProvider>
 		</body>
 	)

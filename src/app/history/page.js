@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 
 import Table from '@components/Table/page'
 import Container from '@components/container'
@@ -30,16 +31,37 @@ const History = () => {
 
 	const deleteItemCallbacks = {
 		success: () =>
-			setError({
-				overall: 'Invalid email address and/or password.',
+			toast.success('Successfully deleted!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
 			}),
 		notFound: () =>
-			setError({
-				overall: `File doesn't exists`,
+			toast.error('Invalid fields!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
 			}),
 		internalError: () =>
-			setError({
-				overall: 'Oops, something went wrong.',
+			toast.error('Internal Server ERROR', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
 			}),
 	}
 

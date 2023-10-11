@@ -1,20 +1,24 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import Container from '@components/container'
 import Button from '@components/Button/page'
-import FileUpload from '@components/Button/fileUpload'
+import TextInput from '@components/textInput'
 import Modal from '@components/Modal/page'
 import Toggle from '@components/Button/toggle'
 import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import Roboflow from '@components/Roboflow/roboflow'
 import Skeleton from '@components/Skeleton/Skeleton'
+import Helper from '@utils/string'
+
+import { toast } from 'react-toastify'
 
 import useUserStore from '../../useStore'
 import useUpload from '@hooks/useUpload'
 import useAnalyze from '@hooks/useAnalyze'
 import useDownload from '@hooks/useDownloadFile'
+import useCreateWeight from '@hooks/useCreateWeight'
 
 const Main = () => {
 	const [isModalOpen, setIsModalOpen] = useState(true)
@@ -22,18 +26,26 @@ const Main = () => {
 	const { uploadFile } = useUpload()
 	const { analyzeFile } = useAnalyze()
 	const { downloadFile } = useDownload()
+	const { isCreating, createWeight } = useCreateWeight(user?.user.access_token)
+
 	const [file, setFile] = useState(null)
 	const [uploadedImage, setUploadedImage] = useState(null)
 	const [analyzedImage, setAnalyzedImage] = useState(null)
 	const [extension, setExtension] = useState(null)
-	const [selectedModel, setSelectedModel] = useState('General')
+	const [selectedIndex, setSelectedIndex] = useState(null)
+	const [selectedModel, setSelectedModel] = useState(null)
 	const [selected, setSelected] = useState(0)
 	const [toggleButton, setToggleButton] = useState(false)
 	const [loading, setLoading] = useState(false)
-	let authorization
-	if (user) {
-		authorization = user.user.access_token
-	}
+
+	const [projectName, setProjectName] = useState(null)
+	const [apiKey, setApiKey] = useState(null)
+	const [version, setVersion] = useState(1)
+	const [useCustomWeight, setUseCustomWeight] = useState(false)
+	const [errors, setErrors] = useState(null)
+	const ls = localStorage.getItem('userAuth')
+	const session = JSON.parse(ls)
+
 	const handleFileUpload = async () => {
 		if (file) {
 			setLoading(true)
@@ -55,21 +67,20 @@ const Main = () => {
 		}
 	}
 
-	const handleSelectModel = (modelName) => {
-		setSelectedModel(modelName)
-		// setIsModalOpen(false)
-	}
-
 	const handleAnalyze = async () => {
+		console.log(session?.state)
+		console.log(user?.user)
 		if (uploadedImage) {
 			try {
 				setLoading(true)
-				console.log(uploadedImage)
 				const response = await analyzeFile(
 					{
 						fileUrl: uploadedImage.url,
+						project_name: user?.user.project_name,
+						api_key: user?.user?.api_key,
+						version: user?.user?.version,
 					},
-					authorization
+					user?.user.access_token
 				)
 
 				if (response.status === 201) {
@@ -89,63 +100,183 @@ const Main = () => {
 		}
 	}
 
-	const handleExport = () => {
-		// downloadFile(authorization, { id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png' })
-		// if (analyzedImage) {
-		// 	const link = document.createElement('a')
-		// 	link.href = analyzedImage.url
-		// 	link.setAttribute('download', 'image.png')
-		// 	document.body.appendChild(link)
-		// 	link.click()
-		// 	document.body.removeChild(link)
-		// }
+	const weightsCallbacks = {
+		invalidFields: () =>
+			toast.error('Invalid fields!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			}),
+		internalError: () =>
+			toast.error('Internal Server ERROR', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			}),
 	}
 
-	useEffect(() => {
-		if (uploadedImage) {
-			console.log('Uploaded Image:', uploadedImage)
-		}
-
-		if (analyzedImage) {
-			console.log('Analyzed Image:', analyzedImage)
-		}
-		if (extension) {
-			console.log('Extension:', extension)
-		}
+	const postWeight = async () => {
 		if (selectedModel) {
-			console.log('Model:', selectedModel)
+			await createWeight({
+				project_name: selectedModel.project_name,
+				api_key: selectedModel.api_key,
+				version: selectedModel.version,
+				callback: weightsCallbacks,
+			})
+			toast.success('Successfully added a new model!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+			session.state.user.user = {
+				...session.state.user.user,
+				project_name: selectedModel.project_name,
+				api_key: selectedModel.api_key,
+				version: selectedModel.version,
+			}
+		} else {
+			await createWeight({
+				project_name: projectName,
+				api_key: apiKey,
+				version: version,
+				callback: weightsCallbacks,
+			})
+			toast.success('Successfully added your custom model!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+			session.state.user.user = {
+				...session.state.user.user,
+				project_name: projectName,
+				api_key: apiKey,
+				version: version,
+			}
 		}
-	}, [uploadedImage, analyzedImage, extension, selectedModel])
+		const updatedData = JSON.stringify(session)
+		localStorage.setItem('userAuth', updatedData)
+	}
+
+	const handleExport = () => {
+		// downloadFile(user?.user.access_token, { id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png' })
+	}
 
 	const renderContent = () => {
 		return (
 			<div>
 				<div className="flex flex-col mb-[20px]">
-					<div className="w-full flex justify-end mb-[20px]">
-						<Toggle title="Use custom weights" />
+					<div className="w-full flex justify-end mb-[20px] ">
+						<Toggle
+							title="Use custom weights"
+							onClick={() => setUseCustomWeight(!useCustomWeight)}
+						/>
 					</div>
-					<h1 className="font-bold text-[20px]">Model</h1>
-					<span className="text-gray-400">Select from any from our pre-defined model you want to use.</span>
-					<ul className="flex py-[20px] gap-3">
-						<li
-							className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500"
-							onClick={() => handleSelectModel('General')}
-						>
-							<span className="">General</span>
-						</li>
-						<li
-							className="w-fit text-gray-500 px-[10px] py-[5px] cursor-pointer rounded-md border border-gray-300 hover:border-green-300 hover:text-green-500"
-							onClick={() => handleSelectModel('LaserSolder')}
-						>
-							<span className="">Laser Solder</span>
-						</li>
-					</ul>
+					{!useCustomWeight && (
+						<div>
+							<h1 className="font-bold text-[20px]">Model</h1>
+							<span className="text-gray-400">Select from any from our pre-defined model you want to use.</span>
+							<ul className="flex py-[20px] gap-3">
+								{Helper &&
+									Helper.predefinedWeights.map((item, index) => (
+										<li
+											key={index}
+											className={`w-fit px-[10px] py-[5px] cursor-pointer rounded-md border ${
+												selectedIndex === index ? `border-green-400 text-green-500 font-bold` : `border-gray-300 text-gray-500`
+											} hover:border-green-300 hover:text-green-500`}
+											onClick={() => {
+												setSelectedModel(item)
+												setSelectedIndex(index)
+											}}
+										>
+											<span className="">{item.title}</span>
+										</li>
+									))}
+							</ul>
+						</div>
+					)}
 				</div>
-				<div className="flex flex-col">
-					<h1 className="font-bold text-[20px]">Upload your own model</h1>
-					<span className="text-gray-400">You can add your own custom dataset to be used in the AI model.</span>
-					<FileUpload />
-				</div>
+				{useCustomWeight && (
+					<div className="flex flex-col">
+						<h1 className="font-bold text-[20px]">Use your own model</h1>
+						<span className="text-gray-400">You can add your own custom dataset to be used in the AI model.</span>
+						<div className="w-full py-4 flex flex-col gap-4">
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Project Name</label>
+								<TextInput
+									type="text"
+									placeholder="lsc-inspector"
+									value={projectName}
+									onChange={(projectName) => {
+										setErrors(null)
+										setProjectName(projectName)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'projectName',
+										// error: errors,
+									}}
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Api Key</label>
+								<TextInput
+									type="text"
+									placeholder="lnVB1Fnjsd5EdDdsnMg7"
+									value={apiKey}
+									onChange={(apiKey) => {
+										setErrors(null)
+										setApiKey(apiKey)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'apiKey',
+										// error: errors,
+									}}
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Version</label>
+								<TextInput
+									type="text"
+									placeholder="1"
+									value={version}
+									onChange={(version) => {
+										setErrors(null)
+										setVersion(version)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'version',
+										// error: errors,
+									}}
+								/>
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 		)
 	}
@@ -181,22 +312,45 @@ const Main = () => {
 							</div>
 						</li>
 					</ul>
-					{user && isAuthenticated && isModalOpen && (
+					{!session?.state?.user?.user.api_key && user && isAuthenticated && isModalOpen && (
 						<Modal
 							title="Setup your AI model"
-							onClose={() => {
-								setIsModalOpen(!isModalOpen)
-							}}
 							content={renderContent}
-							style="w-[50%]"
+							style=" w-[40%]"
 							footer={() => {
 								return (
 									<div className="w-full flex justify-end">
 										<Button
 											style={' bg-green-400 text-white ml-[20px]'}
 											title="Continue"
+											loading={isCreating}
 											onClick={() => {
-												setIsModalOpen(!isModalOpen)
+												if (selectedModel || (projectName && apiKey)) {
+													postWeight()
+													setIsModalOpen(!isModalOpen)
+												} else if (selectedModel || projectName || apiKey) {
+													toast.error('All fields are required!', {
+														position: 'top-center',
+														autoClose: 5000,
+														hideProgressBar: false,
+														closeOnClick: true,
+														pauseOnHover: true,
+														draggable: true,
+														progress: undefined,
+														theme: 'colored',
+													})
+												} else {
+													toast.error('You need to setup your model!', {
+														position: 'top-center',
+														autoClose: 5000,
+														hideProgressBar: false,
+														closeOnClick: true,
+														pauseOnHover: true,
+														draggable: true,
+														progress: undefined,
+														theme: 'colored',
+													})
+												}
 											}}
 										/>
 									</div>

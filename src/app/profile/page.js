@@ -2,7 +2,7 @@
 
 import Container from '@components/container'
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { toast } from 'react-toastify'
 
 import TextInput from '@components/textInput'
 import Button from '@components/Button/page'
@@ -19,13 +19,15 @@ const Profile = () => {
 	const { user } = useUserStore()
 	const { uploadPicture } = useEditProfilePicture()
 	const { editUser } = useEdit()
-	const [profileImage, setProfileImage] = useState(null)
+
 	const [username, setUsername] = useState(user?.user.username)
 	const [errorUsername, setErrorUsername] = useState(null)
 	const [email, setEmail] = useState(user?.user.email)
 	const [errorEmail, setErrorEmail] = useState(null)
 	const [password, setPassword] = useState('********')
 	const [errorPassword, setErrorPassword] = useState(null)
+	const [currentPassword, setCurrentPassword] = useState(null)
+	const [currentErrorPassword, setCurrentErrorPassword] = useState(null)
 	const [newPassword, setNewPassword] = useState('')
 	const [newErrorPassword, setNewErrorPassword] = useState(null)
 	const [confirmPass, setConfirmPass] = useState('')
@@ -68,8 +70,29 @@ const Profile = () => {
 			userData.state.user.user.username = username
 			userData.state.user.user.email = email
 
+			toast.success('Successfully updated your profile!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+
 			setLoading(false)
 		} else {
+			toast.error('Unsuccessful!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			})
 			setLoading(false)
 		}
 		localStorage.setItem('userAuth', JSON.stringify(userData))
@@ -79,6 +102,25 @@ const Profile = () => {
 		return (
 			<div className="w-full flex flex-col gap-6">
 				{error && <span className="text-red-400">{error.overall}</span>}
+				<div>
+					<label className="block mb-2 text-sm font-medium text-gray-900 dark:text-neutral-700">Current Password</label>
+					<TextInput
+						type="password"
+						placeholder="Current Password"
+						value={currentPassword}
+						onChange={(password, errorPassword) => {
+							// setError(null)
+							setCurrentPassword(password)
+							setCurrentErrorPassword(errorPassword)
+						}}
+						validation={{
+							type: 'text_without_space',
+							column: 'Password',
+							size: 6,
+							error: currentErrorPassword,
+						}}
+					/>
+				</div>
 				<div>
 					<label
 						htmlFor="new password"
@@ -244,16 +286,18 @@ const Profile = () => {
 								</div>
 							</div>
 						</div>
-						<div className="flex justify-end">
-							<Button
-								title="Save Changes"
-								style=" w-fit bg-green-400 text-white hover:bg-green-500 h-[40px] justify-center"
-								onClick={() => {
-									setIsEditing(false)
-									handleSaveChanges()
-								}}
-							/>
-						</div>
+						{isEditing && (
+							<div className="flex justify-end">
+								<Button
+									title="Save Changes"
+									style=" w-fit bg-green-400 text-white hover:bg-green-500 h-[40px] justify-center"
+									onClick={() => {
+										setIsEditing(false)
+										handleSaveChanges()
+									}}
+								/>
+							</div>
+						)}
 					</div>
 				</form>
 			</div>
