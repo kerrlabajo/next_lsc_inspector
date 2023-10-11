@@ -10,7 +10,7 @@ const Card = (props) => {
 					<span className="text-xl font-bold">{props.data?.length} </span>
 					<span>images</span>
 				</div>
-				<div className="h-full flex items-center text-xl">{(props.data?.length / props.total) * 100}%</div>
+				<div className="h-full flex items-center text-xl">{((props.data?.length / props.total) * 100).toFixed(0)}%</div>
 			</div>
 		</div>
 	)
