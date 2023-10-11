@@ -26,7 +26,7 @@ function NavBar(props) {
 
 	const isInLogin = router.pathname === '/login'
 
-	useEffect(() => {})
+	useEffect(() => {}, [user])
 
 	if (isInLogin) {
 		return null
@@ -88,19 +88,30 @@ function NavBar(props) {
 						/>
 					</div>
 					<div className={'h-[80px] w-1/4 float-left flex flex-row content-center items-center justify-end '}>
+						<span className="font-bold text-white mr-2">{user?.user.username}</span>
 						<div
 							onClick={() => {
 								setDropdown(!dropdown)
 							}}
 							className="h-[80px] flex content-center items-center"
 						>
-							<SvgIcon
-								component={Person}
-								className="text-white "
-								style={{
-									fontSize: 30,
-								}}
-							/>
+							{user && user.user.profile_image ? (
+								<Image
+									src={user.user.profile_image}
+									alt="profile image"
+									width={50}
+									height={50}
+									className="max-h-[50px] p-1 rounded-full ring-2 ring-gray-30 cursor-pointer"
+								/>
+							) : (
+								<SvgIcon
+									component={Person}
+									className="text-white "
+									style={{
+										fontSize: 30,
+									}}
+								/>
+							)}
 						</div>
 					</div>
 					{renderDropdown()}

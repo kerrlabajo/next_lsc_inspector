@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Skeleton from '@components/Loading/skeleton'
 import { SvgIcon } from '@mui/material'
-import { ChevronLeft, ChevronRight, ToggleOffOutlined, ToggleOnOutlined } from '@mui/icons-material'
+import { ChevronLeft, ChevronRight, ToggleOffOutlined, Visibility, Delete, ToggleOnOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
@@ -99,12 +99,12 @@ const Table = (props) => {
 			>
 				{header.options &&
 					header.options.map((oItem, index) => {
-						let buttonStyle = oItem.title === 'Edit' ? 'custom-edit-button' : 'pr-[15px]'
+						// let buttonStyle = oItem.title === 'Edit' ? 'custom-edit-button' : 'pr-[15px]'
 
 						return (
 							<span
 								key={index}
-								className={`${buttonStyle} px-6 py-4 cursor-pointer float-left`}
+								className={`px-4 py-2 cursor-pointer float-left`}
 								onClick={() => {
 									if (oItem.action === 'redirect') {
 										router.push(oItem.route + item[oItem.route_params])
@@ -113,8 +113,18 @@ const Table = (props) => {
 									}
 								}}
 							>
-								{oItem.title === 'Edit' && '✎ '}
-								{oItem.title}
+								{oItem.title === 'Delete' && (
+									<SvgIcon
+										component={Delete}
+										className="hover:text-red-500"
+									/>
+								)}
+								{oItem.title === 'View' && (
+									<SvgIcon
+										component={Visibility}
+										className="hover:text-green-400"
+									/>
+								)}
 							</span>
 						)
 					})}
@@ -216,7 +226,7 @@ const Table = (props) => {
 									className="pt-4"
 								>
 									<Skeleton
-										height={50}
+										height={30}
 										style={{}}
 									/>
 								</td>
