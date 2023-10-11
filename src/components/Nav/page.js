@@ -26,7 +26,7 @@ function NavBar(props) {
 
 	const isInLogin = router.pathname === '/login'
 
-	useEffect(() => {})
+	useEffect(() => {}, [user])
 
 	if (isInLogin) {
 		return null
