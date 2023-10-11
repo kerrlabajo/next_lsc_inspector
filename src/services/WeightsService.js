@@ -4,10 +4,15 @@ import config from './config'
 const BASE_URL = `${config.API_URL}/weights`
 
 const WeightsService = {
-	retrieveAll: () => axios.get(`${BASE_URL}`),
-	retrieve: (weightId) => axios.get(`${BASE_URL}/${weightId}`, weightId),
-	create: (weight) => axios.post(`${BASE_URL}/`, weight),
-	delete: (weightId) => axios.delete(`${BASE_URL}/${weightId}`),
+	create: (token, weight) =>
+		axios.post(`${BASE_URL}/`, weight, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}),
+	delete: (id) => axios.delete(`${BASE_URL}/${id}`),
+	getAll: () => axios.get(`${BASE_URL}/`),
+	getById: (id) => axios.get(`${BASE_URL}/${id}`, id),
 }
 
 export default WeightsService

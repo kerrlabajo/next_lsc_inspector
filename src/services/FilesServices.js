@@ -10,10 +10,10 @@ const FilesServices = {
 				'Content-Type': 'multipart/form-data',
 			},
 		}),
-	analyze: (url, token) =>
+	analyze: (url, project_name, api_key, version, token) =>
 		axios.post(
 			`${BASE_URL}/analyze`,
-			{ url: url },
+			{ url: url, project_name: project_name, api_key: api_key, version: version },
 			{
 				headers: {
 					Authorization: `Bearer ${token}`,
