@@ -287,7 +287,7 @@ const Main = () => {
 								<label className="block mb-2 text-sm font-medium text-gray-900">Workspace</label>
 								<TextInput
 									type="text"
-									placeholder="lsc-inspector"
+									placeholder="intellysis"
 									value={workspace}
 									onChange={(workspace) => {
 										setErrors(null)

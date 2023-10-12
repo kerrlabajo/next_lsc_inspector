@@ -88,12 +88,18 @@ const String = {
 			project_name: 'lsc-inspector' /*rocess.env.LSC_PROJECT_NAME*/,
 			api_key: 'lnVB1Fnjsd5EdDdsnMg7' /*process.env.LSC_API_KEY*/,
 			version: 1 /*process.env.LSC_VERSION*/,
+			workspace: 'intellysis',
+			model_type: 'yolov8',
+			model_path: 'c:/User/desktop',
 		},
 		{
 			title: 'Hands Model',
 			project_name: 'egohands-public' /*process.env.HANDS_PROJECT_NAME*/,
 			api_key: 'rf_5w20VzQObTXjJhTjq6kad9ubrm33' /*process.env.HANDS_API_KEY*/,
 			version: 9 /*process.env.HANDS_VERSION*/,
+			workspace: 'intellysis',
+			model_type: 'yolov8',
+			model_path: 'c:/User/desktop',
 		},
 	],
 }

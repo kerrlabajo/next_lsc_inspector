@@ -17,6 +17,7 @@ const useCreateWeight = (token) => {
 				project_name,
 				api_key,
 				version,
+				workspace,
 				model_type,
 				model_path,
 			})
