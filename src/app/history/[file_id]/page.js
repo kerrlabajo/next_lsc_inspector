@@ -35,11 +35,11 @@ const Page = ({ params }) => {
 							</div>
 							<div>
 								<b>Accuracy: </b>
-								<span>{Math.round(file?.accuracy * 100)} %</span>
+								<span>{file?.accuracy}</span>
 							</div>
 							<div>
 								<b>Error Rate: </b>
-								<span>{Math.round(file?.error_rate * 100)} %</span>
+								<span>{file?.error_rate}</span>
 							</div>
 							<div>
 								<b>Size: </b>
