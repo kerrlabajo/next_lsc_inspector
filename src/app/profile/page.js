@@ -14,11 +14,13 @@ import { Edit } from '@mui/icons-material'
 import useUserStore from '../../useStore'
 import useEditProfilePicture from '@hooks/useEditProfilePicture'
 import useEdit from '@hooks/useEdit'
+import useUpdatePassword from '@hooks/useUpdatePassword'
 
 const Profile = () => {
 	const { user } = useUserStore()
 	const { uploadPicture } = useEditProfilePicture()
 	const { editUser } = useEdit()
+	const { isUpdating, updatePassword } = useUpdatePassword()
 
 	const [username, setUsername] = useState(user?.user.username)
 	const [errorUsername, setErrorUsername] = useState(null)
@@ -44,6 +46,54 @@ const Profile = () => {
 	if (user) {
 		userId = user.user.id
 		authorization = user.user.access_token
+	}
+
+	const updatePasswordCallbacks = {
+		success: () =>
+			toast.success('Password successfully updated!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			}),
+		notFound: () =>
+			toast.error('Invalid fields!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			}),
+		internalError: () =>
+			toast.error('Internal Server ERROR', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			}),
+	}
+
+	const editPassword = async () => {
+		await updatePassword(
+			userId,
+			authorization,
+			{
+				old_password: currentPassword,
+				new_password: newPassword,
+			},
+			updatePasswordCallbacks
+		)
 	}
 
 	const handleSaveChanges = async () => {
@@ -320,7 +370,10 @@ const Profile = () => {
 											setError({
 												overall: `Password does not match!`,
 											})
-										} else setIsModalOpen(!isModalOpen)
+										} else {
+											editPassword()
+											setIsModalOpen(!isModalOpen)
+										}
 									}}
 								/>
 							</div>
