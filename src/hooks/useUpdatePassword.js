@@ -21,6 +21,9 @@ const useEdit = () => {
 			case 200:
 				await callback.success()
 				break
+			case 201:
+				await callback.success()
+				break
 			case 401:
 				await callback.invalidFields()
 				break
