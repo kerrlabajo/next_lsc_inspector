@@ -41,6 +41,9 @@ const Main = () => {
 	const [projectName, setProjectName] = useState(null)
 	const [apiKey, setApiKey] = useState(null)
 	const [version, setVersion] = useState(1)
+	const [workspace, setWorkspace] = useState(null)
+	const [modelType, setModelType] = useState(null)
+	const [modelPath, setModelPath] = useState(null)
 	const [useCustomWeight, setUseCustomWeight] = useState(false)
 	const [errors, setErrors] = useState(null)
 	const ls = localStorage.getItem('userAuth')
@@ -131,6 +134,9 @@ const Main = () => {
 				project_name: selectedModel.project_name,
 				api_key: selectedModel.api_key,
 				version: selectedModel.version,
+				workspace: selectedModel.workspace,
+				model_type: selectedModel.model_type,
+				model_path: selectedModel.model_path,
 				callback: weightsCallbacks,
 			})
 			toast.success('Successfully added a new model!', {
@@ -154,6 +160,9 @@ const Main = () => {
 				project_name: projectName,
 				api_key: apiKey,
 				version: version,
+				workspace: workspace,
+				model_type: modelType,
+				model_path: modelPath,
 				callback: weightsCallbacks,
 			})
 			toast.success('Successfully added your custom model!', {
@@ -270,6 +279,60 @@ const Main = () => {
 										type: 'text_without_space',
 										size: 11,
 										column: 'version',
+										// error: errors,
+									}}
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Workspace</label>
+								<TextInput
+									type="text"
+									placeholder="lsc-inspector"
+									value={workspace}
+									onChange={(workspace) => {
+										setErrors(null)
+										setWorkspace(workspace)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'workspace',
+										// error: errors,
+									}}
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Model Type</label>
+								<TextInput
+									type="text"
+									placeholder="yolov5"
+									value={modelType}
+									onChange={(modelType) => {
+										setErrors(null)
+										setModelType(modelType)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'modelType',
+										// error: errors,
+									}}
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Model Path</label>
+								<TextInput
+									type="text"
+									placeholder="path in your local directory"
+									value={modelPath}
+									onChange={(modelPath) => {
+										setErrors(null)
+										setModelPath(modelPath)
+									}}
+									validation={{
+										type: 'text_without_space',
+										size: 11,
+										column: 'modelPath',
 										// error: errors,
 									}}
 								/>

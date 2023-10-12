@@ -1,13 +1,14 @@
-// import { isLocal } from '../utils/destinations'
+import { isLocal } from '../utils/destinations'
 
 let apiUrl = null
 
-// if (isLocal) {
-apiUrl = 'http://localhost:5000/api/v1'
-// } else {
-// 	// Production
-// 	apiUrl = 'https://lsc-inspector.azurewebsites.net/'
-// }
+if (isLocal) {
+	apiUrl = 'http://localhost:5000/api/v1'
+} else {
+	// Production
+	// apiUrl = 'https://lsc-inspector.azurewebsites.net/'
+	apiUrl = 'http://localhost:5000/api/v1'
+}
 
 const config = {
 	API_URL: apiUrl,

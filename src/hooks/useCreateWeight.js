@@ -2,12 +2,11 @@
 
 import { useState } from 'react'
 import WeightsService from '@services/WeightsService'
-import { toast } from 'react-toastify'
 
 const useCreateWeight = (token) => {
 	const [isCreating, setIsCreating] = useState(false)
 
-	const createWeight = async ({ project_name, api_key, version, callback }) => {
+	const createWeight = async ({ project_name, api_key, version, workspace, model_type, model_path, callback }) => {
 		setIsCreating(true)
 
 		let responseCode
@@ -18,6 +17,8 @@ const useCreateWeight = (token) => {
 				project_name,
 				api_key,
 				version,
+				model_type,
+				model_path,
 			})
 
 			responseCode = status
