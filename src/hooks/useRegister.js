@@ -31,13 +31,11 @@ const useSignup = () => {
 
 		switch (responseCode) {
 			case 201:
-				// setTimeout(async () => {
 				const user = await loginUser({
 					email: email,
 					password: password,
 				})
 				login(user.user.access_token, user)
-				// }, 1000)
 				break
 			case 400:
 				await callbacks.invalidFields()

@@ -50,7 +50,7 @@ const Login = () => {
 					component={ArrowBack}
 					className="absolute left-6 top-6 w-20 h-auto text-white cursor-pointer"
 					fontSize="large"
-					onClick={() => router.back()}
+					onClick={() => router.push('/')}
 				/>
 				<Image
 					src={Logo}

@@ -10,16 +10,12 @@ const FilesServices = {
 				'Content-Type': 'multipart/form-data',
 			},
 		}),
-	analyze: (url, project_name, api_key, version, token) =>
-		axios.post(
-			`${BASE_URL}/analyze`,
-			{ url: url, project_name: project_name, api_key: api_key, version: version },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		),
+	analyze: (file, token) =>
+		axios.post(`${BASE_URL}/analyze`, file, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		}),
 	download: (token, id, destination) =>
 		axios.post(
 			`${BASE_URL}/download`,

@@ -60,6 +60,17 @@ const Profile = () => {
 				progress: undefined,
 				theme: 'light',
 			}),
+		incorrectPassword: () =>
+			toast.error('Incorrect Password!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			}),
 		notFound: () =>
 			toast.error('Invalid fields!', {
 				position: 'top-center',

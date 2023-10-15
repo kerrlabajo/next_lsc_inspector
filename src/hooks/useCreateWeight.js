@@ -2,15 +2,17 @@
 
 import { useState } from 'react'
 import WeightsService from '@services/WeightsService'
+import useUserStore from '@useStore'
 
 const useCreateWeight = (token) => {
 	const [isCreating, setIsCreating] = useState(false)
+	const { user, login, logout, addWeights } = useUserStore()
 
 	const createWeight = async ({ project_name, api_key, version, workspace, model_type, model_path, callback }) => {
 		setIsCreating(true)
-
+		console.log(user)
 		let responseCode
-		let retrievedUser
+		let weight
 
 		try {
 			const { status, data } = await WeightsService.create(token, {
@@ -23,16 +25,23 @@ const useCreateWeight = (token) => {
 			})
 
 			responseCode = status
-			retrievedUser = data
+			weight = data
+			user.weights.push(weight)
 		} catch (error) {
 			responseCode = error.response.status
 		}
 
 		switch (responseCode) {
-			case 200:
+			case 201:
+				login(user.access_token, user)
+				await callback.success()
 				break
 			case 401:
+				logout()
 				await callback.invalidFields()
+				break
+			case 409:
+				await callback.existed()
 				break
 			case 500:
 				await callback.internalError()

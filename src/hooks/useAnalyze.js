@@ -7,14 +7,23 @@ const useAnalyze = () => {
 	const analyzeFile = async ({ fileUrl, project_name, api_key, version }, token) => {
 		try {
 			setAnalyzing(true)
-			const response = await FilesServices.analyze(fileUrl, project_name, api_key, version, token)
+			const response = await FilesServices.analyze(
+				{
+					fileUrl,
+					project_name,
+					api_key,
+					version,
+				},
+				token
+			)
 			if (response) {
 				return response
 			} else {
 				throw new Error(`Error analyzing file: ${response.statusText}`)
 			}
 		} catch (error) {
-			console.error('Error analyzing file:', error) // Log the specific error
+			console.log(error)
+			console.error('Error analyzing file:', error)
 		} finally {
 			setAnalyzing(false)
 		}

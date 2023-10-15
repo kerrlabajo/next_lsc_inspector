@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,17 +12,6 @@ import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import useUpload from '@hooks/useUpload'
 import useAnalyze from '@hooks/useDemoAnalyze'
 import ImageSkeleton from '@components/Skeleton/imageSkeleton'
-
-const menuItems = [
-	{
-		label: 'File Upload',
-		active: true,
-	},
-	{
-		label: 'External Camera',
-		active: false,
-	},
-]
 
 const Demo = () => {
 	const router = useRouter()
@@ -92,10 +81,7 @@ const Demo = () => {
 
 	return (
 		<div className="bg-white w-full h-fit float-left lg:px-[200px] md:px-[80px] sm:px-[20px] mb-[200px]">
-			<Container
-				withTab={true}
-				style=" text-neutral-900 mt-[100px]"
-			>
+			<Container style=" text-neutral-900 mt-[100px]">
 				<ul className="flex flex-wrap -mb-px  border-b border-gray-200">
 					<li className="mr-2">
 						<div>
@@ -141,6 +127,7 @@ const Demo = () => {
 									title="Upload"
 									style=" bg-green-400 text-white hover:bg-green-500"
 									onClick={uploadImage}
+									loading={isUploading}
 								/>
 							</form>
 						</div>
@@ -161,6 +148,7 @@ const Demo = () => {
 										title="Analyze"
 										style=" bg-green-400 text-white hover:bg-green-500 w-[500px]"
 										onClick={analyzeImage}
+										loading={isAnalyzing}
 									/>
 								</div>
 							</div>

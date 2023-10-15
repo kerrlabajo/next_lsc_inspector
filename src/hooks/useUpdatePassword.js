@@ -27,6 +27,9 @@ const useEdit = () => {
 			case 401:
 				await callback.invalidFields()
 				break
+			case 404:
+				await callback.incorrectPassword()
+				break
 			case 500:
 				await callback.internalError()
 				break

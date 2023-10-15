@@ -90,7 +90,7 @@ const String = {
 			version: 1 /*process.env.LSC_VERSION*/,
 			workspace: 'intellysis',
 			model_type: 'yolov8',
-			model_path: 'c:/User/desktop',
+			model_path: '/Users/incrementtechnologiesinc./downloads/',
 		},
 		{
 			title: 'Hands Model',
@@ -99,7 +99,7 @@ const String = {
 			version: 9 /*process.env.HANDS_VERSION*/,
 			workspace: 'intellysis',
 			model_type: 'yolov8',
-			model_path: 'c:/User/desktop',
+			model_path: '/Users/incrementtechnologiesinc./downloads/',
 		},
 	],
 }

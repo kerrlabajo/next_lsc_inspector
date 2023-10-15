@@ -141,10 +141,10 @@ function NavBar(props) {
 							Features
 						</Link>
 						<Link
-							href="/how-to-use"
+							href="/docs"
 							className="mx-[20px] hover:underline"
 						>
-							How to Use
+							Docs
 						</Link>
 						<Link
 							href="/about-us"

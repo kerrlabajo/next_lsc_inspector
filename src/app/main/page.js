@@ -48,6 +48,7 @@ const Main = () => {
 	const [errors, setErrors] = useState(null)
 	const ls = localStorage.getItem('userAuth')
 	const session = JSON.parse(ls)
+	console.log(user)
 
 	const handleFileUpload = async () => {
 		if (file) {
@@ -79,11 +80,11 @@ const Main = () => {
 				const response = await analyzeFile(
 					{
 						fileUrl: uploadedImage.url,
-						project_name: user?.user.project_name,
-						api_key: user?.user?.api_key,
-						version: user?.user?.version,
+						project_name: user?.weights[0].project_name || null,
+						api_key: user?.weights[0].api_key || null,
+						version: user?.weights[0].version || null,
 					},
-					user?.user.access_token
+					user?.access_token
 				)
 
 				if (response.status === 201) {
@@ -104,7 +105,20 @@ const Main = () => {
 	}
 
 	const weightsCallbacks = {
-		invalidFields: () =>
+		success: () => {
+			toast.success('Successfully added a new model!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'light',
+			})
+			setIsModalOpen(!isModalOpen)
+		},
+		invalidFields: () => {
 			toast.error('Invalid fields!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -114,8 +128,26 @@ const Main = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'colored',
-			}),
-		internalError: () =>
+			})
+			setIsModalOpen(true)
+			setErrors({
+				overall: 'Invalid Fields',
+			})
+		},
+		existed: () => {
+			toast.error('Weight already existed!', {
+				position: 'top-center',
+				autoClose: 5000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: 'colored',
+			})
+			setIsModalOpen(true)
+		},
+		internalError: () => {
 			toast.error('Internal Server ERROR', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -125,7 +157,12 @@ const Main = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'colored',
-			}),
+			})
+			setIsModalOpen(true)
+			setErrors({
+				overall: 'This API key does not exist (or has been revoked).',
+			})
+		},
 	}
 
 	const postWeight = async () => {
@@ -138,16 +175,6 @@ const Main = () => {
 				model_type: selectedModel.model_type,
 				model_path: selectedModel.model_path,
 				callback: weightsCallbacks,
-			})
-			toast.success('Successfully added a new model!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
 			})
 			session.state.user.user = {
 				...session.state.user.user,
@@ -164,16 +191,6 @@ const Main = () => {
 				model_type: modelType,
 				model_path: modelPath,
 				callback: weightsCallbacks,
-			})
-			toast.success('Successfully added your custom model!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
 			})
 			session.state.user.user = {
 				...session.state.user.user,
@@ -194,7 +211,8 @@ const Main = () => {
 		return (
 			<div>
 				<div className="flex flex-col mb-[20px]">
-					<div className="w-full flex justify-end mb-[20px] ">
+					<div className={`w-full flex ${errors ? `justify-between` : `justify-end`} mb-[20px] `}>
+						{errors && <span className="text-red-400">{errors.overall}</span>}
 						<Toggle
 							title="Use custom weights"
 							onClick={() => setUseCustomWeight(!useCustomWeight)}
@@ -321,6 +339,7 @@ const Main = () => {
 							</div>
 							<div>
 								<label className="block mb-2 text-sm font-medium text-gray-900">Model Path</label>
+
 								<TextInput
 									type="text"
 									placeholder="path in your local directory"
@@ -375,7 +394,7 @@ const Main = () => {
 							</div>
 						</li>
 					</ul>
-					{!session?.state?.user?.user.api_key && user && isAuthenticated && isModalOpen && (
+					{user && user.weights.length == 0 && isAuthenticated && isModalOpen && (
 						<Modal
 							title="Setup your AI model"
 							content={renderContent}
@@ -388,9 +407,8 @@ const Main = () => {
 											title="Continue"
 											loading={isCreating}
 											onClick={() => {
-												if (selectedModel || (projectName && apiKey)) {
+												if (selectedModel || (projectName && apiKey && modelPath && modelType && workspace)) {
 													postWeight()
-													setIsModalOpen(!isModalOpen)
 												} else if (selectedModel || projectName || apiKey) {
 													toast.error('All fields are required!', {
 														position: 'top-center',

@@ -1,8 +1,6 @@
-import Image from 'next/image'
 import React from 'react'
-import Feature1 from '../../../public/assets/images/feature1.svg'
-import Feature2 from '../../../public/assets/images/Feature2.svg'
-import Feature3 from '../../../public/assets/images/Feature3.svg'
+import { SvgIcon } from '@mui/material'
+import { Videocam, Photo, SmartToy } from '@mui/icons-material'
 
 const Features = () => {
 	return (
@@ -11,51 +9,56 @@ const Features = () => {
 				<div className="flex flex-col items-center justify-center">
 					<h1 className="text-5xl font-bold text-green-500">Features</h1>
 					<span className="w-[90%] lg:w-[45%] text-center mt-[10px]">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod mauris at dui rhoncus, vel accumsan mi vestibulum. Praesent non
-						placerat sapien, sed maximus risus.
+						With these advanced features, our Laser Solder Quality Assessment Web Application provides a comprehensive and versatile solution for
+						users in the electronics and manufacturing industries. Whether you&apos;re seeking automated quality control or wish to apply your own
+						expertise through custom models, our application has you covered.
 					</span>
 				</div>
-				<div className="flex flex-col lg:flex-row">
-					<div className="flex items-center justify-start lg:justify-center flex-col lg:border-r-[1px] border-neutral-700 gap-y-[15px] p-[40px]">
+				<div className="grid grid-cols-3">
+					<div className="flex items-center justify-start flex-col lg:border-r-[1px] border-neutral-700 gap-y-[30px] p-[40px]">
 						<div className="flex items-center gap-[20px]">
-							<Image
-								src={Feature1}
-								alt="feature1"
-								width={50}
+							<SvgIcon
+								component={Photo}
+								fontSize="large"
+								className="text-green-400"
 							/>
-							<h1 className="text-[20px] font-bold">Feature 1</h1>
+							<h1 className="text-[20px] font-bold">Image Upload</h1>
 						</div>
 						<span className="text-center">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod mauris at dui rhoncus, vel accumsan mi vestibulum. Praesent non
-							placerat sapien, sed maximus risus.
+							Users can easily upload images of laser solder joints, and our web application will employ a sophisticated algorithm to detect and
+							evaluate the quality of the solder joints. This feature enables quick and accurate assessment, helping users identify issues and
+							anomalies in their soldering work.
 						</span>
 					</div>
-					<div className="flex items-center justify-center flex-col lg:border-r-[1px] border-neutral-700 gap-y-[15px] p-[40px]">
+					<div className="flex items-center justify-start flex-col lg:border-r-[1px] border-neutral-700 gap-y-[30px] p-[40px]">
 						<div className="flex items-center gap-[20px]">
-							<Image
-								src={Feature2}
-								alt="feature2"
-								width={50}
+							<SvgIcon
+								component={Videocam}
+								fontSize="large"
+								className="text-green-400"
 							/>
-							<h1 className="text-[20px] font-bold">Feature 2</h1>
+							<h1 className="text-[20px] font-bold">External Camera</h1>
 						</div>
 						<span className="text-center">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod mauris at dui rhoncus, vel accumsan mi vestibulum. Praesent non
-							placerat sapien, sed maximus risus.
+							Users have the option to connect external cameras to the web application. This allows for real-time inspection of microcomponents and
+							laser solder joints. The application can classify the quality of laser solder on these intricate components, making it ideal for quality
+							control and manufacturing processes.
 						</span>
 					</div>
-					<div className="flex items-center justify-center flex-col gap-y-[15px] p-[40px]">
+					<div className="flex items-center justify-start flex-col gap-y-[30px] p-[40px]">
 						<div className="flex items-center gap-[20px]">
-							<Image
-								src={Feature3}
-								alt="feature3"
-								width={50}
+							<SvgIcon
+								component={SmartToy}
+								fontSize="large"
+								className="text-green-400"
 							/>
-							<h1 className="text-[20px] font-bold">Feature 3</h1>
+							<h1 className="text-[20px] font-bold">Custom Model</h1>
 						</div>
 						<span className="text-center">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod mauris at dui rhoncus, vel accumsan mi vestibulum. Praesent non
-							placerat sapien, sed maximus risus.
+							Users can take customization to the next level by uploading their custom machine learning models. These models can be seamlessly
+							integrated into our algorithm, allowing users to tailor the quality assessment process to their specific needs. Whether it&apos;s
+							fine-tuning the algorithm for unique components or incorporating proprietary quality criteria, this feature empowers users to make the
+							application truly their own.
 						</span>
 					</div>
 				</div>

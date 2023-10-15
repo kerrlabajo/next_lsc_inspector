@@ -9,17 +9,19 @@ const AboutUs = () => {
 		<div className="bg-white h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 			<div className="w-1/2 pr-[20px] flex items-center flex-col gap-y-[20px]">
 				<h1 className="text-2xl lg:text-5xl font-bold self-start">
-					<span className="text-green-500">What </span>We Do?
+					<span className="text-green-500">About </span>Us
 				</h1>
 
 				<span className="text-justify">
-					Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since
-					the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five
-					centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					We are a team of dedicated individuals driven by a shared passion for innovation and excellence. Our journey began with a simple idea: to
+					create solutions that make a difference. Today, we take pride in our commitment to pushing the boundaries of what&apos;s possible and
+					delivering products and services that truly matter.
 				</span>
 				<span className="text-justify">
-					It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-					publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+					As we invite you to learn more about us, youll discover the core values and principles that define our organization. From our relentless
+					pursuit of quality to our unwavering dedication to customer satisfaction, our story is one of continuous growth, learning, and a genuine
+					desire to make a positive impact in the world. Thank you for taking the time to get to know us better. We look forward to sharing our story,
+					our vision, and our commitment to excellence with you.
 				</span>
 				<div className="w-full mt-[50px]">
 					<Button
