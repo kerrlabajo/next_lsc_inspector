@@ -10,6 +10,7 @@ import ProfilePictureUpload from '@components/profilepictureUpload'
 import Modal from '@components/Modal/page'
 import { SvgIcon } from '@mui/material'
 import { Edit } from '@mui/icons-material'
+import { errorToast, successToast } from '@utils/toast'
 
 import useUserStore from '../../useStore'
 import useEditProfilePicture from '@hooks/useEditProfilePicture'
@@ -50,55 +51,19 @@ const Profile = () => {
 
 	const updatePasswordCallbacks = {
 		success: () => {
-			toast.success('Password successfully updated!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			})
+			successToast('Password Successfully Updated!')
 			setIsModalOpen(!isModalOpen)
 		},
 		incorrectPassword: () => {
-			toast.error('Incorrect Password!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Incorrect Password!')
 			setIsModalOpen(true)
 		},
 		notFound: () => {
-			toast.error('Invalid fields!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Invalid Fields!')
 			setIsModalOpen(true)
 		},
 		internalError: () => {
-			toast.error('Internal Server ERROR', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Internal Server ERROR!')
 			setIsModalOpen(true)
 		},
 	}
@@ -138,33 +103,12 @@ const Profile = () => {
 		if (response.status === 201) {
 			userData.state.user.user.username = username
 			userData.state.user.user.email = email
-
-			toast.success('Successfully updated your profile!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			})
-
+			successToast('Successfully updated your profile!')
 			setLoading(false)
 		} else {
-			toast.error('Unsuccessful!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Unsuccessful!')
 			setLoading(false)
 		}
-		localStorage.setItem('userAuth', JSON.stringify(userData))
 	}
 
 	const renderEditPassword = () => {
@@ -178,7 +122,6 @@ const Profile = () => {
 						placeholder="Current Password"
 						value={currentPassword}
 						onChange={(password, errorPassword) => {
-							// setError(null)
 							setCurrentPassword(password)
 							setCurrentErrorPassword(errorPassword)
 						}}
@@ -247,7 +190,7 @@ const Profile = () => {
 			<div className="min-h-[100vh] relative float-left text-neutral-900 w-full justify-center p-[20px]">
 				<h1 className="font-bold text-[25px]">Profile</h1>
 				<div
-					className="absolute flex items-center right-0 top-0 float-right text-gray-500 cursor-pointer hover:text-green-400"
+					className="absolute flex items-center right-0 top-0 float-right text-gray-500 cursor-pointer hover:text-primary"
 					onClick={() => setIsEditing(!isEditing)}
 				>
 					<span className="mr-1">Edit</span>
@@ -359,7 +302,7 @@ const Profile = () => {
 							<div className="flex justify-end">
 								<Button
 									title="Save Changes"
-									style=" w-fit bg-green-400 text-white hover:bg-green-500 h-[40px] justify-center"
+									style=" w-fit bg-primary text-white hover:bg-primary h-[40px] justify-center"
 									onClick={() => {
 										setIsEditing(false)
 										handleSaveChanges()
@@ -382,7 +325,7 @@ const Profile = () => {
 						return (
 							<div className="w-full flex justify-end">
 								<Button
-									style={' bg-green-400 text-white ml-[20px]'}
+									style={' bg-primary text-white ml-[20px]'}
 									title="Save"
 									onClick={() => {
 										if (newPassword !== confirmPass) {

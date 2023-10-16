@@ -34,7 +34,7 @@ const Page = ({ params }) => {
 							<div>
 								<b>Classification: </b>
 
-								<span className={file?.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>{file.classification}</span>
+								<span className={file?.classification == 'Good' ? `text-primary font-bold` : `text-red-500 font-bold`}>{file.classification}</span>
 							</div>
 							<div>
 								<b>Accuracy: </b>
@@ -62,7 +62,7 @@ const Page = ({ params }) => {
 									href={file.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-blue-400 hover:underline"
+									className="text-secondary hover:underline"
 								>
 									{file.url}
 								</Link>
@@ -87,7 +87,7 @@ const Page = ({ params }) => {
 				return (
 					<div className="w-full flex justify-end">
 						<Button
-							style={' bg-green-400 text-white m-[10px]'}
+							style={' bg-primary text-white m-[10px]'}
 							title="Export"
 							onClick={() => {
 								saveAs(file.url, 'result.png')

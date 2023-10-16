@@ -122,7 +122,7 @@ const Table = (props) => {
 								{oItem.title === 'View' && (
 									<SvgIcon
 										component={Visibility}
-										className="hover:text-green-400"
+										className="hover:text-primary"
 									/>
 								)}
 							</span>
@@ -196,7 +196,7 @@ const Table = (props) => {
 							header.map((item, index) => (
 								<th
 									scope="col"
-									className="px-6 py-5 text-green-500 "
+									className="px-6 py-5 text-primary "
 									key={index}
 								>
 									{item.title}
@@ -252,7 +252,7 @@ const Table = (props) => {
 				<div className="float-right mt-[20px]">
 					{pagination > 0 && (
 						<span
-							className="cursor-pointer text-green-400 font-bold"
+							className="cursor-pointer text-primary font-bold"
 							onClick={() => {
 								props.onPagination(-1)
 								setPagination((prevPagination) => prevPagination - 1)
@@ -265,7 +265,7 @@ const Table = (props) => {
 
 					{limit === data?.length && (
 						<span
-							className="ml-[20px] cursor-pointer text-green-400 font-bold"
+							className="ml-[20px] cursor-pointer text-primary font-bold"
 							onClick={() => {
 								props.onPagination(1)
 								setPagination((prevPagination) => prevPagination + 1)

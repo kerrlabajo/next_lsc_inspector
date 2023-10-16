@@ -14,7 +14,7 @@ const Sidebar = (props) => {
 	const [subIndex, setSubIndex] = useState('')
 
 	return (
-		<div className={`w-full float-left min-h-[100vh] mt-[80px] relative bg-[#48BF91] border-r-[1px] border-r-gray-200`}>
+		<div className={`w-full float-left min-h-[100vh] mt-[80px] relative bg-primary border-r-[1px] border-r-gray-200`}>
 			<ul className="pt-2">
 				{props.menu &&
 					props.menu.map((item, index) => (
@@ -28,7 +28,7 @@ const Sidebar = (props) => {
 							<li
 								className={
 									'w-full float-left h-[60px] flex items-center content-center px-[20px] text-white hover:font-bold cursor-pointer ' +
-									(pathname.match(item.route) ? 'bg-blue-500 font-bold ' : '')
+									(pathname.match(item.route) ? 'bg-secondary bg-opacity-50 font-bold ' : '')
 								}
 							>
 								<SvgIcon

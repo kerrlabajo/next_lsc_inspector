@@ -13,12 +13,12 @@ const Banner = () => {
 			<div className="w-1/2 pr-[20px] flex items-center justify-center flex-col gap-y-[20px]">
 				<div className="flex bg-gray-200 pl-[10px] pr-[3px] rounded-2xl items-center self-start text-neutral-700">
 					<span>Powered by</span>
-					<div className="bg-green-500 ml-[10px] my-[3px] px-[10px] rounded-2xl font-bold text-neutral-700">
+					<div className="bg-primary ml-[10px] my-[3px] px-[10px] rounded-2xl font-bold text-neutral-700">
 						<span>YOLO V8</span>
 					</div>
 				</div>
 				<h1 className="text-2xl lg:text-5xl font-bold">
-					<span className="text-green-500">Laser Soldering Qualitative</span> Inspector
+					<span className="text-primary">Laser Soldering Qualitative</span> Inspector
 				</h1>
 
 				<span className="text-justify">
@@ -32,8 +32,8 @@ const Banner = () => {
 				<div className="w-full mt-[50px]">
 					<Button
 						title="Try it now"
-						style=" text-white w-full bg-gradient-to-r from-green-500 to-blue-300 font-bold"
-						onHover="bg-gradient-to-r from-blue-300 to-green-500"
+						style=" text-white w-full bg-gradient-to-r from-primary to-secondary font-bold"
+						onHover="bg-gradient-to-r from-secondary to-primary"
 						onClick={() => {
 							router.push('/demo')
 						}}

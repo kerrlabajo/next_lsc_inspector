@@ -51,7 +51,7 @@ const Dashboard = () => {
 						<div className="flex flex-col gap-4 relative">
 							<span className="font-bold">Recent</span>
 							<span
-								className="absolute top-0 right-0 text-green-400 cursor-pointer hover:underline"
+								className="absolute top-0 right-0 text-primary cursor-pointer hover:underline"
 								onClick={() => router.push('/history')}
 							>
 								See all

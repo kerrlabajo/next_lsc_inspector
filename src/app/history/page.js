@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify'
 
 import Table from '@components/Table/page'
 import Container from '@components/container'
@@ -13,6 +12,7 @@ import useUserStore from '@useStore'
 import useFiles from '@hooks/useFiles'
 import useDeleteFile from '@hooks/useDeleteFile'
 import String from '@utils/string'
+import { successToast, errorToast } from '@utils/toast'
 
 const History = () => {
 	const router = useRouter()
@@ -30,39 +30,9 @@ const History = () => {
 	}, [reload])
 
 	const deleteItemCallbacks = {
-		success: () =>
-			toast.success('Successfully deleted!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			}),
-		notFound: () =>
-			toast.error('Invalid fields!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			}),
-		internalError: () =>
-			toast.error('Internal Server ERROR', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			}),
+		success: () => successToast('Successfully deleted!'),
+		notFound: () => errorToast('Invalid Fields!'),
+		internalError: () => errorToast('Internal Server ERROR!'),
 	}
 
 	const deleteItem = async () => {
@@ -88,7 +58,7 @@ const History = () => {
 						<p>All Images History</p>
 						<Button
 							title="Clear History"
-							style=" bg-blue-400 text-white w-[20%] h-[35px]"
+							style=" bg-secondary text-white w-[20%] h-[35px]"
 							isLoading={isDeleting}
 							onClick={() => {
 								setIsDeleteModalOpen(true)
@@ -136,7 +106,7 @@ const History = () => {
 									}}
 								/>
 								<Button
-									style={' bg-green-400 text-white ml-[10px]'}
+									style={' bg-primary text-white ml-[10px]'}
 									title="Confirm"
 									onClick={() => {
 										deleteItem()

@@ -6,7 +6,7 @@ import FilesServices from '@services/FilesServices'
 const useAnalyze = () => {
 	const [isAnalyzing, setIsAnalyzing] = useState(false)
 
-	const analyzeFile = async ({ url }) => {
+	const analyzeFile = async ({ url, callback }) => {
 		setIsAnalyzing(true)
 
 		let responseCode
@@ -24,6 +24,7 @@ const useAnalyze = () => {
 
 		switch (responseCode) {
 			case 201:
+				await callback.success()
 				break
 			case 401:
 				await callback.invalidFields()

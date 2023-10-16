@@ -9,7 +9,7 @@ const AboutUs = () => {
 		<div className="bg-white h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 			<div className="w-1/2 pr-[20px] flex items-center flex-col gap-y-[20px]">
 				<h1 className="text-2xl lg:text-5xl font-bold self-start">
-					<span className="text-green-500">About </span>Us
+					<span className="text-primary">About </span>Us
 				</h1>
 
 				<span className="text-justify">
@@ -26,8 +26,8 @@ const AboutUs = () => {
 				<div className="w-full mt-[50px]">
 					<Button
 						title="More Info"
-						style=" w-fit justify-center text-white bg-gradient-to-r from-green-500 to-blue-300 font-bold w-[30%]"
-						onHover="bg-gradient-to-r from-blue-300 to-green-500"
+						style=" w-fit justify-center text-white bg-gradient-to-r from-primary to-secondary font-bold w-[30%]"
+						onHover="bg-gradient-to-r from-secondary to-primary"
 						onClick={() => {
 							// router.push('/demo')
 						}}

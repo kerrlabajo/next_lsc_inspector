@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { saveAs } from 'file-saver'
 
 import Container from '@components/container'
@@ -12,8 +13,7 @@ import WebcamSkeleton from '@components/Skeleton/webcamSkeleton'
 import Roboflow from '@components/Roboflow/roboflow'
 import Skeleton from '@components/Skeleton/Skeleton'
 import Helper from '@utils/string'
-
-import { toast } from 'react-toastify'
+import { successToast, errorToast } from '@utils/toast'
 
 import useUserStore from '../../useStore'
 import useUpload from '@hooks/useUpload'
@@ -63,95 +63,62 @@ const Main = () => {
 				setLoading(false)
 			}
 		} else {
-			console.error('No file selected')
+			errorToast('No file selected!')
+			setLoading(false)
 		}
 	}
 
-	const handleAnalyze = async () => {
-		if (uploadedImage) {
-			try {
-				setLoading(true)
-				const response = await analyzeFile(
-					{
-						fileUrl: uploadedImage.url,
-						project_name: user?.weights[0].project_name || null,
-						api_key: user?.weights[0].api_key || null,
-						version: user?.weights[0].version || null,
-					},
-					user?.user.access_token
-				)
+	const analyzeCallbacks = {
+		invalidFields: () => {
+			errorToast('Invalid Fields!')
+			setIsModalOpen(true)
+			setErrors({
+				overall: 'Invalid Fields',
+			})
+		},
+		internalError: () => {
+			errorToast('Inter Server ERROR!')
+			setIsModalOpen(true)
+			setErrors({
+				overall: 'This API key does not exist (or has been revoked).',
+			})
+		},
+	}
 
-				if (response.status === 201) {
-					console.log('Image analyzed successfully')
-					setAnalyzedImage(response.data)
-					setLoading(false)
-				} else {
-					console.error('Image analyze unsuccessful')
-					setLoading(false)
-				}
-			} catch (error) {
-				setLoading(false)
-				console.error('Error analyzing file:', error.message)
-			}
-		} else {
-			console.error('No file selected')
-		}
+	const handleAnalyze = async () => {
+		setLoading(true)
+		const response = await analyzeFile(
+			{
+				fileUrl: uploadedImage.url,
+				project_name: user?.weights[0].project_name || null,
+				api_key: user?.weights[0].api_key || null,
+				version: user?.weights[0].version || null,
+				callback: analyzeCallbacks,
+			},
+			user?.user.access_token
+		)
+		setAnalyzedImage(response.data)
+		setLoading(false)
 	}
 
 	const weightsCallbacks = {
 		success: () => {
-			toast.success('Successfully added a new model!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'light',
-			})
+			successToast('Successfully added a new model!')
 			setIsModalOpen(!isModalOpen)
 		},
 		invalidFields: () => {
-			toast.error('Invalid fields!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Invalid Fields!')
 			setIsModalOpen(true)
 			setErrors({
 				overall: 'Invalid Fields',
 			})
 		},
 		existed: () => {
-			toast.error('Weight already existed!', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Model already exists!')
 			setIsModalOpen(true)
 		},
 		internalError: () => {
-			toast.error('Internal Server ERROR', {
-				position: 'top-center',
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: 'colored',
-			})
+			errorToast('Internal Server ERROR')
 			setIsModalOpen(true)
 			setErrors({
 				overall: 'This API key does not exist (or has been revoked).',
@@ -206,8 +173,8 @@ const Main = () => {
 										<li
 											key={index}
 											className={`w-fit px-[10px] py-[5px] cursor-pointer rounded-md border ${
-												selectedIndex === index ? `border-green-400 text-green-500 font-bold` : `border-gray-300 text-gray-500`
-											} hover:border-green-300 hover:text-green-500`}
+												selectedIndex === index ? `border-primary text-primary font-bold` : `border-gray-300 text-gray-500`
+											} hover:border-primary hover:text-primary`}
 											onClick={() => {
 												setSelectedModel(item)
 												setSelectedIndex(index)
@@ -352,7 +319,7 @@ const Main = () => {
 								<a
 									className={`inline-block p-4 cursor-pointer ${
 										selected === 0
-											? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+											? 'text-primary border-b-2 font-bold border-primary rounded-t-lg active'
 											: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
 									}`}
 									onClick={() => setSelected(0)}
@@ -362,7 +329,7 @@ const Main = () => {
 								<a
 									className={`inline-block p-4 cursor-pointer ${
 										selected === 1
-											? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+											? 'text-primary border-b-2 font-bold border-primary rounded-t-lg active'
 											: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
 									}`}
 									onClick={() => setSelected(1)}
@@ -381,34 +348,16 @@ const Main = () => {
 								return (
 									<div className="w-full flex justify-end">
 										<Button
-											style={' bg-green-400 text-white ml-[20px]'}
+											style={' bg-primary text-white ml-[20px]'}
 											title="Continue"
 											loading={isCreating}
 											onClick={() => {
 												if (selectedModel || (projectName && apiKey && modelPath && modelType && workspace)) {
 													postWeight()
 												} else if (selectedModel || projectName || apiKey) {
-													toast.error('All fields are required!', {
-														position: 'top-center',
-														autoClose: 5000,
-														hideProgressBar: false,
-														closeOnClick: true,
-														pauseOnHover: true,
-														draggable: true,
-														progress: undefined,
-														theme: 'colored',
-													})
+													errorToast('All fields are required!')
 												} else {
-													toast.error('You need to setup your model!', {
-														position: 'top-center',
-														autoClose: 5000,
-														hideProgressBar: false,
-														closeOnClick: true,
-														pauseOnHover: true,
-														draggable: true,
-														progress: undefined,
-														theme: 'colored',
-													})
+													errorToast('You need to setup your model!')
 												}
 											}}
 										/>
@@ -439,17 +388,19 @@ const Main = () => {
 									/>
 									<Button
 										title="Upload"
-										style=" bg-green-400 text-white hover:bg-green-500"
+										style=" bg-primary text-white hover:bg-primary"
 										onClick={handleFileUpload}
 									/>
 								</form>
 							</div>
 							{uploadedImage && (
 								<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
-									<img
-										className="flex-shrink w-1/3 h-1/2 object-cover"
+									<Image
 										src={uploadedImage.url}
-										alt="Uploaded"
+										alt="uploaded image"
+										width={400}
+										height={100}
+										style={{ height: 'auto', maxHeight: '350px', maxWidth: '500px' }}
 									/>
 									<div className="flex flex-col flex-shrink items-start font text-base">
 										<div className="flex items-start mb-2">
@@ -491,17 +442,19 @@ const Main = () => {
 									</div>
 									<Button
 										title="Analyze"
-										style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
+										style=" bg-primary text-white hover:bg-primary md:ml-auto"
 										onClick={handleAnalyze}
 									/>
 								</div>
 							)}
 							{analyzedImage && (
 								<div className="w-full flex flex-col gap-y-10 mb-4 rounded shadow p-6 items-center md:flex-row md:items-start md:gap-x-10">
-									<img
-										className="flex-shrink-0 w-1/3 h-1/2 object-cover"
+									<Image
 										src={analyzedImage.url}
-										alt="Uploaded"
+										alt="analyzed image"
+										width={400}
+										height={100}
+										style={{ height: 'auto', maxHeight: '350px', maxWidth: '500px' }}
 									/>
 									<div className="flex flex-col flex-shrink items-start font text-base">
 										<div className="flex items-start mb-2">
@@ -511,7 +464,7 @@ const Main = () => {
 											>
 												Classification:
 											</p>
-											<p className={analyzedImage.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>
+											<p className={analyzedImage.classification == 'Good' ? `text-primary font-bold` : `text-red-500 font-bold`}>
 												{analyzedImage.classification}
 											</p>
 										</div>
@@ -540,7 +493,7 @@ const Main = () => {
 									</div>
 									<Button
 										title="Export"
-										style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
+										style=" bg-primary text-white hover:bg-primary md:ml-auto"
 										onClick={() => saveAs(analyzedImage.url, 'result.png')}
 									/>
 								</div>
@@ -557,7 +510,7 @@ const Main = () => {
 								<Button
 									title={!toggleButton ? 'Open Webcam' : 'Close Webcam'}
 									onClick={() => setToggleButton(!toggleButton)}
-									style=" bg-green-400 text-white hover:bg-green-500"
+									style=" bg-primary text-white hover:bg-primary"
 								/>
 							</div>
 							{toggleButton ? (

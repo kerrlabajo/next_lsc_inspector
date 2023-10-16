@@ -19,9 +19,10 @@ const dropdownMenu = [
 	},
 ]
 
-function NavBar(props) {
+function NavBar() {
 	const router = useRouter()
 	const [dropdown, setDropdown] = useState(false)
+	const [isInDocs, setInDocs] = useState(false)
 	const { user, logout } = useUserStore()
 
 	const isInLogin = router.pathname === '/login'
@@ -36,13 +37,13 @@ function NavBar(props) {
 		return (
 			<div
 				className={
-					'z-10 absolute bg-[#48BF91] divide-y divide-gray-100 rounded-lg shadow w-[300px] right-0 top-[60px] border border-gray-200 ' +
+					'z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[300px] right-10 top-[70px] border border-gray-200 ' +
 					(dropdown == false ? 'hidden' : '')
 				}
 			>
 				<div className="px-4 py-4 text-sm text-white ">
-					<div className="text-lg font-semibold">Hi {user?.user.username}!</div>
-					<div className="font-medium truncate">{user?.user.email}</div>
+					<div className="text-gray-700 text-lg font-semibold">Hi {user?.user.username}!</div>
+					<div className="text-gray-700 font-medium truncate">{user?.user.email}</div>
 				</div>
 				<ul className="text-sm text-white ">
 					{dropdownMenu &&
@@ -50,10 +51,13 @@ function NavBar(props) {
 							<li
 								key={index}
 								onClick={() => {
+									setDropdown(false)
 									router.push(item.route)
 								}}
 							>
-								<span className="block px-4 py-4 cursor-pointer hover:bg-blue-500  ">{item.title}</span>
+								<span className="text-primary block px-4 py-4 cursor-pointer hover:text-white hover:bg-secondary  hover:bg-opacity-50 ">
+									{item.title}
+								</span>
 							</li>
 						))}
 				</ul>
@@ -63,7 +67,7 @@ function NavBar(props) {
 							logout()
 							router.push('/')
 						}}
-						className="block px-4 cursor-pointer py-4 text-sm text-white hover:bg-blue-500 "
+						className="block px-4 cursor-pointer py-4 text-sm text-primary hover:text-white hover:bg-secondary hover:bg-opacity-50"
 					>
 						Sign out
 					</span>
@@ -130,27 +134,34 @@ function NavBar(props) {
 							alt="LSC logo"
 							width={200}
 							onClick={() => {
+								setInDocs(false)
 								router.push('/')
 							}}
 							className="cursor-pointer"
 						/>
 						<Link
 							href="/features"
-							className="ml-[40px] mr-[20px] hover:underline"
+							className="ml-[40px] mr-[20px] hover:border-b-2 border-primary hover:text-primary pb-[3px]"
+							onClick={() => setInDocs(false)}
 						>
 							Features
 						</Link>
-						<Link
-							href="/docs"
-							className="mx-[20px] hover:underline"
-						>
-							Docs
-						</Link>
+
 						<Link
 							href="/about-us"
-							className="mx-[20px] hover:underline"
+							className="mx-[20px] hover:border-b-2 border-primary hover:text-primary pb-[3px]"
+							onClick={() => setInDocs(false)}
 						>
 							About Us
+						</Link>
+						<Link
+							href="/docs"
+							className={`mx-[20px]`}
+							onClick={() => setInDocs(true)}
+						>
+							<span className={`hover:border-b-2 border-primary hover:text-primary pb-[3px] ${isInDocs ? `border-b-2 text-primary` : ``} `}>
+								Docs
+							</span>
 						</Link>
 					</div>
 					<div className={'h-[80px] w-1/4 float-left flex flex-row content-center items-center justify-between '}>
@@ -165,7 +176,7 @@ function NavBar(props) {
 							/>
 							<Button
 								title="Try it now!"
-								style=" bg-green-400 text-white hover:bg-green-500 text-[14px] font-bold"
+								style=" bg-primary text-white hover:bg-primary text-[14px] font-bold"
 								onClick={() => {
 									router.push('/demo')
 								}}

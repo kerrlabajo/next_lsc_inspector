@@ -3,7 +3,7 @@ const Card = (props) => {
 		<div className="bg-white w-full h-full min-h-[150px] p-[20px] flex flex-col justify-between shadow rounded-md">
 			<div className="h-1/3 flex justify-between">
 				<spa className="font-bold">{props.title}</spa>
-				<span className="text-green-400">+3.12%</span>
+				<span className="text-primary">+3.12%</span>
 			</div>
 			<div className="h-2/3 flex items-center justify-between">
 				<div className="h-full flex items-center gap-2">

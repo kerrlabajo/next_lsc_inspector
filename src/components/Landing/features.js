@@ -7,7 +7,7 @@ const Features = () => {
 		<div className="bg-white h-[100vh] float-left text-neutral-900 w-full flex items-center justify-center">
 			<div className="w-full flex items-center flex-col gap-y-[80px]">
 				<div className="flex flex-col items-center justify-center">
-					<h1 className="text-5xl font-bold text-green-500">Features</h1>
+					<h1 className="text-5xl font-bold text-primary">Features</h1>
 					<span className="w-[90%] lg:w-[45%] text-center mt-[10px]">
 						With these advanced features, our Laser Solder Quality Assessment Web Application provides a comprehensive and versatile solution for
 						users in the electronics and manufacturing industries. Whether you&apos;re seeking automated quality control or wish to apply your own
@@ -20,7 +20,7 @@ const Features = () => {
 							<SvgIcon
 								component={Photo}
 								fontSize="large"
-								className="text-green-400"
+								className="text-primary"
 							/>
 							<h1 className="text-[20px] font-bold">Image Upload</h1>
 						</div>
@@ -35,7 +35,7 @@ const Features = () => {
 							<SvgIcon
 								component={Videocam}
 								fontSize="large"
-								className="text-green-400"
+								className="text-primary"
 							/>
 							<h1 className="text-[20px] font-bold">External Camera</h1>
 						</div>
@@ -50,7 +50,7 @@ const Features = () => {
 							<SvgIcon
 								component={SmartToy}
 								fontSize="large"
-								className="text-green-400"
+								className="text-primary"
 							/>
 							<h1 className="text-[20px] font-bold">Custom Model</h1>
 						</div>

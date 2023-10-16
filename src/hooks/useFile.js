@@ -16,7 +16,6 @@ const useFile = (token, id, callback) => {
 				responseCode = status
 				retrievedFile = data
 			} catch (error) {
-				console.error('Error retrieving file:', error)
 				responseCode = error.response
 			}
 			switch (responseCode) {

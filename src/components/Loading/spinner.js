@@ -4,7 +4,7 @@ const Spinner = (props) => {
 	return (
 		<div>
 			<svg
-				className={'w-5 h-5 mr-2 animate-spin fill-white dark:fill-green-400 ' + (props.style ? props.style : 'text-gray-200')}
+				className={'w-5 h-5 mr-2 animate-spin fill-white dark:fill-primary ' + (props.style ? props.style : 'text-gray-200')}
 				viewBox="0 0 100 101"
 				fill="none"
 				xmlns="http://www.w3.org/2000/svg"

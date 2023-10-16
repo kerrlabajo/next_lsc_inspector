@@ -44,7 +44,7 @@ const Login = () => {
 	}
 
 	return (
-		<div className="bg-gradient-to-r from-green-500 to-blue-300 w-full h-[100vh] float-left px-[200px]">
+		<div className="bg-gradient-to-r from-primary to-secondary w-full h-[100vh] float-left px-[200px]">
 			<div className=" h-[100vh] float-left text-neutral-900 w-full flex flex-col gap-10 items-center justify-center">
 				<SvgIcon
 					component={ArrowBack}
@@ -125,7 +125,7 @@ const Login = () => {
 							</div>
 							<Button
 								title="login"
-								style=" w-full bg-green-400 text-white hover:bg-green-500 h-[40px]"
+								style=" w-full bg-primary text-white hover:bg-primary h-[40px]"
 								loading={isLoggingIn}
 								onClick={() => {
 									if (!error) {
@@ -141,7 +141,7 @@ const Login = () => {
 							/>
 							<Button
 								title="Login with Google"
-								style=" w-full bg-green-400 border border-gray-300 hover:bg-gray-50 h-[39px] bg-white text-gray-500"
+								style=" w-full bg-primary border border-gray-300 hover:bg-gray-50 h-[39px] bg-white text-gray-500"
 								onClick={() => {}}
 							/>
 							<p className="text-sm font-light text-gray-500 pt-[20px]">

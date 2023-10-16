@@ -68,7 +68,7 @@ const Demo = () => {
 			<div className="flex flex-col gap-[10px]">
 				<span>You need to log in to export this image.</span>
 				<span
-					className=" text-md font-bold text-blue-500 cursor-pointer hover:underline"
+					className=" text-md font-bold text-secondary cursor-pointer hover:underline"
 					onClick={() => {
 						router.push('/login')
 					}}
@@ -88,7 +88,7 @@ const Demo = () => {
 							<a
 								className={`inline-block p-4 cursor-pointer ${
 									selected === 0
-										? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+										? 'text-primary border-b-2 font-bold border-primary rounded-t-lg active'
 										: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
 								}`}
 								onClick={() => setSelected(0)}
@@ -98,7 +98,7 @@ const Demo = () => {
 							<a
 								className={`inline-block p-4 cursor-pointer ${
 									selected === 1
-										? 'text-green-600 border-b-2 font-bold border-green-600 rounded-t-lg active'
+										? 'text-primary border-b-2 font-bold border-primary rounded-t-lg active'
 										: 'border-b-2 border-transparent rounded-t-lg hover:text-gray-600  hover:border-gray-300'
 								}`}
 								onClick={() => setSelected(1)}
@@ -125,7 +125,7 @@ const Demo = () => {
 								/>
 								<Button
 									title="Upload"
-									style=" bg-green-400 text-white hover:bg-green-500"
+									style=" bg-primary bg-opacity-80 text-white hover:bg-primary hover:bg-opacity-100"
 									onClick={uploadImage}
 									loading={isUploading}
 								/>
@@ -146,7 +146,7 @@ const Demo = () => {
 									/>
 									<Button
 										title="Analyze"
-										style=" bg-green-400 text-white hover:bg-green-500 w-[500px]"
+										style=" bg-primary bg-opacity-80 text-white hover:bg-primary hover:bg-opacity-100 w-[500px]"
 										onClick={analyzeImage}
 										loading={isAnalyzing}
 									/>
@@ -164,7 +164,7 @@ const Demo = () => {
 								<h1 className="text-xl font-bold">Results: </h1>
 								<Button
 									title="Export"
-									style=" bg-green-400 text-white hover:bg-green-500 absolute right-6 top-6"
+									style=" bg-primary bg-opacity-80 text-white hover:bg-primary hover:bg-opacity-100 absolute right-6 top-6"
 									onClick={() => {
 										setIsModalOpen(!isModalOpen)
 									}}
@@ -182,7 +182,7 @@ const Demo = () => {
 										<div>
 											<b>Classification: </b>
 
-											<span className={file.classification == 'Good' ? `text-green-400 font-bold` : `text-red-500 font-bold`}>
+											<span className={file.classification == 'Good' ? `text-primary font-bold` : `text-red-500 font-bold`}>
 												{file.classification}
 											</span>
 										</div>
@@ -200,7 +200,7 @@ const Demo = () => {
 												href={file.url}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-blue-400 hover:underline"
+												className="text-secondary hover:underline"
 											>
 												{file.url}
 											</Link>
@@ -216,7 +216,7 @@ const Demo = () => {
 							<Button
 								title={!toggleButton ? 'Open Webcam' : 'Close Webcam'}
 								onClick={() => setToggleButton(!toggleButton)}
-								style=" bg-green-400 text-white hover:bg-green-500"
+								style=" bg-primary bg-opacity-80 text-white hover:bg-primary hover:bg-opacity-100"
 							/>
 						</div>
 						{toggleButton ? (
@@ -240,7 +240,7 @@ const Demo = () => {
 							return (
 								<div className="w-full flex justify-end">
 									<Button
-										style={' bg-green-400 text-white ml-[20px]'}
+										style={' bg-primary text-white ml-[20px]'}
 										title="Close"
 										onClick={() => {
 											setIsModalOpen(!isModalOpen)
