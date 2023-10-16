@@ -4,10 +4,14 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { saveAs } from 'file-saver'
+
+import Button from '@components/Button/page'
 import Modal from '@components/Modal/page'
+import Skeleton from '@components/Skeleton/Skeleton'
+
 import useUserStore from '@useStore'
 import useFile from '@hooks/useFile'
-import Skeleton from '@components/Skeleton/Skeleton'
 
 const Page = ({ params }) => {
 	const router = useRouter()
@@ -79,19 +83,19 @@ const Page = ({ params }) => {
 				router.push('/history')
 			}}
 			content={renderContent}
-			// footer={() => {
-			// 	return (
-			// 		<div className="w-full flex justify-end">
-			// 			<Button
-			// 				style={' bg-green-400 text-white ml-[20px]'}
-			// 				title="Continue"
-			// 				onClick={() => {
-			// 					router.push('/history')
-			// 				}}
-			// 			/>
-			// 		</div>
-			// 	)
-			// }}
+			footer={() => {
+				return (
+					<div className="w-full flex justify-end">
+						<Button
+							style={' bg-green-400 text-white m-[10px]'}
+							title="Export"
+							onClick={() => {
+								saveAs(file.url, 'result.png')
+							}}
+						/>
+					</div>
+				)
+			}}
 		/>
 	)
 }

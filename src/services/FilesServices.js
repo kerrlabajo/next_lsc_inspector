@@ -16,16 +16,6 @@ const FilesServices = {
 				Authorization: `Bearer ${token}`,
 			},
 		}),
-	download: (token, id, destination) =>
-		axios.post(
-			`${BASE_URL}/download`,
-			{ id: id, destination: destination },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
-		),
 	demoAnalyze: (url) => axios.post(`${BASE_URL}/demo`, url),
 	getAll: (token) =>
 		axios.get(`${BASE_URL}/`, {

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { saveAs } from 'file-saver'
 
 import Container from '@components/container'
 import Button from '@components/Button/page'
@@ -17,7 +18,6 @@ import { toast } from 'react-toastify'
 import useUserStore from '../../useStore'
 import useUpload from '@hooks/useUpload'
 import useAnalyze from '@hooks/useAnalyze'
-import useDownload from '@hooks/useDownloadFile'
 import useCreateWeight from '@hooks/useCreateWeight'
 
 const Main = () => {
@@ -25,7 +25,6 @@ const Main = () => {
 	const { user, isAuthenticated } = useUserStore()
 	const { uploadFile } = useUpload()
 	const { analyzeFile } = useAnalyze()
-	const { downloadFile } = useDownload()
 	const { isCreating, createWeight } = useCreateWeight(user?.user.access_token)
 
 	const [file, setFile] = useState(null)
@@ -46,9 +45,6 @@ const Main = () => {
 	const [modelPath, setModelPath] = useState(null)
 	const [useCustomWeight, setUseCustomWeight] = useState(false)
 	const [errors, setErrors] = useState(null)
-	const ls = localStorage.getItem('userAuth')
-	const session = JSON.parse(ls)
-	console.log(user.access_token)
 
 	const handleFileUpload = async () => {
 		if (file) {
@@ -72,8 +68,6 @@ const Main = () => {
 	}
 
 	const handleAnalyze = async () => {
-		console.log(session?.state)
-		console.log(user?.user)
 		if (uploadedImage) {
 			try {
 				setLoading(true)
@@ -177,12 +171,6 @@ const Main = () => {
 				type: 'pre-defined',
 				callback: weightsCallbacks,
 			})
-			session.state.user.user = {
-				...session.state.user.user,
-				project_name: selectedModel.project_name,
-				api_key: selectedModel.api_key,
-				version: selectedModel.version,
-			}
 		} else {
 			await createWeight({
 				project_name: projectName,
@@ -194,19 +182,7 @@ const Main = () => {
 				type: 'custom',
 				callback: weightsCallbacks,
 			})
-			session.state.user.user = {
-				...session.state.user.user,
-				project_name: projectName,
-				api_key: apiKey,
-				version: version,
-			}
 		}
-		const updatedData = JSON.stringify(session)
-		localStorage.setItem('userAuth', updatedData)
-	}
-
-	const handleExport = () => {
-		// downloadFile(user?.user.access_token, { id: analyzedImage.id, destination: 'C:/Users/Kerr/Downloads/downloaded_image.png' })
 	}
 
 	const renderContent = () => {
@@ -565,7 +541,7 @@ const Main = () => {
 									<Button
 										title="Export"
 										style=" bg-green-400 text-white hover:bg-green-500 md:ml-auto"
-										onClick={handleExport}
+										onClick={() => saveAs(analyzedImage.url, 'result.png')}
 									/>
 								</div>
 							)}
