@@ -8,7 +8,7 @@ const useCreateWeight = (token) => {
 	const [isCreating, setIsCreating] = useState(false)
 	const { user, login, logout, addWeights } = useUserStore()
 
-	const createWeight = async ({ project_name, api_key, version, workspace, model_type, model_path, callback }) => {
+	const createWeight = async ({ project_name, api_key, version, workspace, model_type, model_path, type, callback }) => {
 		setIsCreating(true)
 		console.log(user)
 		let responseCode
@@ -22,6 +22,7 @@ const useCreateWeight = (token) => {
 				workspace,
 				model_type,
 				model_path,
+				type
 			})
 
 			responseCode = status
@@ -33,7 +34,7 @@ const useCreateWeight = (token) => {
 
 		switch (responseCode) {
 			case 201:
-				login(user.access_token, user)
+				login(user.token, user)
 				await callback.success()
 				break
 			case 401:

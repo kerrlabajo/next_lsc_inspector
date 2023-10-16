@@ -171,9 +171,10 @@ const Main = () => {
 				project_name: selectedModel.project_name,
 				api_key: selectedModel.api_key,
 				version: selectedModel.version,
-				workspace: selectedModel.workspace,
-				model_type: selectedModel.model_type,
-				model_path: selectedModel.model_path,
+				workspace: null,
+				model_type: null,
+				model_path: null,
+				type: 'pre-defined',
 				callback: weightsCallbacks,
 			})
 			session.state.user.user = {
@@ -190,6 +191,7 @@ const Main = () => {
 				workspace: workspace,
 				model_type: modelType,
 				model_path: modelPath,
+				type: 'custom',
 				callback: weightsCallbacks,
 			})
 			session.state.user.user = {
