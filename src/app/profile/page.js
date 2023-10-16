@@ -49,7 +49,7 @@ const Profile = () => {
 	}
 
 	const updatePasswordCallbacks = {
-		success: () =>
+		success: () => {
 			toast.success('Password successfully updated!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -59,8 +59,10 @@ const Profile = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'light',
-			}),
-		incorrectPassword: () =>
+			})
+			setIsModalOpen(!isModalOpen)
+		},
+		incorrectPassword: () => {
 			toast.error('Incorrect Password!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -70,8 +72,10 @@ const Profile = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'colored',
-			}),
-		notFound: () =>
+			})
+			setIsModalOpen(true)
+		},
+		notFound: () => {
 			toast.error('Invalid fields!', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -81,8 +85,10 @@ const Profile = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'colored',
-			}),
-		internalError: () =>
+			})
+			setIsModalOpen(true)
+		},
+		internalError: () => {
 			toast.error('Internal Server ERROR', {
 				position: 'top-center',
 				autoClose: 5000,
@@ -92,7 +98,9 @@ const Profile = () => {
 				draggable: true,
 				progress: undefined,
 				theme: 'colored',
-			}),
+			})
+			setIsModalOpen(true)
+		},
 	}
 
 	const editPassword = async () => {
@@ -383,7 +391,6 @@ const Profile = () => {
 											})
 										} else {
 											editPassword()
-											setIsModalOpen(!isModalOpen)
 										}
 									}}
 								/>

@@ -15,7 +15,7 @@ const useEdit = () => {
 			responseCode = status
 			retrievedUser = data
 		} catch (error) {
-			responseCode = error.response.error
+			responseCode = error.response.status
 		}
 		switch (responseCode) {
 			case 200:
