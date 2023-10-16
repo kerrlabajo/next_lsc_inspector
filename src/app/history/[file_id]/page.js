@@ -1,10 +1,9 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import Button from '@components/Button/page'
 import Modal from '@components/Modal/page'
 import useUserStore from '@useStore'
 import useFile from '@hooks/useFile'
@@ -12,8 +11,8 @@ import Skeleton from '@components/Skeleton/Skeleton'
 
 const Page = ({ params }) => {
 	const router = useRouter()
-	const { user, isAuthenticated } = useUserStore()
-	const { isRetrieving, file } = useFile(user?.user.access_token, params.file_id)
+	const { user } = useUserStore()
+	const { file } = useFile(user?.user.access_token, params.file_id)
 
 	const renderContent = () => {
 		return (
