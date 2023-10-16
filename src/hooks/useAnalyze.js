@@ -9,7 +9,7 @@ const useAnalyze = () => {
 			setAnalyzing(true)
 			const response = await FilesServices.analyze(
 				{
-					fileUrl,
+					url: fileUrl,
 					project_name,
 					api_key,
 					version,
@@ -22,7 +22,6 @@ const useAnalyze = () => {
 				throw new Error(`Error analyzing file: ${response.statusText}`)
 			}
 		} catch (error) {
-			console.log(error)
 			console.error('Error analyzing file:', error)
 		} finally {
 			setAnalyzing(false)

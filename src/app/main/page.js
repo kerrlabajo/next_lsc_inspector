@@ -48,7 +48,7 @@ const Main = () => {
 	const [errors, setErrors] = useState(null)
 	const ls = localStorage.getItem('userAuth')
 	const session = JSON.parse(ls)
-	console.log(user)
+	console.log(user.access_token)
 
 	const handleFileUpload = async () => {
 		if (file) {
@@ -84,7 +84,7 @@ const Main = () => {
 						api_key: user?.weights[0].api_key || null,
 						version: user?.weights[0].version || null,
 					},
-					user?.access_token
+					user?.user.access_token
 				)
 
 				if (response.status === 201) {
