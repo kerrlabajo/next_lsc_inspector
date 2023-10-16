@@ -6,13 +6,12 @@ import FilesServices from '@services/FilesServices'
 const useUpload = () => {
 	const [isUploading, setIsUploading] = useState(false)
 
-		const uploadFile = async ({ body }) => {
-			setIsUploading(true)
+	const uploadFile = async ({ body }) => {
+		setIsUploading(true)
 
-			let responseCode
-			let fileUploaded
-			console.log(body)
-			try {
+		let responseCode
+		let fileUploaded
+		try {
 			const { status, data } = await FilesServices.upload(body)
 
 			responseCode = status
@@ -20,7 +19,7 @@ const useUpload = () => {
 
 			return { data, status }
 		} catch (error) {
-			console.log(error)
+			responseCode = error.response.status
 		}
 
 		switch (responseCode) {

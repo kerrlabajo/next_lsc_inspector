@@ -10,8 +10,6 @@ const useDeleteFile = () => {
 		let responseCode
 		let deletedFile
 		if (id) {
-			console.log('id: ', id)
-			console.log('token: ', token)
 			try {
 				const { status, data } = await FilesServices.deleteById(token, id)
 				responseCode = status

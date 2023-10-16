@@ -10,7 +10,6 @@ const useCreateWeight = (token) => {
 
 	const createWeight = async ({ project_name, api_key, version, workspace, model_type, model_path, type, callback }) => {
 		setIsCreating(true)
-		console.log(user)
 		let responseCode
 		let weight
 
@@ -22,7 +21,7 @@ const useCreateWeight = (token) => {
 				workspace,
 				model_type,
 				model_path,
-				type
+				type,
 			})
 
 			responseCode = status

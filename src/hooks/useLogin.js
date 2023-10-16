@@ -23,7 +23,6 @@ const useLogin = () => {
 			responseCode = status
 			retrievedUser = data
 		} catch (error) {
-			console.log(error)
 			responseCode = error.response.status
 		}
 
