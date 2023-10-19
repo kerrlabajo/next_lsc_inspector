@@ -35,9 +35,9 @@ const String = {
 	],
 	tableHeader: [
 		{
-			title: 'Date',
-			type: 'text',
-			variable: 'date',
+			title: '',
+			type: 'result',
+			variable: 'url',
 		},
 		{
 			title: 'Name',

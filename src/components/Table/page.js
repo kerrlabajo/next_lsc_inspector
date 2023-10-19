@@ -33,6 +33,23 @@ const Table = (props) => {
 			</td>
 		)
 	}
+	const renderResult = (header, item, index) => {
+		return (
+			<td
+				key={index}
+				className="w-[70px] h-[70px]"
+			>
+				{item[header.variable] && (
+					<Image
+						src={item.url}
+						alt="image"
+						height={70}
+						width={70}
+					/>
+				)}
+			</td>
+		)
+	}
 
 	const renderRedirect = (header, item, index) => {
 		let style = header.style ? header.style : null
@@ -166,6 +183,8 @@ const Table = (props) => {
 
 	const renderIndex = (item, index, hItem, hIndex) => {
 		switch (hItem.type.toLowerCase()) {
+			case 'result':
+				return renderResult(hItem, item, index)
 			case 'text':
 				return renderText(hItem, item[hItem.variable], hItem.title)
 			case 'ratings':
