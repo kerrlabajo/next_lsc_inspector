@@ -26,7 +26,7 @@ const useAnalyze = () => {
 
 			return { data, status }
 		} catch (error) {
-			responseCode = error.response
+			responseCode = error.response.status
 		}
 		switch (responseCode) {
 			case 201:
