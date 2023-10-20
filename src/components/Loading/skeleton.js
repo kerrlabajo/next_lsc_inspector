@@ -8,7 +8,7 @@ function Skeleton(props) {
 				className="w-full rounded animate-pulse"
 			>
 				<div className="w-full">
-					<div className={`${props.style ? props.style : `h-[30px]`} bg-gray-300 rounded-lg w-full mb-[20px]`}></div>
+					<div className="h-[30px] bg-gray-300 rounded-lg w-full mb-[20px]"></div>
 				</div>
 				<span className="sr-only">Loading...</span>
 			</div>

@@ -6,8 +6,7 @@ if (isLocal) {
 	apiUrl = 'http://localhost:5000/api/v1'
 } else {
 	// Production
-	// apiUrl = 'https://lsc-inspector.azurewebsites.net/'
-	apiUrl = 'http://localhost:5000/api/v1'
+	apiUrl = 'https://lsc-inspector-908ed02924c7.herokuapp.com/api/v1'
 }
 
 const config = {
