@@ -47,6 +47,7 @@ const Main = () => {
 	const [errors, setErrors] = useState(null)
 
 	const handleFileUpload = async () => {
+		console.log()
 		if (file) {
 			setLoading(true)
 			const formData = new FormData()
@@ -93,6 +94,7 @@ const Main = () => {
 				project_name: user?.weights[0].project_name || null,
 				api_key: user?.weights[0].api_key || null,
 				version: user?.weights[0].version || null,
+				weight_id: user?.weights[0].id || null,
 				callback: analyzeCallbacks,
 			},
 			user?.user.access_token

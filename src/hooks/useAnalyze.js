@@ -5,7 +5,7 @@ const useAnalyze = () => {
 	const [analyzing, setAnalyzing] = useState(false)
 	const [result, setResult] = useState(null)
 
-	const analyzeFile = async ({ fileUrl, project_name, api_key, version, callback }, token) => {
+	const analyzeFile = async ({ fileUrl, project_name, api_key, version, weight_id ,callback }, token) => {
 		setAnalyzing(true)
 		let responseCode
 		let analyzedImage
@@ -17,6 +17,7 @@ const useAnalyze = () => {
 					project_name,
 					api_key,
 					version,
+					weight_id
 				},
 				token
 			)
@@ -25,7 +26,7 @@ const useAnalyze = () => {
 
 			return { data, status }
 		} catch (error) {
-			responseCode = error.response.status
+			responseCode = error.response
 		}
 		switch (responseCode) {
 			case 201:
