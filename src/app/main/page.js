@@ -47,6 +47,7 @@ const Main = () => {
 	const [errors, setErrors] = useState(null)
 
 	const handleFileUpload = async () => {
+		console.log()
 		if (file) {
 			setLoading(true)
 			const formData = new FormData()
@@ -93,6 +94,7 @@ const Main = () => {
 				project_name: user?.weights[0].project_name || null,
 				api_key: user?.weights[0].api_key || null,
 				version: user?.weights[0].version || null,
+				weight_id: user?.weights[0].id || null,
 				callback: analyzeCallbacks,
 			},
 			user?.user.access_token
@@ -132,8 +134,8 @@ const Main = () => {
 				project_name: selectedModel.project_name,
 				api_key: selectedModel.api_key,
 				version: selectedModel.version,
-				workspace: null,
-				model_type: null,
+				workspace: selectedModel.workspace,
+				model_type: selectedModel.model_type,
 				model_path: null,
 				type: 'pre-defined',
 				callback: weightsCallbacks,
