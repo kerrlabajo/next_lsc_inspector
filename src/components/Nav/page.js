@@ -10,7 +10,9 @@ import { Person, Settings } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
 import Button from '@components/Button/page'
 import useUserStore from './../../useStore'
-
+import configureAxios from '@configureAxios'
+import Modal from '@components/Modal/page'
+import useRefreshToken from '@hooks/useRefreshToken'
 const dropdownMenu = [
 	{
 		title: 'Profile',
@@ -24,10 +26,21 @@ function NavBar() {
 	const [dropdown, setDropdown] = useState(false)
 	const [isInDocs, setInDocs] = useState(false)
 	const { user, logout } = useUserStore()
+	const { refreshToken } = useRefreshToken()
+
+	const [showModal, setShowModal] = useState(false);
 
 	const isInLogin = router.pathname === '/login'
-
+	const refresh = user?.user.refresh_token
 	useEffect(() => {}, [user])
+
+	useEffect(() => {
+		const modalTimeout = setTimeout(() => {
+		  setShowModal(true);
+		}, 900000); // 15 minutes is the expiry time of the access token
+
+		return () => clearTimeout(modalTimeout); // Clean up the timeout on component unmount
+	  }, []);
 
 	if (isInLogin) {
 		return null
@@ -76,7 +89,22 @@ function NavBar() {
 		)
 	}
 
+	const handleStayLoggedIn = () => {
+		refreshToken(refresh)
+		setShowModal(false)
+		location.reload();
+	}
+	const renderContent = () => {
+		return (
+			<div>
+				<div className="flex flex-row">Stay logged in?</div>
+				<Button title="Yes" onClick={handleStayLoggedIn}></Button>
+				<Button title="Logout" onClick={() => logout()}></Button>
+			</div>
+		)
+	}
 	const renderAuthorizedNav = () => {
+
 		return (
 			<div className="z-40 float-left w-full h-[80px] shadow fixed bg-[#48BF91] text-neutral-900 pl-[25px] pr-[50px]">
 				<div className="lg:block xl:block 2xl:block sm:hidden md:hidden xs:hidden">
@@ -120,6 +148,9 @@ function NavBar() {
 					</div>
 					{renderDropdown()}
 				</div>
+				{showModal && (
+					<Modal title="Setup your AI model" content={renderContent}></Modal>
+				)}
 			</div>
 		)
 	}
