@@ -9,7 +9,7 @@ const ResultCard = (props) => {
 		>
 			<div className="flex justify-between">
 				<span className="text-xl font-bold">{props.data.name}</span>
-				<span className="text-primary">Successful</span>
+				{/* <span className="text-primary">Successful</span> */}
 			</div>
 			<div className="w-full flex flex-col gap-2">
 				<div className="flex justify-between">

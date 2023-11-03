@@ -30,13 +30,13 @@ const FilesServices = {
 			},
 		}),
 	deleteAll: (token) =>
-		axios.delete(`${BASE_URL}/`, {
+		axios.delete(`${BASE_URL}/clear`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		}),
 	deleteById: (token, id) =>
-		axios.delete(`${BASE_URL}/${id}`, {
+		axios.delete(`${BASE_URL}/${id}/delete`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
