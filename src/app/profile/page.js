@@ -100,9 +100,10 @@ const Profile = () => {
 			username: username,
 			email: email,
 		})
-		if (response.status === 201) {
+		if (response.status === 200) {
 			userData.state.user.user.username = username
 			userData.state.user.user.email = email
+			localStorage.setItem('userAuth', JSON.stringify(userData));
 			successToast('Successfully updated your profile!')
 			setLoading(false)
 		} else {

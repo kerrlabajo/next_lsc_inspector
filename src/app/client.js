@@ -5,9 +5,11 @@ import { SessionProvider } from 'next-auth/react'
 import Layout from '@components/layout/Layout'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import configureAxios from '@configureAxios'
 
 const inter = Inter({ subsets: ['latin'] })
 
+configureAxios()
 export default function Client({ children }) {
 	return (
 		<body className={inter.className}>
